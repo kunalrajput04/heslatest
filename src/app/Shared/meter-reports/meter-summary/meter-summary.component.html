@@ -1,0 +1,148 @@
+<div class="main-content">
+  <div class="main-content-inner">
+    <!-- <div class="page-content">
+      <div class="page-header">
+        <div></div>
+      </div> -->
+      <!-- /.page-header -->
+
+      <div class="row">
+        <div class="col-xs-12">
+          <!-- <h1 style="text-align: center; margin-top: 2rem">Meter Summary</h1> -->
+          <h1 class="h3" style=" text-align: left;margin-left: 20px;">Meter Summary</h1>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+              <div style="font-size: 1.5rem; font-weight: bold;margin-left: 20px;">
+                Total Meters: {{ communicatingCount + nonCommunicatingCount + neverCommunicatedCount }}
+              </div>
+              <div>
+                <button
+                  (click)="downloadCSV('total')"
+                  class="btn btn-primary"
+                  style="margin-right: 10px;"
+                >
+                  Export Total CSV
+                </button>
+                <button
+                  (click)="downloadPDF('total')"
+                  class="btn btn-secondary"
+                >
+                  Export Total PDF
+                </button>
+              </div>
+            </div>
+          <ol style="--length: 5" role="list">
+            <li style="--i: 1">
+              <div
+                style="
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+                "
+              >
+                <h3 style="flex: 1">Communicating Meter</h3>
+                <div
+                  style="
+                    flex: 1;
+                    text-align: center;
+                    font-size: 1.5rem;
+                    font-weight: bold;
+                  "
+                >
+                  Count: {{ communicatingCount }}
+                </div>
+                <div style="flex: 1; text-align: right">
+                  <button
+                    (click)="downloadCSV('communicating')"
+                    class="btn btn-primary"
+                  >
+                    Download CSV
+                  </button>
+                  <button
+                    (click)="downloadPDF('communicating')"
+                    class="btn btn-secondary"
+                  >
+                    Download PDF
+                  </button>
+                </div>
+              </div>
+            </li>
+            <li style="--i: 2">
+              <div
+                style="
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+                "
+              >
+                <h3 style="flex: 1">Non Communicating Meter</h3>
+                <div
+                  style="
+                    flex: 1;
+                    text-align: center;
+                    font-size: 1.5rem;
+                    font-weight: bold;
+                  "
+                >
+                  Count: {{ nonCommunicatingCount }}
+                </div>
+                <div style="flex: 1; text-align: right">
+                  <button
+                    (click)="downloadCSV('nonCommunicating')"
+                    class="btn btn-primary"
+                  >
+                    Download CSV
+                  </button>
+                  <button
+                    (click)="downloadPDF('nonCommunicating')"
+                    class="btn btn-secondary"
+                  >
+                    Download PDF
+                  </button>
+                </div>
+              </div>
+            </li>
+            <li style="--i: 3">
+              <div
+                style="
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+                "
+              >
+                <h3 style="flex: 1">Never Communicated Meter</h3>
+                <div
+                  style="
+                    flex: 1;
+                    text-align: center;
+                    font-size: 1.5rem;
+                    font-weight: bold;
+                  "
+                >
+                  Count: {{ neverCommunicatedCount }}
+                </div>
+                <div style="flex: 1; text-align: right">
+                  <button
+                    (click)="downloadCSV('neverCommunicated')"
+                    class="btn btn-primary"
+                  >
+                    Download CSV
+                  </button>
+                  <button
+                    (click)="downloadPDF('neverCommunicated')"
+                    class="btn btn-secondary"
+                  >
+                    Download PDF
+                  </button>
+                </div>
+              </div>
+            </li>
+          </ol>
+          <!-- PAGE CONTENT ENDS -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </div>
+    <!-- /.page-content -->
+  <!-- </div> -->
+<!-- </div> -->

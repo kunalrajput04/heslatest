@@ -1,0 +1,282 @@
+<div class="main-content">
+  <div class="main-content-inner">
+    <div class="page-content">
+      <div class="page-header"></div>
+      <!-- /.page-header -->
+
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="row">
+            <div class="col-xs-12">
+              <form novalidate>
+                <div class="row">
+                  <div class="form-group col-md-4">
+                    <label class="block clearfix">
+                      <div>
+                        <select style="width: 100%" name="roleID" #roleID="ngModel" [(ngModel)]="formdata.roleID"
+                          (change)="changeAccessLevel($event.target.value)" required>
+                          <option value="">Select Access Level</option>
+                          <option value="1">Utility</option>
+                          <option value="2">Subdivision</option>
+                          <option value="3">Substation</option>
+                          <option value="4">Feeder</option>
+                          <option value="5">DT</option>
+                          <option value="6">METER</option>
+                        </select>
+                      </div>
+                    </label>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label class="block clearfix">
+                      <div class="">
+                       
+                        <input readonly class="form-control" style="width: 100%" name="accessOwner"
+                          #accessOwner="ngModel" [(ngModel)]="formdata.accessOwner" />
+                      </div>
+                    </label>
+                  </div>
+                  <div class="form-group col-md-4" *ngIf="isMeter">
+                    <label class="block clearfix">
+                      <div class="">
+                        <input placeholder="meter serial no" class="form-control" style="width: 100%" name="designation"
+                          #designation="ngModel" [(ngModel)]="formdata.designation" />
+                      </div>
+                    </label>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label class="block clearfix" *ngIf="isSubdivision">
+                      <div class="">
+                        <select style="width: 100%" #accessSubdivision="ngModel" name="accessSubdivision" [ngClass]="
+                            accessSubdivision.invalid
+                              ? 'errorclass'
+                              : 'successclass'
+                          " [(ngModel)]="formdata.accessSubdivision" (change)="getSubstation($event.target.value)"
+                          required>
+                          <option selected="" value="">
+                            Select Subdivision
+                          </option>
+                          <option *ngFor="let obj of SubDivisionDropdown" [Value]="obj">
+                            {{ obj }}
+                          </option>
+                        </select>
+                      </div>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="form-group col-md-4">
+                    <label class="block clearfix" *ngIf="isSubstation">
+                      <div class="">
+                        <select style="width: 100%" #accessSubStation="ngModel" name="accessSubStation" [ngClass]="
+                            accessSubStation.invalid
+                              ? 'errorclass'
+                              : 'successclass'
+                          " [(ngModel)]="formdata.accessSubStation" (change)="getFeeder($event.target.value)" required>
+                          <option selected="" value="">
+                            Select Substation
+                          </option>
+                          <option *ngFor="let obj of SubStationDropdown" [Value]="obj">
+                            {{ obj }}
+                          </option>
+                        </select>
+                      </div>
+                    </label>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label class="block clearfix" *ngIf="isFeeder">
+                      <div class="">
+                        <select #accessFeeder="ngModel" name="accessFeeder" [ngClass]="
+                            accessFeeder.invalid ? 'errorclass' : 'successclass'
+                          " [(ngModel)]="formdata.accessFeeder" style="width: 100%"
+                          (change)="getDT($event.target.value)" required>
+                          <option selected="" value="">Select Feeder</option>
+                          <option *ngFor="let obj of FeederDropdown" [Value]="obj">
+                            {{ obj }}
+                          </option>
+                        </select>
+                      </div>
+                    </label>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label class="block clearfix" *ngIf="isDT">
+                      <div class="">
+                        <select #accessDT="ngModel" name="accessDT" [ngClass]="
+                            accessDT.invalid ? 'errorclass' : 'successclass'
+                          " [(ngModel)]="formdata.accessDT" style="width: 100%" required>
+                          <option selected="" value="">Select DT</option>
+                          <option *ngFor="let obj of DTDropdown" [Value]="obj">
+                            {{ obj }}
+                          </option>
+                        </select>
+                      </div>
+                    </label>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-12">
+              <table id="simple-table" class="table table-bordered table-hover">
+                <thead>
+                  <tr>
+                    <th>PrePay Configuration type</th>
+                    <th>PrePay Configuration Value</th>
+                    <th class="hidden-480">
+                      Action
+                    </th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr>
+                    <td>
+                      <a href="javascript:void(0)">PrePay Mode</a>
+                    </td>
+                    <td>
+                      <span>PrePaid</span><input name="PaymentMode" value="1" [(ngModel)]="PaymentMode" type="radio" />
+                      <span>PostPaid</span><input name="PaymentMode" value="0" [(ngModel)]="PaymentMode" type="radio" />
+                    </td>
+                    <td>
+                      <div class="form-check">
+                        <input type="checkbox" name="PaymentModeCheck" [(ngModel)]="PaymentModeCheck" id="PaymentModeCheck" class="form-check-input" >
+                        <label class="form-check-label" for="PaymentMode"></label>
+                        <button (click)="onSubmit('PaymentMode')" style="margin-left: 15px;" class="btn btn-info" type="button"
+                          [disabled]="iswritepermission === '0'">
+                          <i class="ace-icon fa fa-check bigger-110"></i>
+                          Submit
+                        </button>
+                      </div>
+                      <div class="hidden-sm hidden-xs btn-group">
+                        
+                       
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>
+                      <a href="javascript:void(0)">Current Balance Amount</a>
+                    </td>
+                    <td>
+                      <input type="text" name="CurrentBalanceAmount" [(ngModel)]="CurrentBalanceAmount" />
+                    </td>
+                    <td>
+
+
+                      <div class="form-check">
+                        <input type="checkbox" name="CurrentBalanceAmountCheck" [(ngModel)]="CurrentBalanceAmountCheck" id="CurrentBalanceAmountCheck" class="form-check-input" >
+                        <label class="form-check-label" for="CurrentBalanceAmountCheck"></label>
+                        <button (click)="onSubmit('CurrentBalanceAmount')" class="btn btn-info"
+                          style="margin-left: 15px;" type="button" [disabled]="iswritepermission === '0'">
+                          <i class="ace-icon fa fa-check bigger-110"></i>
+                          Submit
+                        </button>
+                      </div>
+
+
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <a href="javascript:void(0)">Current Balance Time</a>
+                    </td>
+                    <td>
+                      <input type="datetime-local" name="CurrentBalanceTime" [(ngModel)]="CurrentBalanceTime" />
+                    </td>
+                    <td>
+                      <div class="form-check">
+                        <input type="checkbox" name="CurrentBalanceTimeCheck" [(ngModel)]="CurrentBalanceTimeCheck" id="CurrentBalanceTimeCheck" class="form-check-input" >
+                        <label class="form-check-label" for="CurrentBalanceTimeCheck"></label>
+                        <button (click)="onSubmit('CurrentBalanceTime')" style="margin-left: 15px;" class="btn btn-info" type="button"
+                          [disabled]="iswritepermission === '0'">
+                          <i class="ace-icon fa fa-check bigger-110"></i>
+                          Submit
+                        </button>
+                      </div>
+
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <a href="javascript:void(0)">Last Token Recharge Amount</a>
+                    </td>
+                    <td>
+                      <input type="text" name="LastTokenRechargeAmount" [(ngModel)]="LastTokenRechargeAmount" />
+                    </td>
+                    <td>
+                      <div class="form-check">
+                        <input type="checkbox" name="LastTokenRechargeAmountCheck" [(ngModel)]="LastTokenRechargeAmountCheck" id="LastTokenRechargeAmountCheck" class="form-check-input" >
+                        <label class="form-check-label" for="LastTokenRechargeAmountCheck"></label>
+                        <button (click)="onSubmit('LastTokenRechargeAmount')" style="margin-left: 15px;" class="btn btn-info" type="button"
+                          [disabled]="iswritepermission === '0'">
+                          <i class="ace-icon fa fa-check bigger-110"></i>
+                          Submit
+                        </button>
+                      </div>
+
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <a href="javascript:void(0)">Last Token Recharge Time</a>
+                    </td>
+                    <td>
+                      <input type="datetime-local" name="LastTokenRechargeTime" [(ngModel)]="LastTokenRechargeTime" />
+                    </td>
+                    <td>
+                      <div class="form-check">
+                        <input type="checkbox" name="LastTokenRechargeTimeCheck" [(ngModel)]="LastTokenRechargeTimeCheck" id="LastTokenRechargeTimeCheck" class="form-check-input" >
+                        <label class="form-check-label" for="LastTokenRechargeTimeCheck"></label>
+                        <button (click)="onSubmit('LastTokenRechargeTime')" style="margin-left: 15px;" class="btn btn-info" type="button"
+                          [disabled]="iswritepermission === '0'">
+                          <i class="ace-icon fa fa-check bigger-110"></i>
+                          Submit
+                        </button>
+                      </div>
+
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <a href="javascript:void(0)">Total Amount At Last Recharge</a>
+                    </td>
+                    <td>
+                      <input type="text" name="TotalAmountAtLastRecharge" [(ngModel)]="TotalAmountAtLastRecharge" />
+                    </td>
+                    <td>
+                      <div class="form-check">
+                        <input type="checkbox" name="TotalAmountAtLastRechargeCheck" [(ngModel)]="TotalAmountAtLastRechargeCheck" id="TotalAmountAtLastRechargeCheck" class="form-check-input" >
+                        <label class="form-check-label" for="TotalAmountAtLastRechargeCheck"></label>
+                        <button (click)="onSubmit('TotalAmountAtLastRecharge')" style="margin-left: 15px;" class="btn btn-info" type="button"
+                          [disabled]="iswritepermission === '0'">
+                          <i class="ace-icon fa fa-check bigger-110"></i>
+                          Submit
+                        </button>
+                      </div>
+
+                    </td>
+                  </tr>
+                  <tr>
+                    
+                    <td colspan="3" style="text-align: center;">
+                      <button  style="margin-left: 15px;" (click)="onSubmitAll()" class="btn btn-info" type="button"
+                      [disabled]="iswritepermission === '0'">
+                      <i class="ace-icon fa fa-check bigger-110"></i>
+                      Write Selected 
+                    </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- /.span -->
+          </div>
+        </div>
+        <!-- /.row -->
+      </div>
+      <!-- /.page-content -->
+    </div>
+  </div>
+</div>

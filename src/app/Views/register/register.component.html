@@ -1,0 +1,441 @@
+<div
+  class="login-layout"
+  style="background-image: url(../../../assets/images/tower.jpg)"
+>
+  <div class="main-container">
+    <div class="main-content">
+      <div class="row">
+        <div
+          class="col-sm-12 col-sm-offset-1"
+          style="margin-left: 0% !important"
+        >
+          <div class="login-container" style="width: 50%; margin-left: 27em">
+            <div class="center">
+              <h1>
+                <i class="ace-icon fa fa-bolt green"></i>
+                <span class="red">AMI</span>
+                <span class="white" id="id-text2"> SOLUTIONS</span>
+              </h1>
+              <!-- <h1 class="white" id="id-text2" style="font-size: 23px">
+                &copy; MeECL
+              </h1> -->
+            </div>
+
+            <div class="space-6"></div>
+
+            <div class="position-relative">
+              <div
+                id="signup-box"
+                class="signup-box widget-box no-border visible"
+              >
+                <div class="widget-body">
+                  <div class="widget-main">
+                    <h4
+                      class="header green lighter bigger"
+                      style="text-align: center"
+                    >
+                      <i class="ace-icon fa fa-users blue"></i>
+                      New User Registration
+                    </h4>
+
+                    <div class="space-6"></div>
+                    <p style="text-align: center">
+                      Enter your details to begin:
+                    </p>
+
+                    <form #form="ngForm"   autocomplete="off" novalidate (submit)="saveUser(form)">
+                      <fieldset>
+                        <div class="col-md-12">
+                          <div class="row">
+                            <div class="col-md-6">
+                              <label class="block clearfix">
+                                <span class="block input-icon input-icon-right">
+                                  <input
+                                    type="text"
+                                    (change)="getexistingUser()"
+                                    class="form-control"
+                                    placeholder="username"
+                                    [ngClass]="
+                                      email.invalid
+                                        ? 'errorclass'
+                                        : 'successclass'
+                                    "
+                                    #email="ngModel"
+                                    
+                                    name="email"
+                                    id="email"
+                                    [(ngModel)]="formdata.email"
+                                    required
+                                  />
+                                  <i class="ace-icon fa fa-user"></i>
+                                </span>
+                              </label>
+                            </div>
+                            <div class="col-md-6">
+                              <label class="block clearfix">
+                                <span class="block input-icon input-icon-right">
+                                  <input
+                                    type="email"
+                                    class="form-control"
+                                    [ngClass]="
+                                      userName.invalid
+                                        ? 'errorclass'
+                                        : 'successclass'
+                                    "
+                                    #userName="ngModel"
+                                    name="userName"
+                                    id="userName"
+                                    [(ngModel)]="formdata.userName"
+                                    placeholder="Full Name"
+                                    required
+                                  />
+                                  <i class="ace-icon fa fa-user"></i>
+                                </span>
+                              </label>
+                            </div>
+
+                            <div class="col-md-6" *ngIf="!isUpdate">
+                              <label class="block clearfix">
+                                <span class="block input-icon input-icon-right">
+                                  <input
+                                    type="password"
+                                    class="form-control"
+                                    placeholder="Password"
+                                    #password="ngModel"
+                                    [ngClass]="
+                                      password.invalid
+                                        ? 'errorclass'
+                                        : 'successclass'
+                                    "
+                                    name="password"
+                                    id="password"
+                                    [(ngModel)]="formdata.password"
+                                    required
+                                  />
+                                  <i class="ace-icon fa fa-lock"></i>
+                                </span>
+                              </label>
+                            </div>
+                            <div class="col-md-6" *ngIf="!isUpdate">
+                              <label class="block clearfix">
+                                <span class="block input-icon input-icon-right">
+                                  <input
+                                    type="password"
+                                    class="form-control"
+                                    placeholder="Repeat password"
+                                    name="repeatPassword"
+                                    [(ngModel)]="repeatPassword"
+                                    required
+                                  />
+                                  <i class="ace-icon fa fa-lock"></i>
+                                </span>
+                              </label>
+                            </div>
+                            <div class="col-md-6">
+                              <label class="block clearfix">
+                                <span class="block input-icon input-icon-right">
+                                  <input
+                                    type="text"
+                                    class="form-control"
+                                    placeholder="Designation"
+                                    #designation="ngModel"
+                                    name="designation"
+                                    [ngClass]="
+                                      designation.invalid
+                                        ? 'errorclass'
+                                        : 'successclass'
+                                    "
+                                    id="designation"
+                                    [(ngModel)]="formdata.designation"
+                                    required
+                                  />
+                                 
+                                  <i class="ace-icon fa fa-credit-card"></i>
+                                </span>
+                              </label>
+                            </div>
+                            <div class="col-md-6">
+                              <label class="block clearfix">
+                                <div class="">
+                                  <select
+                                    style="width: 100%"
+                                    #writeAccess="ngModel"
+                                    name="writeAccess"
+                                    id="writeAccess"
+                                    [(ngModel)]="formdata.writeAccess"
+                                  >
+                                    <option value="0">Read</option>
+                                    <option value="1">Read &amp; Write</option>
+                                  </select>
+                                </div>
+                              </label>
+                            </div>
+                            <div class="col-md-12">
+                              <label class="block clearfix">
+                                <span class="block input-icon input-icon-right">
+                                  <input
+                                    type="text"
+                                    class="form-control"
+                                    placeholder="welcome message"
+                                    #welcomemsg="ngModel"
+                                    name="welcomemsg"
+                                    [ngClass]="
+                                    welcomemsg.invalid
+                                        ? 'errorclass'
+                                        : 'successclass'
+                                    "
+                                    id="welcomemsg"
+                                    [(ngModel)]="formdata.welcomemsg"
+                                    
+                                  />
+                                 
+                                  <i class="ace-icon fa fa-comments"></i>
+                                </span>
+                              </label>
+                            </div>
+                            <div class="col-md-12">
+                              <label class="block clearfix">
+                                <div class="">
+                                  <select
+                                    class=""
+                                    style="width: 100%"
+                                    #roleID="ngModel"
+                                    name="roleID"
+                                    id="roleID"
+                                    [ngClass]="
+                                      roleID.invalid
+                                        ? 'errorclass'
+                                        : 'successclass'
+                                    "
+                                    [(ngModel)]="formdata.roleID"
+                                    (change)="
+                                      changeAccessLevel($event.target.value)
+                                    "
+                                    required
+                                  >
+                                    <option value="">
+                                      Select Access Level
+                                    </option>
+                                    <option value="1">Utility</option>
+                                    <option value="2">Subdivision</option>
+                                    <option value="3">Substation</option>
+                                    <option value="4">Feeder</option>
+                                    <option value="5">DT</option>
+                                  </select>
+                                </div>
+                              </label>
+                            </div>
+
+                            <div class="col-md-12">
+                              <label class="block clearfix">
+                                <div class="">
+                                  <select
+                                    class=""
+                                    id="useraccess"
+                                    style="width: 100%"
+                                    #accessOwner="ngModel"
+                                    name="accessOwner"
+                                    id="accessOwner"
+                                    [ngClass]="
+                                      accessOwner.invalid
+                                        ? 'errorclass'
+                                        : 'successclass'
+                                    "
+                                    [(ngModel)]="formdata.accessOwner"
+                                    (change)="changeUtility()"
+                                    required
+                                  >
+                                    <option value="">Select Utility</option>
+
+                                    <option
+                                      *ngFor="let obj of utilityDropdown"
+                                      [Value]="obj"
+                                    >
+                                      {{ obj }}
+                                    </option>
+                                  </select>
+                                </div>
+                              </label>
+                            </div>
+
+                            <div class="col-md-6">
+                              <label
+                                class="block clearfix"
+                                *ngIf="isSubdivision"
+                              >
+                                <div class="">
+                                  <select
+                                    style="width: 100%"
+                                    #accessSubdivision="ngModel"
+                                    name="accessSubdivision"
+                                    id="accessSubdivision"
+                                    [ngClass]="
+                                      accessSubdivision.invalid
+                                        ? 'errorclass'
+                                        : 'successclass'
+                                    "
+                                    [(ngModel)]="formdata.accessSubdivision"
+                                    (change)="
+                                      getSubstation($event.target.value)
+                                    "
+                                    required
+                                  >
+                                    <option selected="" value="">
+                                      Select Subdivision
+                                    </option>
+                                    <option
+                                      *ngFor="let obj of subdivisionDropDown"
+                                      [Value]="obj"
+                                    >
+                                      {{ obj }}
+                                    </option>
+                                  </select>
+                                </div>
+                              </label>
+                            </div>
+                            <div class="col-md-6">
+                              <label
+                                class="block clearfix"
+                                *ngIf="isSubstation"
+                              >
+                                <div class="">
+                                  <select
+                                    style="width: 100%"
+                                    #accessSubStation="ngModel"
+                                    name="accessSubStation"
+                                    id="accessSubStation"
+                                    [ngClass]="
+                                      accessSubStation.invalid
+                                        ? 'errorclass'
+                                        : 'successclass'
+                                    "
+                                    [(ngModel)]="formdata.accessSubStation"
+                                    (change)="getFeeder($event.target.value)"
+                                    required
+                                  >
+                                    <option selected="" value="">
+                                      Select Substation
+                                    </option>
+                                    <option
+                                      *ngFor="let obj of substationDropDown"
+                                      [Value]="obj"
+                                    >
+                                      {{ obj }}
+                                    </option>
+                                  </select>
+                                </div>
+                              </label>
+                            </div>
+                            <div class="col-md-6">
+                              <label class="block clearfix" *ngIf="isFeeder">
+                                <div class="">
+                                  <select
+                                    #accessFeeder="ngModel"
+                                    name="accessFeeder"
+                                    id="accessFeeder"
+                                    [ngClass]="
+                                      accessFeeder.invalid
+                                        ? 'errorclass'
+                                        : 'successclass'
+                                    "
+                                    [(ngModel)]="formdata.accessFeeder"
+                                    style="width: 100%"
+                                    (change)="getDT($event.target.value)"
+                                    required
+                                  >
+                                    <option selected="" value="">
+                                      Select Feeder
+                                    </option>
+                                    <option
+                                      *ngFor="let obj of feederDropDown"
+                                      [Value]="obj"
+                                    >
+                                      {{ obj }}
+                                    </option>
+                                  </select>
+                                </div>
+                              </label>
+                            </div>
+                            <div class="col-md-6">
+                              <label class="block clearfix" *ngIf="isDT">
+                                <div class="">
+                                  <select
+                                    #accessDT="ngModel"
+                                    name="accessDT"
+                                    id="accessDT"
+                                    [ngClass]="
+                                      accessDT.invalid
+                                        ? 'errorclass'
+                                        : 'successclass'
+                                    "
+                                    [(ngModel)]="formdata.accessDT"
+                                    style="width: 100%"
+                                    required
+                                  >
+                                    <option selected="" value="">
+                                      Select DT
+                                    </option>
+                                    <option
+                                      *ngFor="let obj of dtDropDown"
+                                      [Value]="obj"
+                                    >
+                                      {{ obj }}
+                                    </option>
+                                  </select>
+                                </div>
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="clearfix">
+                          <button
+                            type="reset"
+                            class="width-30 pull-left btn btn-sm"
+                          >
+                            <i class="ace-icon fa fa-refresh"></i>
+                            <span class="bigger-110">Reset</span>
+                          </button>
+
+                          <button
+                            type="submit"
+                            [disabled]="form.invalid"
+                            class="width-65 pull-right btn btn-sm btn-success"
+                          >
+                            <span *ngIf="!isUpdate" class="bigger-110">Register</span>
+                            <span *ngIf="isUpdate" class="bigger-110">Update</span>
+
+                            <i
+                              class="ace-icon fa fa-arrow-right icon-on-right"
+                            ></i>
+                          </button>
+                        </div>
+                      </fieldset>
+                    </form>
+                  </div>
+
+                  <div class="toolbar center">
+                    <a
+                      routerLink="/login"
+                      data-target="#login-box"
+                      class="back-to-login-link"
+                    >
+                      <i class="ace-icon fa fa-arrow-left"></i>
+                      Back to login
+                    </a>
+                  </div>
+                </div>
+                <!-- /.widget-body -->
+              </div>
+              <!-- /.signup-box -->
+            </div>
+            <!-- /.position-relative -->
+          </div>
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </div>
+    <!-- /.main-content -->
+  </div>
+</div>

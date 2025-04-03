@@ -1,0 +1,345 @@
+<!-- Device List  -->
+
+<div class="main-content">
+  <div class="main-content-inner">
+    <div class="page-content">
+      <div class="page-header">
+        <br />
+      </div>
+
+      <div class="row">
+        <div class="col-xs-12">
+          <!-- PAGE CONTENT BEGINS -->
+
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="table-header">
+                <span style="margin-top: 4px">
+                  <button type="button" id="ModalAddSubdevision" data-toggle="modal" data-target="#myModal" style="
+                      margin-top: 5px;
+                      height: 43px;
+                      background-color: darkslategray;
+                      border-radius: 7px;
+                    ">
+                    Add Multiple Device
+                  </button>
+                </span>
+                <span style="margin-top: 0px; float: right; margin-right: 16px"><button *ngIf="iswritepermission != '0'"
+                    type="button" (click)="showDeviceModal()" style="
+                      margin-top: 5px;
+                      height: 43px;
+                      background-color: darkslategray;
+                      border-radius: 7px;
+                      background-color: darkslategray;
+                      border-radius: 7px;
+                    ">
+                    Add Device
+                  </button></span>
+
+
+              </div>
+              <div class="table-responsive">
+                <button type="button" (click)="onBtnExport()" class="ag-gridbtn">
+                  <i class="fa fa-download"></i> CSV Export Data
+                </button>
+                <input type="text" id="filter-text-box" placeholder="Search" (input)="onFilterTextBoxChanged()" />
+                
+                <input type="text" placeholder="meter no" name="meterNo" [(ngModel)]="meterNo" style="float: right;"/>
+                <button type="button" (click)="onList()" class="ag-gridbtn gobtn" style="float: right;">
+                  Go
+                </button>
+
+                <ag-grid-angular style="width: 100%; height: 450px;" class="ag-theme-balham"
+                  [defaultColDef]="defaultColDef" [gridOptions]="gridOptions" [pagination]=true
+                  [paginationPageSize]="15" enableCellTextSelection=true (gridReady)="onGridReady($event)"
+                  [columnDefs]="columnDefs" [animateRows]=true [frameworkComponents]="frameworkComponents">
+                </ag-grid-angular>
+              </div>
+            </div>
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </div>
+      <!-- /.page-content -->
+    </div>
+  </div>
+  <!--End Device List  -->
+
+  <!-- Add Multiple Device Popup -->
+
+  <div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content" style="margin-top: 8em !important">
+        <div class="modal-header" style="background-color: #548dbe">
+          <button type="button" class="close" data-dismiss="modal">
+            &times;
+          </button>
+          <h4 class="modal-title" style="text-align: center">
+            Add Multiple Device
+          </h4>
+        </div>
+        <form id="FormUploadFile" action="{{apiUrl}}/file/upload" method="post" target="_blank"
+          enctype="multipart/form-data" style="margin-top: 3em">
+          <span style="font-weight: bold; margin-left: 1em">Upload CSV File:<br /><br /><input type="file"
+              class="form-control" name="file" size="45" style="
+                margin-top: 1em;
+                width: 82%;
+                height: 44px;
+                margin-left: 1em;
+              " value="Select CSV file" /></span>
+          <br />
+          <input class="form-control" type="submit" value="Upload File"
+            style="margin-top: 3em; background: #438eb9; color: white" />
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- End Add Multiple Device Popup -->
+
+  <!-- Add  Device Popup -->
+
+  <div class="modal fade" id="ModalAddDevice" tabindex="-1" role="dialog" aria-labelledby="exampleModalDevice"
+    aria-hidden="true">
+    <div class="col-lg-12">
+      <div class="row">
+        <div class="modal-dialog col-lg-12" style="
+            float: none;
+            width: 70%;
+            margin-top: 7em;
+            margin-left: 22em;
+            line-height: 1em;
+          ">
+          <form #form="ngForm" novalidate (submit)="saveDevice(form)" autocomplete="off">
+            <input type="hidden" #description="ngModel" name="description" id="description"
+              [(ngModel)]="formdata.description" />
+            <div class="modal-content">
+              <div class="modal-header" style="background-color: #438eb9">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                  style="margin-top: -20px !important">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="exampleModalDevice" style="text-align: center" showDeviceModal
+                  *ngIf="!isEdit">
+                  Add Device
+                </h4>
+                <h4 class="modal-title" id="exampleModalDevice" style="text-align: center" showDeviceModal
+                  *ngIf="isEdit">
+                  Update Device
+                </h4>
+              </div>
+              <div class="modal-body">
+                <div class="row">
+                  <div class="form-group col-md-4">
+                    <label class="HideSubdivisionDropDown">Select Subdivision</label>
+                    <select class="
+                        browser-default
+                        custom-select
+                        HideSubdivisionDropDown
+                        form-control
+                      " #subDivisionName="ngModel" name="subDivisionName" id="subDivisionName"
+                      [(ngModel)]="formdata.subDivisionName" [ngClass]="
+                        subDivisionName.invalid ? 'errorclass' : 'successclass'
+                      " (change)="getSubstation(subDivisionName.value)" required>
+                      <option [ngValue]="">Select Subdivision</option>
+                      <option *ngFor="let obj of subdivisionDropDown" [ngValue]="obj">
+                        {{ obj }}
+                      </option>
+                    </select>
+                  </div>
+
+                  <div class="form-group col-md-4">
+                    <label class="HideSubstationDropDown">Select Substation</label>
+                    <select class="
+                        browser-default
+                        custom-select
+                        HideSubstationDropDown
+                        form-control
+                      " #subStationName="ngModel" name="subStationName" id="subStationName" [ngClass]="
+                        subStationName.invalid ? 'errorclass' : 'successclass'
+                      " [(ngModel)]="formdata.subStationName" (change)="getFeeder(subStationName.value)" required>
+                      <option [ngValue]="">Select Substation</option>
+                      <option *ngFor="let obj of substatioDropDown" [ngValue]="obj">
+                        {{ obj }}
+                      </option>
+                    </select>
+                  </div>
+
+                  <div class="form-group col-md-4">
+                    <label class="HideFeederDropDown">Select Feeder</label>
+                    <select class="
+                        browser-default
+                        custom-select
+                        HideFeederDropDown
+                        form-control
+                      " #feederName="ngModel" name="feederName" id="feederName" [ngClass]="
+                        feederName.invalid ? 'errorclass' : 'successclass'
+                      " [(ngModel)]="formdata.feederName" (change)="getDT(feederName.value)" required>
+                      <option [ngValue]="">Select Feeder</option>
+                      <option *ngFor="let obj of feederDropDown" [ngValue]="obj">
+                        {{ obj }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="form-group col-md-4">
+                    <label class="HideDTDropDown">Select DT</label>
+                    <select class="
+                        browser-default
+                        custom-select
+                        HideDTDropDown
+                        form-control
+                      " #dtName="ngModel" name="dtName" id="dtName"
+                      [ngClass]="dtName.invalid ? 'errorclass' : 'successclass'" [(ngModel)]="formdata.dtName" required>
+                      <option [ngValue]="">Select DT</option>
+                      <option *ngFor="let obj of dtDropDown" [ngValue]="obj">
+                        {{ obj }}
+                      </option>
+                    </select>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label class="HideFeederDropDown">Commissioning Status</label>
+                    <select class="
+                        browser-default
+                        custom-select
+                        HideFeederDropDown
+                        form-control
+                      " #commissioningStatus="ngModel" name="commissioningStatus" id="commissioningStatus" [ngClass]="
+                        commissioningStatus.invalid
+                          ? 'errorclass'
+                          : 'successclass'
+                      " [(ngModel)]="formdata.commissioningStatus" required>
+                      <option selected value="Up">Up</option>
+                      <option value="Down">Down</option>
+                      <option value="Inactive">Inactive</option>
+                    </select>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label class="HideDTDropDown">Meter Type</label>
+                    <select class="
+                        browser-default
+                        custom-select
+                        HideDTDropDown
+                        form-control
+                      " #deviceType="ngModel" name="deviceType" id="deviceType" [ngClass]="
+                        deviceType.invalid ? 'errorclass' : 'successclass'
+                      " [(ngModel)]="formdata.deviceType" required>
+                      <option selected value="Single Phase">
+                        Single Phase
+                      </option>
+                      <option value="Three Phase">Three Phase</option>
+                      <option value="CT Meter">CT Meter</option>
+                      <option value="HT Meter">HT Meter</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="form-group col-md-4">
+                    <label class="HideDTDropDown">Manufacturer</label>
+                    <select class="
+                        browser-default
+                        custom-select
+                        HideDTDropDown
+                        form-control
+                      " #manufacturer="ngModel" name="manufacturer" id="manufacturer" [ngClass]="
+                        manufacturer.invalid ? 'errorclass' : 'successclass'
+                      " [(ngModel)]="formdata.manufacturer" required>
+                      <option value="JNE">JNE </option>
+                      <option value="HEXING">HEXING </option>
+                      <option value="JPM">JPM </option>
+                      <option value="INISH">INISH </option>
+                      <option value="ALLIED">ALLIED </option>
+                      <option value="LNT">LNT </option>
+                      <option value="LAN">LAN </option>
+                      <option value="EPPELTONE">EPPELTONE </option>
+                      <option value="FLASH">FLASH </option>
+                      <option value="HPL">HPL </option>
+                      <option value="MSE1"> MSE </option>
+                      <option value="MSE"> MSE Part-I </option>
+                    </select>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label>Meter Serial No.</label>
+                    <input type="text" #deviceSerialNo="ngModel" name="deviceSerialNo" id="deviceSerialNo" [ngClass]="
+                        deviceSerialNo.invalid ? 'errorclass' : 'successclass'
+                      " [(ngModel)]="formdata.deviceSerialNo" class="form-control" [readonly]="isEdit" required />
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label>Consumer Name</label>
+                    <input type="text" #consumerName="ngModel" name="consumerName" id="consumerName" [ngClass]="
+                        consumerName.invalid ? 'errorclass' : 'successclass'
+                      " [(ngModel)]="formdata.consumerName" class="form-control"
+                      pattern="[a-zA-Z-0-9][a-zA-Z0-9 -]+[a-zA-Z-0-9]$" required />
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="form-group col-md-4">
+                    <label>Consumer No</label>
+                    <input type="text" #consumerNo="ngModel" name="consumerNo" id="consumerNo" [ngClass]="
+                        consumerNo.invalid ? 'errorclass' : 'successclass'
+                      " [(ngModel)]="formdata.consumerNo" class="form-control" required />
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label>Phone Number</label>
+                    <input type="number" #phoneNumber="ngModel" name="phoneNumber" id="phoneNumber" [ngClass]="
+                        phoneNumber.invalid ? 'errorclass' : 'successclass'
+                      " [(ngModel)]="formdata.phoneNumber" class="form-control" required />
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label>Latitude</label>
+                    <input type="number" #latitude="ngModel" name="latitude" id="latitude" [ngClass]="
+                        latitude.invalid ? 'errorclass' : 'successclass'
+                      " [(ngModel)]="formdata.latitude" class="form-control" placeholder="" required />
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-md-4">
+                    <label>Longitude</label>
+                    <input type="number" #longitude="ngModel" name="longitude" id="longitude" [ngClass]="
+                        longitude.invalid ? 'errorclass' : 'successclass'
+                      " [(ngModel)]="formdata.longitude" class="form-control" required />
+                  </div>
+
+                  <div class="form-group col-md-4">
+                    <label>IPV6 Address</label>
+                    <input type="text" #ipAddressMain="ngModel" name="ipAddressMain" id="ipAddressMain"
+                      [(ngModel)]="formdata.ipAddressMain" class="form-control" />
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label>IPV6 Port</label>
+                    <input type="text" #ipPortMain="ngModel" name="ipPortMain" id="ipPortMain"
+                      [(ngModel)]="formdata.ipPortMain" class="form-control" />
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-md-4">
+                    <label>Address</label>
+                    <input type="text" #address="ngModel" name="address" id="address" [(ngModel)]="formdata.address"
+                      class="form-control" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal" style="float: left">
+                Close
+              </button>
+              <button type="submit" [disabled]="form.invalid" class="btn brn-default" style="float: right">
+                Save
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--End Add Device Popup -->
+</div>

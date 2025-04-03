@@ -1,0 +1,20 @@
+https://evit.in:8443/dataservice/rest/Evit/getInstantData/SUBDEVISION/SUBD_DEL_01/2021-03-03/2023-03-14
+ 
+ https://evit.in:8443/dataservice/rest/Evit/getInstantData/SUBSTATION/SUBST_DEL_01/2021-03-03/2023-03-14
+ 
+ 
+ https://evit.in:8443/dataservice/rest/Evit/getInstantData/FEEDER/FED_DEL_01/2021-03-03/2023-03-14
+ 
+ https://evit.in:8443/dataservice/rest/Evit/getInstantData/DT/DT_DEL_01/2021-03-03/2023-03-14
+
+https://evit.in:8443/dataservice/rest/Evit/getEventData/SUBDEVISION/SUBD_DEL_01/2021-03-03/2023-03-14
+
+https://evit.in:8443/dataservice/rest/Evit/getLoadProfileData/SUBDEVISION/SUBD_DEL_01/2021-03-03/2023-03-14
+
+https://evit.in:8443/dataservice/rest/Evit/getDevice/ALL/EVIT_DELHI
+
+https://evit.in:8443/dataservice/rest/Evit/getFeeders/EVIT_DELHI/SUBD_DEL_01
+
+https://evit.in:8443/dataservice/rest/Evit/getSubstation/EVIT_DELHI/FED_DEL_01
+
+https://evit.in:8443/dataservice/rest/Evit/getDT/EVIT_DELHI/SUBST_DEL_01

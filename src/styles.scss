@@ -1,0 +1,64 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import "~@ng-select/ng-select/themes/default.theme.css";
+@import "../node_modules/ag-grid-community/dist/styles/ag-grid.css";
+@import "../node_modules/ag-grid-community/dist/styles/ag-theme-balham.css";
+
+
+.toast-container .ngx-toastr {
+  position: initial;
+  overflow: auto;
+  margin: 3px 0px 15px;
+  padding: 15px 1px 18px 42px;
+  width: 363px;
+  border-radius: 10px 3px 3px 3px;
+  background-position: 12px center;
+  background-repeat: no-repeat;
+  background-size: 24px;
+  box-shadow: 0 0 12px #999999;
+  color: #ffffff;
+}
+
+.ng-tns-c65-2.toast-message.ng-star-inserted {
+  font-size: 15px;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+
+.ng-select.custom.ng-select-single .ng-select-container .ng-value-container,
+.ng-select.ng-select-single .ng-select-container .ng-value-container .ng-value {
+  white-space: nowrap;
+  overflow: visible !important;
+  text-overflow: ellipsis;
+}
+
+
+table.display {
+  margin: 0 auto;
+  width: 100%;
+  clear: both;
+  border-collapse: collapse;
+  table-layout: fixed; // add this
+  word-wrap: break-word; // add this
+}
+
+.ag-gridbtn {
+
+  height: 29px;
+  background-color: rgb(36, 207, 53);
+  border-radius: 7px;
+  border-radius: 0px;
+  color: white;
+  float: left;
+
+
+}

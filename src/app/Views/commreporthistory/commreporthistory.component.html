@@ -1,0 +1,552 @@
+<div class="main-content">
+    <div class="main-content-inner">
+      <div class="page-content">
+        <div id="printingsection">
+          <div class="center" style="display: none">
+            <div class="row center">
+              <div class="col-md-6">
+                <h1><b>SLA REPORT</b></h1>
+              </div>
+  
+              <div class="col-md-6">
+                <h2><b>UTILITY : MEPDCL</b></h2>
+              </div>
+            </div>
+  
+            <div class="col-md-12">
+              <h4>
+                <b *ngIf="isSubdivision">Subdivision :
+                  {{
+                  formdata.accessSubdivision
+                  ? formdata.accessSubdivision
+                  : "N/A"
+                  }}</b>
+                <br />
+                <b *ngIf="isSubstation">Substation :
+                  {{
+                  formdata.accessSubStation ? formdata.accessSubStation : "N/A"
+                  }}</b>
+                <br />
+                <b *ngIf="isFeeder">Feeder :
+                  {{ formdata.accessFeeder ? formdata.accessFeeder : "N/A" }}</b>
+                <br />
+                <b *ngIf="isDT">
+                  DT : {{ formdata.accessDT ? formdata.accessDT : "N/A" }}</b>
+              </h4>
+            </div>
+          </div>
+  
+          <div class="page-header"></div>
+          <div class="row noprint">
+            <!-- new -->
+            <div class="form-group col-md-3" style="margin: 0;padding: 0;width: 18%">
+              <div class="col-md-1" style="margin-top: 14px; margin-bottom: 4px; width: 40px">
+                <span>From:</span>
+              </div>
+              <div class="col-md-2" style="margin-bottom: 4px;line-height: normal;">
+                <span>
+                  <input type="date" #fromdate="ngModel" name="fromdate" [(ngModel)]="formdata.fromdate"/>
+                </span>
+              </div>
+            </div>
+            <div class="form-group col-md-3" style="width: 18%;">
+               <div class="col-md-1" style="margin-top: 14px; margin-bottom: 4px; width: 30px">
+                 <span>to:</span>
+               </div>
+            <div class="col-md-2" style="margin-bottom: 4px;line-height: normal;">
+                <span>
+                  <input type="date" #todate="ngModel" name="todate" [(ngModel)]="formdata.todate"/>
+                </span>
+            </div>
+            </div> 
+            <div class="form-group col-md-3" style="width: 18%">
+              <label class="block clearfix">
+                <div>
+                  <select style="width: 100%" name="roleID" #roleID="ngModel" [(ngModel)]="formdata.roleID"
+                    (change)="changeAccessLevel($event.target.value)" required>
+                    <option value="">Select Access Level</option>
+                    <option value="2">Subdivision</option>
+                    <option value="3">Substation</option>
+                    <option value="4">Feeder</option>
+                    <option value="5">DT</option>
+                    <option value="1">All</option>
+                  </select>
+                </div>
+              </label>
+            </div>
+            <!-- <div class="form-group col-md-3">
+              <label class="block clearfix">
+                <div class="">
+    
+                  <input readonly class="form-control" style="width: 100%" name="accessOwner" #accessOwner="ngModel"
+                    [(ngModel)]="formdata.accessOwner" />
+                </div>
+              </label>
+            </div> -->
+            <div class="form-group col-md-3" *ngIf="isSubdivision" style="width: 18%">
+              <label class="block clearfix">
+                <div class="">
+                  <select style="width: 100%" #accessSubdivision="ngModel" name="accessSubdivision" [ngClass]="
+                      accessSubdivision.invalid ? 'errorclass' : 'successclass'
+                    " [(ngModel)]="formdata.accessSubdivision" (change)="getSubstation($event.target.value)" required>
+                    <option selected=""  value="">Select Subdivision</option>
+                    <option *ngFor="let obj of SubDivisionDropdown" [Value]="obj">
+                      {{ obj }}
+                    </option>
+                  </select>
+                </div>
+              </label>
+            </div>
+  
+            <div class="form-group col-md-3" *ngIf="isSubstation" style="width: 18%">
+              <label class="block clearfix">
+                <div class="">
+                  <select style="width: 100%" #accessSubStation="ngModel" name="accessSubStation" [ngClass]="
+                      accessSubStation.invalid ? 'errorclass' : 'successclass'
+                    " [(ngModel)]="formdata.accessSubStation" (change)="getFeeder($event.target.value)" required>
+                    <option selected="" value="">Select Substation</option>
+                    <option *ngFor="let obj of SubStationDropdown" [Value]="obj">
+                      {{ obj }}
+                    </option>
+                  </select>
+                </div>
+              </label>
+            </div>
+            
+            <button (click)="callFunctionForChart()" *ngIf="!isSubstation && !isFeeder && !isDT" class="btn btn-primary"
+              type="button">
+              Go
+            </button>
+          
+          
+            <div class="form-group col-md-3" *ngIf="isFeeder" style="width: 18%">
+              <label class="block clearfix">
+                <div class="">
+                  <select #accessFeeder="ngModel" name="accessFeeder" [ngClass]="
+                      accessFeeder.invalid ? 'errorclass' : 'successclass'
+                    " [(ngModel)]="formdata.accessFeeder" style="width: 100%" (change)="getDT($event.target.value)"
+                    required>
+                    <option selected="" value="">Select Feeder</option>
+                    <option *ngFor="let obj of FeederDropdown" [Value]="obj">
+                      {{ obj }}
+                    </option>
+                  </select>
+                </div>
+              </label>
+            </div>
+            <div class="form-group col-md-3" *ngIf="isDT" style="width: 18%">
+              <label class="block clearfix">
+                <div class="">
+                  <select #accessDT="ngModel" name="accessDT" [ngClass]="accessDT.invalid ? 'errorclass' : 'successclass'"
+                    [(ngModel)]="formdata.accessDT" style="width: 100%" required>
+                    <option selected="" value="">Select DT</option>
+                    <option *ngFor="let obj of DTDropdown" [Value]="obj">
+                      {{ obj }}
+                    </option>
+                  </select>
+                </div>
+              </label>
+            </div>
+            <!-- select date -->
+            <button (click)="callFunctionForChart()" *ngIf="isSubstation || isFeeder || isDT" class="btn btn-primary"
+              type="button">
+              Go
+            </button>
+          </div>
+  
+          <!-- <button (click)="convertToPDF()" *ngIf="!isSubstation && !isFeeder && !isDT"
+            class="btn btn-success pull-right noprint" type="button">
+            <i class="fa fa-print"></i> Print
+          </button> -->
+  
+          <!-- /.page-header -->
+          <!-- <div class="row printinpart">
+            <div class="col-md-12 infobox-container">
+              <div class="col-md-12" style="display: flex">
+                <div class="col-md-12" style="padding: 0px; margin-bottom: 18px">
+                  <div class="row">
+                    <div class="min-bg-s col-md-4">
+                      <div class="item">
+                        <div class="widget-box">
+                          <div class="widget-header widget-header-flat widget-header-small">
+                            <h5 class="widget-title">Communication Status</h5>
+  
+                            <div class="widget-toolbar no-border"></div>
+                          </div>
+                          <div id="chart">
+                            <apx-chart [series]="commRead" [chart]="commchart" [labels]="chartOptions.labels"
+                              [colors]="chartOptions.colors" [legend]="chartOptions.legend"
+                              [dataLabels]="chartOptions.dataLabels" [fill]="chartOptions.fill"
+                              [plotOptions]="chartOptions.plotOptions"></apx-chart>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="min-bg-s col-md-4">
+                      <div class="item">
+                        <div class="widget-box">
+                          <div class="widget-header widget-header-flat widget-header-small">
+                            <h5 class="widget-title">Instant Data</h5>
+  
+                            <div class="widget-toolbar no-border"></div>
+                          </div>
+                          <div id="chart">
+                            <apx-chart [series]="instantRead" [chart]="instatnchart" [labels]="chartOptions.labels"
+                              [colors]="chartOptions.colors" [legend]="chartOptions.legend"
+                              [dataLabels]="chartOptions.dataLabels" [fill]="chartOptions.fill"
+                              [plotOptions]="chartOptions.plotOptions"></apx-chart>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+  
+                    <div class="min-bg-s col-md-4">
+                      <div class="item">
+                        <div class="widget-box">
+                          <div class="widget-header widget-header-flat widget-header-small">
+                            <h5 class="widget-title">Daily Load Profile data</h5>
+  
+                            <div class="widget-toolbar no-border"></div>
+                          </div>
+                          <div id="chart">
+                            <apx-chart [series]="dlpRead" [chart]="dlpchart" [labels]="chartOptions.labels"
+                              [colors]="chartOptions.colors" [legend]="chartOptions.legend"
+                              [dataLabels]="chartOptions.dataLabels" [fill]="chartOptions.fill"
+                              [plotOptions]="chartOptions.plotOptions"></apx-chart>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+  
+                    <div class="min-bg-s col-md-4">
+                      <div class="item">
+                        <div class="widget-box">
+                          <div class="widget-header widget-header-flat widget-header-small">
+                            <h5 class="widget-title">Load Profile data</h5>
+  
+                            <div class="widget-toolbar no-border"></div>
+                          </div>
+                          <div id="chart">
+                            <apx-chart [series]="lpRead" [chart]="lpchart" [labels]="chartOptions.labels"
+                              [colors]="chartOptions.colors" [legend]="chartOptions.legend"
+                              [dataLabels]="chartOptions.dataLabels" [fill]="chartOptions.fill"
+                              [plotOptions]="chartOptions.plotOptions"></apx-chart>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+  
+                    <div class="min-bg-s col-md-4">
+                      <div class="item">
+                        <div class="widget-box">
+                          <div class="widget-header widget-header-flat widget-header-small">
+                            <h5 class="widget-title">Event Data</h5>
+  
+                            <div class="widget-toolbar no-border"></div>
+                          </div>
+                          <div id="chart">
+                            <apx-chart [series]="eventRead" [chart]="eventchart" [labels]="chartOptions.labels"
+                              [colors]="chartOptions.colors" [legend]="chartOptions.legend"
+                              [dataLabels]="chartOptions.dataLabels" [fill]="chartOptions.fill"
+                              [plotOptions]="chartOptions.plotOptions"></apx-chart>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+  
+                    <div class="min-bg-s col-md-4">
+                      <div class="item">
+                        <div class="widget-box">
+                          <div class="widget-header widget-header-flat widget-header-small">
+                            <h5 class="widget-title">Billing Data</h5>
+  
+                            <div class="widget-toolbar no-border"></div>
+                          </div>
+                          <div id="chart">
+                            <apx-chart [series]="billingRead" [chart]="billingchart" [labels]="chartOptions.labels"
+                              [colors]="chartOptions.colors" [legend]="chartOptions.legend"
+                              [dataLabels]="chartOptions.dataLabels" [fill]="chartOptions.fill"
+                              [plotOptions]="chartOptions.plotOptions"></apx-chart>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+  
+                    <div class="min-bg-s col-md-4">
+                      <div class="item">
+                        <div class="widget-box">
+                          <div class="widget-header widget-header-flat widget-header-small">
+                            <h5 class="widget-title">
+                              SIM Type
+                              <i (click)="reSetSimType()" style="font-size: 19px; float: right" class="fa fa-refresh"
+                                aria-hidden="true"></i>
+                            </h5>
+  
+                            <div class="widget-toolbar no-border"></div>
+                          </div>
+                          <div id="chart">
+                            <apx-chart [series]="metertypeRead" [chart]="metertypechart"
+                              [labels]="meterchartOptions.labels" [colors]="meterchartOptions.colors"
+                              [legend]="meterchartOptions.legend" [dataLabels]="meterchartOptions.dataLabels"
+                              [fill]="meterchartOptions.fill" [plotOptions]="meterchartOptions.plotOptions"></apx-chart>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div> -->
+  
+          <!-- <div class="row" *ngIf="isclick">
+            <div class="col-xs-12">
+              <h4 class="h4">{{ graphHeaderValue }}</h4>
+            </div>
+          </div> -->
+          <!-- <div class="row">
+            <div class="col-sm-12">
+              <div class="table-header">
+                <form #form="ngForm" (submit)="onSubmit()">
+                  <div class="row">
+                    <div class="col-lg-3">
+                      <h4 class="title">SLA History Report</h4>
+                    </div>
+                    <div class="col-lg-1" style="margin-top: 4px; margin-bottom: 4px; width: 40px">
+                      <span>From:</span>
+                    </div>
+                    <div class="col-lg-2" style="margin-top: 4px; margin-bottom: 4px">
+                      <span>
+                        <input type="date" #fromdate="ngModel" name="fromdate" [(ngModel)]="formdata.fromdate"/>
+                      </span>
+                    </div>
+                    <div class="col-lg-1" style="margin-top: 4px; margin-bottom: 4px; width: 10px">
+                      <span>To:</span>
+                    </div>
+                    <div class="col-lg-2" style="margin-top: 4px; margin-bottom: 4px">
+                      <span>
+                        <input
+                          type="date"
+                          #todate="ngModel"
+                          name="todate"
+                          [(ngModel)]="formdata.todate"
+                          class="form-control"
+                        />
+                      </span>
+                    </div>
+                    <div
+                      class="col-lg-1"
+                      style="margin-top: 4px; margin-bottom: 4px"
+                    >
+                      <span>
+                        <button
+                          type="submit"
+                          class="btn brn-default"
+                          style="
+                            background: #707878;
+                            border-radius: 7px;
+                            color: white;
+                          "
+                        >
+                          Go
+                        </button>
+                      </span>
+                    </div>
+                   
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div> -->
+          
+          <!-- chart area -->
+          <div class="row printinpart">
+            <div class="col-md-12 infobox-container">
+              <div class="col-md-12" style="display: flex">
+                <div class="col-md-12" style="padding: 0px; margin-bottom: 2px">
+                  <div class="row">
+                    <!-- chart details -->
+                    <div class="col-md-4">
+                      <div class="item">
+                        <div class="widget-box">
+                          <div class="widget-header widget-header-flat widget-header-small">
+                            <h5 class="widget-title">Communication Status</h5>
+                            <div class="widget-toolbar no-border"></div>
+                          </div>
+                          <div>
+                            <div class="row widget-header-small fw-bold" style="text-align: left;">
+                              <div class="col-sm-12" style="padding: 5px; padding-left: 6px;padding-right: 6px;">
+                                <div class="row">
+                                  <div class="col-sm-3">
+                                    <h6>Month</h6>
+                                  </div>
+                                  <div class="col-sm-9">
+                                    <h6>{{formdata.fromdate}} to:  {{formdata.todate}} </h6>
+                                  </div>
+                                </div>
+                                <div class="row">
+                                  <div class="col-sm-3">
+                                    <h6>Utility</h6>
+                                  </div>
+                                  <div class="col-sm-9">
+                                    <h6>MPDCL</h6>
+                                  </div>
+                                </div>
+                                <div class="row">
+                                  <div class="col-sm-3">
+                                    <h6>Subdivision</h6>
+                                  </div>
+                                  <div class="col-sm-9" *ngIf="isSubdivision ||isSubstation || isFeeder || isDT">
+                                    <h6>{{formdata.accessSubdivision}}</h6>
+                                  </div>
+                                  <div class="col-sm-9" *ngIf="!isSubdivision && !isSubstation && !isFeeder && !isDT">
+                                    <h6>---------------</h6>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="item">
+                        <div class="widget-box">
+                          <div class="widget-header widget-header-flat widget-header-small">
+                            <h5 class="widget-title">Communication Status</h5>
+                            <div class="widget-toolbar no-border"></div>
+                          </div>
+                          <div>
+                            <div class="row widget-header-small fw-bold" style="text-align: left;">
+                              <div class="col-sm-12" style="padding: 5px; padding-left: 6px;padding-right: 6px;">
+                                <div class="row">
+                                  <div class="col-sm-3">
+                                    <h6>Substation</h6>
+                                  </div>
+                                  <div class="col-sm-9" *ngIf="isSubstation || isFeeder || isDT">
+                                    <h6>{{formdata.accessSubStation}}</h6>
+                                  </div>
+                                  <div class="col-sm-9" *ngIf="!isSubstation && !isFeeder && !isDT">
+                                    <h6>---------------</h6>
+                                  </div>
+                                </div>
+                                <div class="row">
+                                  <div class="col-sm-3">
+                                    <h6>Feeder</h6>
+                                  </div>
+                                  <div class="col-sm-9" *ngIf="isFeeder || isDT">
+                                    <h6>{{formdata.accessFeeder}}</h6>
+                                  </div>
+                                  <div class="col-sm-9" *ngIf="!isFeeder && !isDT">
+                                    <h6>---------------</h6>
+                                  </div>
+                                </div>
+                                <div class="row">
+                                  <div class="col-sm-3">
+                                    <h6>DT</h6>
+                                  </div>
+                                  <div class="col-sm-9" *ngIf="isDT">
+                                    <h6>{{formdata.accessDT}}</h6>
+                                  </div>
+                                  <div class="col-sm-9" *ngIf="!isDT">
+                                    <h6>---------------</h6>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- chart details end -->
+                    <div class="min-bg-s col-md-4">
+                      <div class="item">
+                        <div class="widget-box">
+                          <div class="widget-header widget-header-flat widget-header-small">
+                            <h5 class="widget-title">SLA Count</h5>
+  
+                            <div class="widget-toolbar no-border"></div>
+                          </div>
+                          <div id="chart">
+                            <apx-chart [series]="commRead" [chart]="commchart" [labels]="chartOptions.labels"
+                              [colors]="chartOptions.colors" [legend]="chartOptions.legend"
+                              [dataLabels]="chartOptions.dataLabels" [fill]="chartOptions.fill"
+                              [plotOptions]="chartOptions.plotOptions"></apx-chart>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="min-bg-s col-md-4">
+                      <div class="item">
+                        <div class="widget-box">
+                          <div class="widget-header widget-header-flat widget-header-small">
+                            <h5 class="widget-title">SLA Count(%)</h5>
+  
+                            <div class="widget-toolbar no-border"></div>
+                          </div>
+                          <div id="chart">
+                            <apx-chart [series]="instantRead" [chart]="instatnchart" [labels]="chartOptions.labels"
+                              [colors]="chartOptions.colors" [legend]="chartOptions.legend"
+                              [dataLabels]="chartOptions.dataLabels" [fill]="chartOptions.fill"
+                              [plotOptions]="chartOptions.plotOptions"></apx-chart>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+  
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- chart end -->
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="table-responsive">
+                <button
+                type="button"
+                (click)="onBtnExport()"
+               class="ag-gridbtn"
+              >
+              <i class="fa fa-download"></i>  CSV Export Data
+              </button>
+                <input
+                type="text"
+                id="filter-text-box"
+                placeholder="Search"
+                (input)="onFilterTextBoxChanged()"
+              />
+           
+                <ag-grid-angular
+                style="width: 100%; height: 450px;"
+                class="ag-theme-balham"
+                [defaultColDef]="defaultColDef"
+                [gridOptions]="gridOptions"
+                [pagination]=true
+                [paginationPageSize]="15"
+                enableCellTextSelection=true
+                (gridReady)="onGridReady($event)"
+                [columnDefs]="columnDefs"
+                [animateRows]=true
+               
+                >
+            </ag-grid-angular>
+                
+              </div>
+            </div>
+            <!-- /.row -->
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 wi-100" style="margin-top: 1em">
+            <div style="margin-left: 0px; margin-right: 0px">
+              <div id="map" class="leaflet-container leaflet-retina leaflet-fade-anim leaflet-grab leaflet-touch-drag"
+                tabindex="0" style="outline: none; top: 1em" leaflet [leafletOptions]="mapOptions"
+                [leafletMarkerClusterOptions]="markerClusterOptions" (leafletMapReady)="onMapReady($event)"
+                [leafletMarkerCluster]="markerClusterData"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

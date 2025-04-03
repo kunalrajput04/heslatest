@@ -1,0 +1,509 @@
+<div class="main-content">
+  <div class="main-content-inner">
+    <div class="page-content">
+      <div class="ace-settings-container" id="ace-settings-container">
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="ace-settings-box clearfix" id="ace-settings-box">
+              <div class="pull-left width-50">
+                <div class="ace-settings-item">
+                  <div class="pull-left">
+                    <select id="skin-colorpicker" class="hide">
+                      <option data-skin="no-skin" value="#438EB9">
+                        #438EB9
+                      </option>
+                      <option data-skin="skin-1" value="#222A2D">
+                        #222A2D
+                      </option>
+                      <option data-skin="skin-2" value="#C6487E">
+                        #C6487E
+                      </option>
+                      <option data-skin="skin-3" value="#D0D0D0">
+                        #D0D0D0
+                      </option>
+                    </select>
+                  </div>
+                  <span>&nbsp; Choose Skin</span>
+                </div>
+
+                <div class="ace-settings-item">
+                  <input
+                    type="checkbox"
+                    class="ace ace-checkbox-2 ace-save-state"
+                    id="ace-settings-navbar"
+                    autocomplete="off"
+                  />
+                  <label class="lbl" for="ace-settings-navbar"
+                    >Fixed Navbar</label
+                  >
+                </div>
+
+                <div class="ace-settings-item">
+                  <input
+                    type="checkbox"
+                    class="ace ace-checkbox-2 ace-save-state"
+                    id="ace-settings-sidebar"
+                    autocomplete="off"
+                  />
+                  <label class="lbl" for="ace-settings-sidebar"
+                    >Fixed Sidebar</label
+                  >
+                </div>
+
+                <div class="ace-settings-item">
+                  <input
+                    type="checkbox"
+                    class="ace ace-checkbox-2 ace-save-state"
+                    id="ace-settings-breadcrumbs"
+                    autocomplete="off"
+                  />
+                  <label class="lbl" for="ace-settings-breadcrumbs"
+                    >Fixed Breadcrumbs</label
+                  >
+                </div>
+
+                <div class="ace-settings-item">
+                  <input
+                    type="checkbox"
+                    class="ace ace-checkbox-2"
+                    id="ace-settings-rtl"
+                    autocomplete="off"
+                  />
+                  <label class="lbl" for="ace-settings-rtl"
+                    >Right To Left (rtl)</label
+                  >
+                </div>
+
+                <div class="ace-settings-item">
+                  <input
+                    type="checkbox"
+                    class="ace ace-checkbox-2 ace-save-state"
+                    id="ace-settings-add-container"
+                    autocomplete="off"
+                  />
+                  <label class="lbl" for="ace-settings-add-container">
+                    Inside
+                    <b>.container</b>
+                  </label>
+                </div>
+              </div>
+              <!-- /.pull-left -->
+
+              <div class="pull-left width-50">
+                <div class="ace-settings-item">
+                  <input
+                    type="checkbox"
+                    class="ace ace-checkbox-2"
+                    id="ace-settings-hover"
+                    autocomplete="off"
+                  />
+                  <label class="lbl" for="ace-settings-hover"
+                    >Submenu on Hover</label
+                  >
+                </div>
+
+                <div class="ace-settings-item">
+                  <input
+                    type="checkbox"
+                    class="ace ace-checkbox-2"
+                    id="ace-settings-compact"
+                    autocomplete="off"
+                  />
+                  <label class="lbl" for="ace-settings-compact"
+                    >Compact Sidebar</label
+                  >
+                </div>
+
+                <div class="ace-settings-item">
+                  <input
+                    type="checkbox"
+                    class="ace ace-checkbox-2"
+                    id="ace-settings-highlight"
+                    autocomplete="off"
+                  />
+                  <label class="lbl" for="ace-settings-highlight"
+                    >Alt. Active Item</label
+                  >
+                </div>
+              </div>
+              <!-- /.pull-left -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-12">
+          <!-- PAGE CONTENT BEGINS -->
+
+          <div class="row">
+            <div class="col-md-12 infobox-container">
+              <div class="col-sm-12 bg-sw">
+                <div class="bg-div">
+                  <div
+                    class="infobox infobox-green boxSubdivision infobox1 one1"
+                    style="background: #f44336c9"
+                  >
+                    <div class="infobox-icon">
+                      <i
+                        class="ace-icon fa fa-industry"
+                        style="
+                          -webkit-box-shadow: none;
+                          box-shadow: none;
+                          background: #f44336c9;
+                        "
+                      ></i>
+                    </div>
+
+                    <div class="infobox-data">
+                      <div class="infobox-content" style="float: left">
+                        Subdivision
+                      </div>
+                    </div>
+                    <h1 style="font-size: 25px; color: #fff">
+                      {{ dashboard.SUBDEVISION }}
+                    </h1>
+                  </div>
+
+                  <div
+                    class="infobox infobox-blue boxSubstation infobox1 one3"
+                    style="background: #4dd0e1ed"
+                  >
+                    <div class="infobox-icon">
+                      <i
+                        class="ace-icon fa fa-rss"
+                        style="
+                          background: #4dd0e1ed;
+                          -webkit-box-shadow: none;
+                          box-shadow: none;
+                        "
+                      ></i>
+                    </div>
+
+                    <div class="infobox-data">
+                      <div class="infobox-content">Substation</div>
+                    </div>
+
+                    <h1 style="font-size: 25px; color: #fff">
+                      {{ dashboard.SUBSTATION }}
+                    </h1>
+                  </div>
+
+                  <div
+                    class="infobox infobox-blue boxFeeder infobox1 one2"
+                    style="background: #ef5350c7"
+                  >
+                    <div class="infobox-icon">
+                      <i
+                        class="ace-icon fa fa-rss"
+                        style="
+                          background: #ef5350c7;
+                          -webkit-box-shadow: none;
+                          box-shadow: none;
+                        "
+                      ></i>
+                    </div>
+
+                    <div class="infobox-data">
+                      <div class="infobox-content">Feeder</div>
+                    </div>
+
+                    <h1 style="font-size: 25px; color: #fff">
+                      {{ dashboard.FEEDER }}
+                    </h1>
+                  </div>
+
+                  <div
+                    class="infobox infobox-pink boxDT infobox1 one4"
+                    style="background: #4362b17d"
+                  >
+                    <div class="infobox-icon">
+                      <i
+                        class="ace-icon fa fa-bolt"
+                        style="
+                          background: #4362b17d;
+                          -webkit-box-shadow: none;
+                          box-shadow: none;
+                        "
+                      ></i>
+                    </div>
+
+                    <div class="infobox-data">
+                      <div class="infobox-content">
+                        Distribution Transformer
+                      </div>
+                    </div>
+                    <h1 style="font-size: 25px; margin-top: 0em; color: #fff">
+                      {{ dashboard.DT }}
+                    </h1>
+                  </div>
+
+                  <div
+                    class="infobox infobox-green infobox1 one5"
+                    style="background: #009688"
+                  >
+                    <div class="infobox-icon">
+                      <i
+                        class="ace-icon fa fa-tachometer"
+                        style="
+                          background: #009688;
+                          margin-top: 0em;
+                          color: #fff;
+                        "
+                      ></i>
+                    </div>
+
+                    <div class="infobox-data">
+                      <div class="infobox-content">Smart Meter</div>
+                    </div>
+
+                    <h1
+                      style="
+                        font-size: 25px;
+                        font-size: 25px;
+                        background: #009688;
+                        margin-top: 0em;
+                        color: #fff;
+                      "
+                    >
+                      {{ dashboard.DEVICES }}
+                    </h1>
+                  </div>
+                </div>
+                <!--Pai Chart-->
+              </div>
+
+              <div class="col-md-12" style="display: flex">
+                <div
+                  class="col-md-12"
+                  style="padding: 0px; margin-bottom: 18px"
+                >
+                  <div
+                    class="min-bg-s"
+                    style="background: #d1cfca; margin-left: 0px !important"
+                  >
+                    <div class="item">
+                      <div class="widget-box">
+                        <div
+                          class="
+                            widget-header widget-header-flat widget-header-small
+                          "
+                        >
+                          <h5 class="widget-title">Meter Type</h5>
+
+                          <div class="widget-toolbar no-border"></div>
+                        </div>
+                        <div id="chart">
+                          <apx-chart
+                            [series]="chartOptions.series"
+                            [labels]="chartOptions.labels"
+                            [colors]="chartOptions.colors"
+                            [chart]="chartOptions.chart"
+                            [legend]="chartOptions.legend"
+                            [dataLabels]="chartOptions.dataLabels"
+                            [fill]="chartOptions.fill"
+                            [plotOptions]="chartOptions.plotOptions"
+                          ></apx-chart>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="min-bg-s" style="background: #d1cfca">
+                    <div class="item">
+                      <div class="widget-box">
+                        <div
+                          class="
+                            widget-header widget-header-flat widget-header-small
+                          "
+                        >
+                          <h5 class="widget-title">Communication Status</h5>
+
+                          <div class="widget-toolbar no-border"></div>
+                        </div>
+                        <div id="chart">
+                          <apx-chart
+                            [series]="chartOptions1.series"
+                            [chart]="chartOptions1.chart"
+                            [labels]="chartOptions1.labels"
+                            [colors]="chartOptions1.colors"
+                            [legend]="chartOptions1.legend"
+                            [dataLabels]="chartOptions1.dataLabels"
+                            [fill]="chartOptions1.fill"
+                            [plotOptions]="chartOptions1.plotOptions"
+                          ></apx-chart>
+                          
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="min-bg-s" style="background: #d1cfca">
+                    <div class="item">
+                      <div class="widget-box">
+                        <div
+                          class="
+                            widget-header widget-header-flat widget-header-small
+                          "
+                        >
+                          <h5 class="widget-title">Instant Data</h5>
+
+                          <div class="widget-toolbar no-border"></div>
+                        </div>
+                        <div id="chart">
+                          <apx-chart
+                            [series]="chartOptions2.series"
+                            [chart]="chartOptions2.chart"
+                            [labels]="chartOptions2.labels"
+                            [colors]="chartOptions2.colors"
+                            [legend]="chartOptions2.legend"
+                            [dataLabels]="chartOptions2.dataLabels"
+                            [fill]="chartOptions2.fill"
+                            [plotOptions]="chartOptions2.plotOptions"
+                          ></apx-chart>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="min-bg-s" style="background: #d1cfca">
+                    <div class="item">
+                      <div class="widget-box">
+                        <div
+                          class="
+                            widget-header widget-header-flat widget-header-small
+                          "
+                        >
+                          <h5 class="widget-title">Daily Load Profile data</h5>
+
+                          <div class="widget-toolbar no-border"></div>
+                        </div>
+                        <div id="chart">
+                          <apx-chart
+                            [series]="chartOptions3.series"
+                            [chart]="chartOptions3.chart"
+                            [labels]="chartOptions3.labels"
+                            [colors]="chartOptions3.colors"
+                            [legend]="chartOptions3.legend"
+                            [dataLabels]="chartOptions3.dataLabels"
+                            [fill]="chartOptions3.fill"
+                            [plotOptions]="chartOptions3.plotOptions"
+                          ></apx-chart>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="min-bg-s" style="background: #d1cfca">
+                    <div class="item">
+                      <div class="widget-box">
+                        <div
+                          class="
+                            widget-header widget-header-flat widget-header-small
+                          "
+                        >
+                          <h5 class="widget-title">Load Profile data</h5>
+
+                          <div class="widget-toolbar no-border"></div>
+                        </div>
+                        <div id="chart">
+                          <apx-chart
+                            [series]="chartOptions4.series"
+                            [chart]="chartOptions4.chart"
+                            [labels]="chartOptions4.labels"
+                            [colors]="chartOptions4.colors"
+                            [legend]="chartOptions4.legend"
+                            [dataLabels]="chartOptions4.dataLabels"
+                            [fill]="chartOptions4.fill"
+                            [plotOptions]="chartOptions4.plotOptions"
+                          ></apx-chart>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="min-bg-s" style="background: #d1cfca">
+                    <div class="item">
+                      <div class="widget-box">
+                        <div
+                          class="
+                            widget-header widget-header-flat widget-header-small
+                          "
+                        >
+                          <h5 class="widget-title">Event Data</h5>
+
+                          <div class="widget-toolbar no-border"></div>
+                        </div>
+                        <div id="chart">
+                          <apx-chart
+                            [series]="chartOptions5.series"
+                            [chart]="chartOptions5.chart"
+                            [labels]="chartOptions5.labels"
+                            [colors]="chartOptions5.colors"
+                            [legend]="chartOptions5.legend"
+                            [dataLabels]="chartOptions5.dataLabels"
+                            [fill]="chartOptions5.fill"
+                            [plotOptions]="chartOptions5.plotOptions"
+                          ></apx-chart>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div
+                    class="min-bg-s"
+                    style="background: #d1cfca; margin-right: 0px !important"
+                  >
+                    <div class="item">
+                      <div class="widget-box">
+                        <div
+                          class="
+                            widget-header widget-header-flat widget-header-small
+                          "
+                        >
+                          <h5 class="widget-title">Billing History</h5>
+
+                          <div class="widget-toolbar no-border"></div>
+                        </div>
+                        <div id="chart">
+                          <apx-chart
+                            [series]="chartOptions6.series"
+                            [chart]="chartOptions6.chart"
+                            [labels]="chartOptions6.labels"
+                            [colors]="chartOptions6.colors"
+                            [legend]="chartOptions6.legend"
+                            [dataLabels]="chartOptions6.dataLabels"
+                            [fill]="chartOptions6.fill"
+                            [plotOptions]="chartOptions6.plotOptions"
+                          ></apx-chart>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12 wi-100" style="margin-top: 1em">
+                <div style="margin-left: 0px; margin-right: 0px">
+                  <div
+                    id="map"
+                    class="
+                      leaflet-container
+                      leaflet-retina
+                      leaflet-fade-anim
+                      leaflet-grab
+                      leaflet-touch-drag
+                    "
+                    tabindex="0"
+                    style="outline: none; top: 1em"
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /.ace-settings-box -->
+    </div>
+  </div>
+</div>
+

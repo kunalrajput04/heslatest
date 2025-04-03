@@ -1,0 +1,563 @@
+<ul class="nav nav-list" style="top: 0px">
+  <li class="active">
+    <a id="RedirectToDashboard" routerLink="/">
+      <span class="menu-text">Dashboard </span>
+    </a>
+
+    <b class="arrow"></b>
+  </li>
+    <li class="dropdown">
+      <a href="javascript:void(0)" class="dropdown-toggle">
+        <i class="menu-icon fa fa-file"></i>
+        <span class="menu-text"> Meter Reports </span>
+        <b class="arrow fa fa-angle-down"></b>
+      </a>
+      <ul class="submenu">
+        <li>
+          <a routerLink="/meter-reports/meter-summary">
+            <i class="menu-icon fa fa-caret-right"></i>
+            Meter Summery
+          </a>
+        </li>
+        <li>
+          <a routerLink="/meter-reports/communication-report">
+            <i class="menu-icon fa fa-caret-right"></i>
+            Communication Report
+          </a>
+        </li>
+        <li>
+          <a routerLink="/meter-reports/failure-report">
+            <i class="menu-icon fa fa-caret-right"></i>
+            Never Communication Report
+          </a>
+        </li>
+        <!-- <li>
+          <a routerLink="/meter-reports/inactive-report">
+            <i class="menu-icon fa fa-caret-right"></i>
+            Inactive Report
+          </a>
+        </li>-->
+        <li> 
+          <a routerLink="/meter-reports/failurenever-report">
+            <i class="menu-icon fa fa-caret-right"></i>
+            Non Communicated Report
+          </a>
+        </li>
+      </ul>
+    </li>
+  
+
+  <li class="">
+    <a href="javascript:void(0);" class="dropdown-toggle">
+      <i class="menu-icon fa fa-pencil-square-o"></i>
+      <span class="menu-text">Devices </span>
+
+      <b class="arrow fa fa-angle-down"></b>
+    </a>
+    <b class="arrow"></b>
+    <ul class="submenu nav-hide" style="display: none">
+      <li class="">
+        <a routerLink="/deviceInfo">
+          <i class="menu-icon fa fa-plug"></i>
+          <span class="menu-text">Meter Info </span>
+        </a>
+      </li>
+      <li class="">
+        <a routerLink="/nameplate">
+          <i class="menu-icon fa fa-plug"></i>
+          <span class="menu-text">Meter Name Plate Data</span>
+        </a>
+      </li>
+      <li class="">
+        <a routerLink="/commsummary">
+          <i class="menu-icon fa fa-plug"></i>
+          <span class="menu-text">Current SLA Summary</span>
+        </a>
+      </li>
+      <li class="">
+        <a routerLink="/commreport">
+          <i class="menu-icon fa fa-plug"></i>
+          <span class="menu-text">Current SLA Report</span>
+        </a>
+      </li>
+      <li class="">
+        <a routerLink="/slahistory">
+          <i class="menu-icon fa fa-plug"></i>
+          <span class="menu-text">History SLA Summary</span>
+        </a>
+      </li>
+      <li class="">
+        <a routerLink="/sysAbility">
+          <i class="menu-icon fa fa-plug"></i>
+          <span class="menu-text">System Availability</span>
+        </a>
+      </li>
+      <li class="">
+        <a routerLink="/commreporthistory">
+          <i class="menu-icon fa fa-plug"></i>
+          <span class="menu-text">History SLA Report</span>
+        </a>
+      </li>
+    </ul>
+
+    <b class="arrow"></b>
+  </li>
+
+  <li class="">
+    <a href="javascript:void(0);" class="dropdown-toggle">
+      <i class="menu-icon fa fa-pencil-square-o"></i>
+      <span class="menu-text">Meter Data </span>
+
+      <b class="arrow fa fa-angle-down"></b>
+    </a>
+
+    <b class="arrow"></b>
+
+    <ul class="submenu nav-hide" style="display: none">
+      <li class="">
+        <a id="RedirectToInstantData" routerLink="/InstantData">
+          <i class="menu-icon fa fa-caret-right"></i>
+          Instant Data
+        </a>
+
+        <b class="arrow"></b>
+      </li>
+      <li class="">
+        <a id="RedirectToInstantData" routerLink="/RecentInstantData">
+          <i class="menu-icon fa fa-caret-right"></i>
+          Recent Instant Data
+        </a>
+
+        <b class="arrow"></b>
+      </li>
+      <li class="">
+        <a id="RedirectToInstantDataPush" routerLink="/InstantDataPush">
+          <i class="menu-icon fa fa-caret-right"></i>
+          Instant Data Push
+        </a>
+
+        <b class="arrow"></b>
+      </li>
+      <li class="">
+        <a id="RedirectToDailyLPD" routerLink="/DailyLpd">
+          <i class="menu-icon fa fa-caret-right"></i>
+          Daily Meter Profile
+        </a>
+
+        <b class="arrow"></b>
+      </li>
+      <li class="">
+        <a id="RedirectToEventData" routerLink="/EventData">
+          <i class="menu-icon fa fa-caret-right"></i>
+          Event Data
+        </a>
+
+        <b class="arrow"></b>
+      </li>
+      <li class="">
+        <a id="RedirectToEventDataPush" routerLink="/EventDataPush">
+          <i class="menu-icon fa fa-caret-right"></i>
+          Event Data Push
+        </a>
+
+        <b class="arrow"></b>
+      </li>
+      <li class="">
+        <a id="RedirectToLoadData" routerLink="/LoadData">
+          <i class="menu-icon fa fa-caret-right"></i>
+          Load Profile Data
+        </a>
+
+        <b class="arrow"></b>
+      </li>
+
+      <li class="">
+        <a id="RedirectToBillingData" routerLink="/Billing">
+          <i class="menu-icon fa fa-caret-right"></i>
+          Billing History
+        </a>
+
+        <b class="arrow"></b>
+      </li>
+      <li class="">
+        <a id="RedirectToBillingData" routerLink="/currentbilling">
+          <i class="menu-icon fa fa-caret-right"></i>
+          Current Billing
+        </a>
+
+        <b class="arrow"></b>
+      </li>
+      <!-- <li class="">
+        <a id="RedirectToBillingData" routerLink="/meterstatus">
+          <i class="menu-icon fa fa-caret-right"></i>
+          Meter Status
+        </a>
+
+        <b class="arrow"></b>
+      </li> -->
+    </ul>
+  </li>
+  <li class="">
+    <a
+      href="javascript:void(0)"
+      *ngIf="isWriteAccess"
+      (click)="connectAndDisconnect()"
+    >
+      <i class="menu-icon fa fa-plug"></i>
+      <span class="menu-text">On Demand </span>
+    </a>
+    <a href="javascript:void(0)" *ngIf="!isWriteAccess">
+      <i class="menu-icon fa fa-plug"></i>
+      <span class="menu-text">On Demand </span>
+    </a>
+  </li>
+
+  <li class="">
+    <a href="javascript:void(0)" class="dropdown-toggle">
+      <i class="menu-icon fa fa-arrow-circle-o-down"></i>
+      <span class="menu-text">Settings </span>
+
+      <b class="arrow fa fa-angle-down"></b>
+    </a>
+
+    <b class="arrow"></b>
+    <ul *ngIf="!isWriteAccess" class="submenu nav-hide" style="display: none">
+      <li class="ShowHideSubdivisionNav">
+        <a href="javascript:void(0)">
+          <i class="menu-icon fa fa-industry"></i>
+          <span class="menu-text">Configuration </span>
+        </a>
+
+        <b class="arrow"></b>
+      </li>
+
+      <li class="ShowHideDTNav">
+        <a href="javascript:void(0)" id="RedirectToDTListPage">
+          <i class="menu-icon fa fa-bolt"></i>
+          <span class="menu-text">HES Settings </span>
+        </a>
+
+        <b class="arrow"></b>
+      </li>
+      <li class="ShowHideDTNav">
+        <a href="javascript:void(0)" id="RedirectToDTListPage">
+          <i class="menu-icon fa fa-bolt"></i>
+          <span class="menu-text">Firmware Update </span>
+        </a>
+
+        <b class="arrow"></b>
+      </li>
+      <li class="ShowHideDTNav">
+        <a href="javascript:void(0)" id="RedirectToDTListPage">
+          <i class="menu-icon fa fa-bolt"></i>
+          <span class="menu-text">RTC Sync </span>
+        </a>
+
+        <b class="arrow"></b>
+      </li>
+      <li class="ShowHideDTNav">
+        <a href="javascript:void(0)" id="RedirectToDTListPage">
+          <i class="menu-icon fa fa-bolt"></i>
+          <span class="menu-text">TOD Read/Write </span>
+        </a>
+
+        <b class="arrow"></b>
+      </li>
+    </ul>
+    <ul *ngIf="isWriteAccess" class="submenu nav-hide" style="display: none">
+      <li class="ShowHideSubdivisionNav">
+        <a routerLink="/Configuration">
+          <i class="menu-icon fa fa-industry"></i>
+          <span class="menu-text">Configuration </span>
+        </a>
+
+        <b class="arrow"></b>
+      </li>
+
+      <li class="ShowHideDTNav">
+        <a routerLink="/hessetting" id="RedirectToDTListPage">
+          <i class="menu-icon fa fa-bolt"></i>
+          <span class="menu-text">HES Settings </span>
+        </a>
+
+        <b class="arrow"></b>
+      </li>
+      <li class="ShowHideDTNav">
+        <a routerLink="/firmware" id="RedirectToDTListPage">
+          <i class="menu-icon fa fa-bolt"></i>
+          <span class="menu-text">Firmware Update </span>
+        </a>
+
+        <b class="arrow"></b>
+      </li>
+      <li class="ShowHideDTNav">
+        <a routerLink="/rtcsync" id="RedirectToDTListPage">
+          <i class="menu-icon fa fa-bolt"></i>
+          <span class="menu-text">RTC Sync </span>
+        </a>
+
+        <b class="arrow"></b>
+      </li>
+      <li class="ShowHideDTNav">
+        <a routerLink="/todrw" id="RedirectToDTListPage">
+          <i class="menu-icon fa fa-bolt"></i>
+          <span class="menu-text">TOD Read/Write </span>
+        </a>
+
+        <b class="arrow"></b>
+      </li>
+    </ul>
+  </li>
+
+  <li class="">
+    <a href="javascript:void(0)" class="dropdown-toggle">
+      <i class="menu-icon fa fa-arrow-circle-o-down"></i>
+      <span class="menu-text">Log Reports </span>
+
+      <b class="arrow fa fa-angle-down"></b>
+    </a>
+
+    <b class="arrow"></b>
+    <ul *ngIf="!isWriteAccess" class="submenu nav-hide" style="display: none">
+      <li class="ShowHideSubstationNav">
+        <a href="javascript:void(0)">
+          <i class="menu-icon fa fa-rss"></i>
+          <span class="menu-text">Configuration Report</span>
+        </a>
+
+        <b class="arrow"></b>
+      </li>
+      <li class="ShowHideFeederNav">
+        <a href="javascript:void(0)">
+          <i class="menu-icon fa fa-rss"></i>
+          <span class="menu-text"> Command Log </span>
+        </a>
+        <b class="arrow"></b>
+      </li>
+      <li class="ShowHideDTNav">
+        <a href="javascript:void(0)" id="RedirectToDTListPage">
+          <i class="menu-icon fa fa-bolt"></i>
+          <span class="menu-text">All Command Log </span>
+        </a>
+
+        <b class="arrow"></b>
+      </li>
+      <li class="ShowHideDTNav">
+        <a href="javascript:void(0)" id="RedirectToDTListPage">
+          <i class="menu-icon fa fa-bolt"></i>
+          <span class="menu-text">Firmware Logs </span>
+        </a>
+
+        <b class="arrow"></b>
+      </li>
+    </ul>
+    <ul *ngIf="isWriteAccess" class="submenu nav-hide" style="display: none">
+      <li class="ShowHideSubstationNav">
+        <a routerLink="/configreport">
+          <i class="menu-icon fa fa-rss"></i>
+          <span class="menu-text">Configuration Report</span>
+        </a>
+
+        <b class="arrow"></b>
+      </li>
+      <li class="ShowHideFeederNav">
+        <a routerLink="/commandlog">
+          <i class="menu-icon fa fa-rss"></i>
+          <span class="menu-text"> Command Log </span>
+        </a>
+        <b class="arrow"></b>
+      </li>
+      <li class="ShowHideDTNav">
+        <a routerLink="/allcommandlog" id="RedirectToDTListPage">
+          <i class="menu-icon fa fa-bolt"></i>
+          <span class="menu-text">All Command Log </span>
+        </a>
+
+        <b class="arrow"></b>
+      </li>
+      <li class="ShowHideDTNav">
+        <a routerLink="/firmwarelogs" id="RedirectToDTListPage">
+          <i class="menu-icon fa fa-bolt"></i>
+          <span class="menu-text">Firmware Logs </span>
+        </a>
+
+        <b class="arrow"></b>
+      </li>
+      <li class="ShowHideDTNav">
+        <a routerLink="/fullconfiglogs" id="RedirectToDTListPage">
+          <i class="menu-icon fa fa-bolt"></i>
+          <span class="menu-text">Full Config Logs </span>
+        </a>
+        <b class="arrow"></b>
+      </li>
+      <li class="ShowHideDTNav">
+        <a routerLink="/meterstatuslog" id="RedirectToDTListPage">
+          <i class="menu-icon fa fa-bolt"></i>
+          <span class="menu-text">Meter Status Logs </span>
+        </a>
+        <b class="arrow"></b>
+      </li>
+    </ul>
+  </li>
+
+  <li class="">
+    <a href="javascript:void(0)" class="dropdown-toggle">
+      <i class="menu-icon fa fa-arrow-circle-o-down"></i>
+      <span class="menu-text">Hierarchy </span>
+
+      <b class="arrow fa fa-angle-down"></b>
+    </a>
+
+    <b class="arrow"></b>
+
+    <ul *ngIf="!isWriteAccess" class="submenu nav-hide" style="display: none">
+      <li class="ShowHideSubdivisionNav">
+        <a href="javascript:void(0)">
+          <i class="menu-icon fa fa-industry"></i>
+          <span class="menu-text">Subdivision </span>
+        </a>
+
+        <b class="arrow"></b>
+      </li>
+
+      <li class="ShowHideSubstationNav">
+        <a href="javascript:void(0)" id="RedirectToSubstationListPage">
+          <i class="menu-icon fa fa-rss"></i>
+          <span class="menu-text">Substation </span>
+        </a>
+
+        <b class="arrow"></b>
+      </li>
+      <li class="ShowHideFeederNav">
+        <a href="javascript:void(0)" id="RedirectToFeederListPage">
+          <i class="menu-icon fa fa-rss"></i>
+          <span class="menu-text"> Feeder </span>
+        </a>
+        <b class="arrow"></b>
+      </li>
+      <li class="ShowHideDTNav">
+        <a href="javascript:void(0)" id="RedirectToDTListPage">
+          <i class="menu-icon fa fa-bolt"></i>
+          <span class="menu-text">DT </span>
+        </a>
+
+        <b class="arrow"></b>
+      </li>
+    </ul>
+    <ul *ngIf="isWriteAccess" class="submenu nav-hide" style="display: none">
+      <li class="ShowHideSubdivisionNav">
+        <a routerLink="/subdivision">
+          <i class="menu-icon fa fa-industry"></i>
+          <span class="menu-text">Subdivision </span>
+        </a>
+
+        <b class="arrow"></b>
+      </li>
+
+      <li class="ShowHideSubstationNav">
+        <a routerLink="/Substation" id="RedirectToSubstationListPage">
+          <i class="menu-icon fa fa-rss"></i>
+          <span class="menu-text">Substation </span>
+        </a>
+
+        <b class="arrow"></b>
+      </li>
+      <li class="ShowHideFeederNav">
+        <a routerLink="/Feeder" id="RedirectToFeederListPage">
+          <i class="menu-icon fa fa-rss"></i>
+          <span class="menu-text"> Feeder </span>
+        </a>
+        <b class="arrow"></b>
+      </li>
+      <li class="ShowHideDTNav">
+        <a routerLink="/DT" id="RedirectToDTListPage">
+          <i class="menu-icon fa fa-bolt"></i>
+          <span class="menu-text">DT </span>
+        </a>
+
+        <b class="arrow"></b>
+      </li>
+    </ul>
+  </li>
+
+  <li class="">
+    <a *ngIf="isWriteAccess" routerLink="/PrepayConfiguration">
+      <i class="menu-icon fa fa-plug"></i>
+      <span class="menu-text">PrePay Configuration</span>
+    </a>
+    <a href="javascript:void(0)" *ngIf="!isWriteAccess">
+      <i class="menu-icon fa fa-plug"></i>
+      <span class="menu-text">PrePay Configuration</span>
+    </a>
+
+    <b class="arrow"></b>
+  </li>
+
+  <li class="HideShowFilterSubdivision" *ngIf="isSubdivision">
+    <select
+      class="browser-default custom-select"
+      style="width: 188px"
+      id="ddlSubdivisionForFilter"
+      (change)="getSubstation($event.target.value)"
+    >
+      <option selected="" value="">Select Subdivision</option>
+      <option *ngFor="let obj of subdivisionDropDown" [Value]="obj">
+        {{ obj }}
+      </option>
+    </select>
+  </li>
+  <li class="HideShowFilterSubstaion" *ngIf="isSubstation">
+    <select
+      class="browser-default custom-select"
+      style="width: 188px"
+      id="ddlSubstationForFilter"
+      (change)="getFeeder($event.target.value)"
+    >
+      <option selected="" value="">Select Substation</option>
+      <option *ngFor="let obj of substatioDropDown" [Value]="obj">
+        {{ obj }}
+      </option>
+    </select>
+  </li>
+  <li class="HideShowFilterFeeder" *ngIf="isFeeder">
+    <select
+      class="browser-default custom-select"
+      style="width: 188px"
+      id="ddlFeederForFilter"
+      (change)="getDT($event.target.value)"
+    >
+      <option selected="" value="">Select Feeder</option>
+      <option *ngFor="let obj of feederDropDown" [Value]="obj">
+        {{ obj }}
+      </option>
+    </select>
+  </li>
+
+  <li class="HideShowFilterDT" *ngIf="isDT">
+    <select
+      class="browser-default custom-select"
+      style="width: 188px"
+      id="ddlDTForFilter"
+      (change)="getDevice($event.target.value)"
+    >
+      <option selected="" value="">Select DT</option>
+      <option *ngFor="let obj of dtDropDown" [Value]="obj">
+        {{ obj }}
+      </option>
+    </select>
+  </li>
+
+  <li class="HideShowFilterMeteringDevice">
+    <select
+      class="browser-default custom-select"
+      style="width: 188px"
+      id="ddlMeteringDeviceForFilter"
+      (change)="setDevice($event.target.value)"
+    >
+      <option selected="" value="">Select Device</option>
+      <option *ngFor="let obj of deviceDropDown" [Value]="obj">
+        {{ obj }}
+      </option>
+    </select>
+  </li>
+</ul>

@@ -1,0 +1,115 @@
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta charset="utf-8" />
+  <title>Welcome to smart meter system</title>
+  <meta name="description" content="User login page" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <link rel="stylesheet" href="/assets/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="/assets/css/fonts.googleapis.com.css" />
+  <link rel="stylesheet" href="/assets/css/ace.min.css" />
+  <link rel="stylesheet" href="/assets/css/ace-rtl.min.css" />
+  <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet" type="text/css" />
+</head>
+<div class="page-bg"></div>
+
+<div class="animation-wrapper" style="background-image: url(../../../assets/images/tower.jpg)">
+  <div class="particle particle-1"></div>
+  <div class="particle particle-2"></div>
+  <div class="particle particle-3"></div>
+  <div class="particle particle-4"></div>
+</div>
+
+<div class="page-wrapper">
+  <div class="main-container">
+    <div class="main-content">
+      <div class="rowqw" style="margin-left: 0x !important; margin-right: opx !important">
+        <div class="col-md-6" style="float: none; display: inline-flex">
+          <div class="login-container" style="margin-top: 3em">
+            <div class="center">
+              <h1>
+                <i class="ace-icon fa fa-bolt green"></i>
+                <span class="red">AMI</span>
+                <span class="white" id="id-text2"> SOLUTIONS</span>
+              </h1>
+              <!-- <h1 class="white" id="id-text2" style="font-size: 23px">
+                &copy; MeECL
+              </h1> -->
+              <!-- <h1 class="white" id="id-text2" style="font-size: 23px">
+                <img
+                class="nav-user-photo"
+                src="/assets/images/avatars/iitk-logo.svg"
+                alt="Jason's Photo"
+              />
+              </h1>  -->
+            </div>
+            <div class="space-6"></div>
+            <div class="position-relative">
+              <div id="login-box" class="login-box widget-box no-border visible">
+                <div class="widget-body">
+                  <div class="widget-main">
+                    <div class="space-6"></div>
+
+                    <form [formGroup]="loginForm" (submit)="userlogin()">
+                      <fieldset>
+                        <label class="block clearfix">
+                          <span class="block input-icon input-icon-right">
+                            <input formControlName="email" placeholder="username" class="form-control" type="text" />
+                            <i class="ace-icon fa fa-user"></i>
+                          </span>
+                        </label>
+
+                        <label class="block clearfix">
+                          <span class="block input-icon input-icon-right">
+                            <input formControlName="password" placeholder="password" class="form-control"
+                              type="password" />
+                            <i class="ace-icon fa fa-lock"></i>
+                          </span>
+                        </label>
+
+                        <div class="space"></div>
+                       
+                        <div class="clearfix">
+                          <button type="submit" [disabled]="loginForm.invalid" class="width-35 pull-right btn btn-sm btn-primary">
+                            <i class="ace-icon fa fa-key"></i>
+                            <span class="bigger-110">Login</span>
+                          </button>
+                        </div>
+                       
+                        <div class="space-4"></div>
+                        <ngx-recaptcha2 #captchaElem [siteKey]="siteKey" [size]="'normal'" [hl]="'en'" [theme]="'light'"
+                        formControlName="recaptcha">
+                      </ngx-recaptcha2>
+                      </fieldset>
+                    </form>
+                   
+
+
+                    <div class="social-or-login center">
+                      <span class="bigger-110"></span>
+                    </div>
+
+                    <div class="space-6"></div>
+                  </div>
+                  <!-- /.widget-main -->
+
+                  <div class="toolbar clearfix">
+                    <div></div>
+                  </div>
+                </div>
+                <!-- /.widget-body -->
+              </div>
+              <!-- /.login-box -->
+
+              <!-- /.signup-box -->
+            </div>
+          </div>
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </div>
+    <!-- /.main-content -->
+  </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>

@@ -1,0 +1,41 @@
+.infobox {
+  width: 249px !important;
+  height: 128px !important;
+}
+
+.infobox > .infobox-icon {
+  width: 50px !important;
+}
+
+.infobox > .infobox-icon > .ace-icon {
+  height: 55px !important;
+}
+
+.infobox > .infobox-icon > .ace-icon:before {
+  font-size: 37px !important;
+  width: 52px !important;
+}
+
+select {
+  width: 250px;
+}
+
+.auto-style1 {
+  left: 3px;
+  top: 90px;
+}
+.nav-list > li:before {
+  display: none;
+  position: absolute;
+  top: -1px;
+  left: 0;
+  z-index: 1;
+  height: 41px;
+  width: 3px;
+  max-width: 3px;
+  overflow: hidden;
+  background-color: #629cc9;
+}
+li.HideShowFilterMeteringDevice {
+  overflow: hidden;
+}

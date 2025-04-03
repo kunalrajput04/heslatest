@@ -1,0 +1,39 @@
+@media (min-width: 320px) and (max-width: 767px) {
+  a#menuToggle {
+    display: none;
+  }
+  ul.breadcrumb {
+    margin-left: 11px;
+  }
+  .select-b {
+    float: left;
+    width: 100% !important;
+    margin: 0 !important;
+    margin-bottom: 5px !important;
+    height: 45px;
+  }
+  .checkbox label,
+  .radio label {
+    min-height: 20px;
+    padding-left: 18px !important;
+    margin-bottom: 0;
+    font-weight: 400;
+    cursor: pointer;
+  }
+  .navbar-buttons.navbar-header.pull-right {
+    padding-bottom: 3px;
+  }
+  .main-content {
+    margin-left: 0px !important;
+  }
+  .min-bg-s {
+    float: left;
+  }
+  .min-bg-s {
+    margin: 1 0.5% !important;
+    width: 49% !important;
+    height: 179px;
+    float: left;
+    text-align: center;
+  }
+}

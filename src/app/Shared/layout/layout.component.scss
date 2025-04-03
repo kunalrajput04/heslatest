@@ -1,0 +1,132 @@
+.ace-nav .dropdown-modal .radio {
+  margin: 0px;
+  color: #fff;
+  padding: 0px 4px;
+  max-height: 45px;
+  text-transform: capitalize;
+}
+
+.sidebarhide {
+  margin-left: -190px !important;
+}
+.menutoggle {
+  background: #4caf50;
+  position: absolute;
+  width: 45px;
+  height: 45px;
+  top: 0;
+  line-height: 45px;
+  left: -12px;
+  font-size: 21px;
+  cursor: pointer;
+  color: #ffffff;
+  transition: all 0.2s ease-out 0s;
+  text-align: center;
+  padding: 1px !important;
+}
+#menu-toggler {
+  z-index: 88;
+}
+ul.nav.ace-nav {
+  float: right;
+}
+.checkbox label,
+.radio label {
+  min-height: 20px;
+  padding-left: 14px !important;
+  margin-bottom: 0;
+  font-weight: 400;
+  cursor: pointer;
+}
+.ace-nav > li.grey {
+  background-color: #5f9ea0;
+}
+.ace-nav > li.brown {
+  background-color: #d15b47;
+}
+.ace-nav > li.purple {
+  background-color: #62a8d1;
+}
+.ace-nav > li.green {
+  background-color: #2e8965;
+}
+.ace-nav > li.green2 {
+  background-color: #fd6c57;
+}
+.breadcrumb > li > a {
+  color: #fff !important;
+}
+body {
+  height: 100vh;
+  text-align: center;
+}
+/*Trigger Button*/
+.login-trigger {
+  font-weight: bold;
+  color: #fff;
+  background: linear-gradient(to bottom right, #b05574, #f87e7b);
+  padding: 15px 30px;
+  border-radius: 30px;
+  position: relative;
+  top: 50%;
+}
+
+/*Modal*/
+h4 {
+  font-weight: bold;
+  color: #fff;
+}
+.close {
+  color: #fff;
+  transform: scale(1.2);
+}
+.modal-content {
+  font-weight: bold;
+  background: linear-gradient(to bottom right, #004b44, #202020);
+}
+.form-control {
+  margin: 1em 0;
+}
+.form-control:hover,
+.form-control:focus {
+  box-shadow: none;
+  border-color: #fff;
+}
+.username,
+.password {
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  border-bottom: 2px solid #eee;
+  padding-left: 0;
+  font-weight: normal;
+  background: transparent;
+}
+.form-control::-webkit-input-placeholder {
+  color: #eee;
+}
+.form-control:focus::-webkit-input-placeholder {
+  font-weight: bold;
+  color: #fff;
+}
+.login {
+  padding: 6px 20px;
+  border-radius: 20px;
+  background: none;
+  border: 2px solid #fab87f;
+  color: #fab87f;
+  font-weight: bold;
+  transition: all 0.5s;
+  margin-top: 1em;
+}
+.login:hover {
+  background: #fab87f;
+  color: #fff;
+}
+input.btn.changepassword {
+  background-color: #202020 !important;
+  border-color: #abbac3;
+}
+input.password.form-control {
+  padding: 5px;
+}

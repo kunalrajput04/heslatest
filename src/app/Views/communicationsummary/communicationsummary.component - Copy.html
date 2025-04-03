@@ -1,0 +1,630 @@
+<div class="main-content" id="contentToConvert">
+
+  <div class="main-content-inner">
+    <div class="page-content">
+
+
+      <div class="center" style="display:none;">
+        <h1><b>SLA REPORT</b> </h1>
+
+        <h2><b>UTILITY : {{username}}</b> </h2>
+      </div>
+      <div class="row">
+
+        <div class="col-md-12 infobox-container">
+          <div class="col-md-12" style="display: flex">
+            <div class="col-md-12" style="padding: 0px; margin-bottom: 18px">
+
+              <div class="row">
+
+
+
+                <div class="min-bg-s  col-md-4">
+                  <div class="item">
+                    <div class="widget-box">
+                      <div class="
+                        widget-header widget-header-flat widget-header-small
+                      ">
+                        <h5 class="widget-title">Comm Read</h5>
+
+                        <div class="widget-toolbar no-border"></div>
+                      </div>
+                      <div id="chart">
+                        <apx-chart [series]="commRead" [labels]="chartOptions.labels" [colors]="chartOptions.colors"
+                          [chart]="chartOptions.chart" [legend]="chartOptions.legend"
+                          [dataLabels]="chartOptions.dataLabels" [fill]="chartOptions.fill"
+                          [plotOptions]="chartOptions.plotOptions"></apx-chart>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="min-bg-s col-md-4">
+                  <div class="item">
+                    <div class="widget-box">
+                      <div class="
+                        widget-header widget-header-flat widget-header-small
+                      ">
+                        <h5 class="widget-title">Instant Read</h5>
+
+                        <div class="widget-toolbar no-border"></div>
+                      </div>
+                      <div id="chart">
+                        <apx-chart [series]="instantRead" [labels]="chartOptions.labels" [colors]="chartOptions.colors"
+                          [chart]="chartOptions.chart" [legend]="chartOptions.legend"
+                          [dataLabels]="chartOptions.dataLabels" [fill]="chartOptions.fill"
+                          [plotOptions]="chartOptions.plotOptions"></apx-chart>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="min-bg-s col-md-4">
+                  <div class="item">
+                    <div class="widget-box">
+                      <div class="
+                        widget-header widget-header-flat widget-header-small
+                      ">
+                        <h5 class="widget-title">DLP Data</h5>
+
+                        <div class="widget-toolbar no-border"></div>
+                      </div>
+                      <div id="chart">
+                        <apx-chart [series]="dlpRead" [labels]="chartOptions.labels" [colors]="chartOptions.colors"
+                          [chart]="chartOptions.chart" [legend]="chartOptions.legend"
+                          [dataLabels]="chartOptions.dataLabels" [fill]="chartOptions.fill"
+                          [plotOptions]="chartOptions.plotOptions"></apx-chart>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="min-bg-s col-md-4">
+                  <div class="item">
+                    <div class="widget-box">
+                      <div class="
+                        widget-header widget-header-flat widget-header-small
+                      ">
+                        <h5 class="widget-title">LP Read</h5>
+
+                        <div class="widget-toolbar no-border"></div>
+                      </div>
+                      <div id="chart">
+                        <apx-chart [series]="lpRead" [labels]="chartOptions.labels" [colors]="chartOptions.colors"
+                          [chart]="chartOptions.chart" [legend]="chartOptions.legend"
+                          [dataLabels]="chartOptions.dataLabels" [fill]="chartOptions.fill"
+                          [plotOptions]="chartOptions.plotOptions"></apx-chart>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="min-bg-s col-md-4">
+                  <div class="item">
+                    <div class="widget-box">
+                      <div class="
+                        widget-header widget-header-flat widget-header-small
+                      ">
+                        <h5 class="widget-title">Billing Read</h5>
+
+                        <div class="widget-toolbar no-border"></div>
+                      </div>
+                      <div id="chart">
+                        <apx-chart [series]="billingRead" [labels]="chartOptions.labels" [colors]="chartOptions.colors"
+                          [chart]="chartOptions.chart" [legend]="chartOptions.legend"
+                          [dataLabels]="chartOptions.dataLabels" [fill]="chartOptions.fill"
+                          [plotOptions]="chartOptions.plotOptions"></apx-chart>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="min-bg-s col-md-4">
+                  <div class="item">
+                    <div class="widget-box">
+                      <div class="
+                        widget-header widget-header-flat widget-header-small
+                      ">
+                        <h5 class="widget-title">Event Read</h5>
+
+                        <div class="widget-toolbar no-border"></div>
+                      </div>
+                      <div id="chart">
+                        <apx-chart [series]="eventRead" [labels]="chartOptions.labels" [colors]="chartOptions.colors"
+                          [chart]="chartOptions.chart" [legend]="chartOptions.legend"
+                          [dataLabels]="chartOptions.dataLabels" [fill]="chartOptions.fill"
+                          [plotOptions]="chartOptions.plotOptions"></apx-chart>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="table-header">
+                <div class="col-lg-3">
+                  <h6 
+                    class="title">
+                    Total Installed Meters : {{dashboardChartComman.singlephasemeters +
+                    dashboardChartComman.threephasemeters + dashboardChartComman.ctmeters}}<br>
+                    Total Active Meters    : {{dashboardChartComman.singlephasemeters +
+                    dashboardChartComman.threephasemeters + dashboardChartComman.ctmeters-dashboardChartComman.inactivedev}}<br>
+                    Total Inactive Meters  : {{dashboardChartComman.inactivedev}}<br>
+                    Total Faulty Meters    : {{dashboardChartComman.faultydev}}
+                  </h6>
+                </div>
+                <button class="btn btn-success pull-right noprint" (click)="convertToPDF()"><i class="fa fa-print"></i>
+                  Print </button>
+
+
+                <div class="row">
+
+                </div>
+              </div>
+
+            </div>
+            <!-- /.span -->
+          </div>
+          <div class="row">
+            <div class="col-xs-12">
+              <table id="simple-table" class="table table-bordered table-hover no-wrap">
+                <thead>
+                  <tr>
+                    <th>Data</th>
+                    <!-- <th class="noprint">Inactive</th>
+                    <th class="noprint">Active </th>
+                    <th class="noprint">Faulty</th> -->
+
+                    <th class="print">Current Day </th>
+
+                    <th class="print">Current Day (%) </th>
+
+                    <th class="print">Last Day</th>
+
+                    <th class="print">Last Day(%)</th>
+
+                    <th class="print">Last Week </th>
+
+                    <th class="print">Last Week(%)</th>
+
+                    <th class="print">Last Month </th>
+
+                    <th class="print">Last Month(%)</th>
+
+
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr>
+                    <td>
+                      cumulative Read
+                    </td>
+                    <!-- <td class="noprint">
+                      {{dashboardChartComman.inactivedev}}
+                    </td>
+                    <td class="noprint">
+                      {{dashboardChartComman.activedev}}
+                    </td>
+                    <td class="noprint">
+                      {{dashboardChartComman.faultydev}}
+                    </td> -->
+                    <td class="noprint">
+                      <a href="javascript:void(0)" (click)="onTableget('LastComm', 'Success','Today')">
+
+                        {{dashboardChartComman.commdaysuccesscount}}
+                      </a>
+                    </td>
+
+                    <td class="print">
+
+                      {{(dashboardChartComman.commdaysuccesscount) / ((dashboardChartComman.singlephasemeters +
+                      dashboardChartComman.threephasemeters + dashboardChartComman.ctmeters) -
+                      (dashboardChartComman.inactivedev + dashboardChartComman.activedev + dashboardChartComman.faultydev)) | percent: "1.0-2"}}
+                    </td>
+
+                    <td class="noprint">
+                      <a href="javascript:void(0)" (click)="onTableget('LastComm', 'Success','Yesterday')">
+                        {{dashboardChartComman.commyestsuccesscount}}
+                      </a>
+                    </td>
+
+                    <td class="print">
+
+
+                      {{(dashboardChartComman.commyestsuccesscount) / ((dashboardChartComman.singlephasemeters +
+                      dashboardChartComman.threephasemeters + dashboardChartComman.ctmeters) -
+                      (dashboardChartComman.inactivedev + dashboardChartComman.activedev + dashboardChartComman.faultydev)) | percent: "1.0-2"}}
+                    </td>
+
+                    <td class="noprint">
+                      <a href="javascript:void(0)" (click)="onTableget('LastComm', 'Success','Last Week')">
+                        {{dashboardChartComman.commweeksuccesscount}}
+                      </a>
+                    </td>
+
+                    <td class="print">
+
+
+                      {{(dashboardChartComman.commweeksuccesscount) / ((dashboardChartComman.singlephasemeters +
+                      dashboardChartComman.threephasemeters + dashboardChartComman.ctmeters) -
+                      (dashboardChartComman.inactivedev + dashboardChartComman.activedev + dashboardChartComman.faultydev)) | percent: "1.0-2"}}
+                    </td>
+
+                    <td class="noprint">
+                      <a href="javascript:void(0)" (click)="onTableget('LastComm', 'Success','Last Month')">
+                        {{dashboardChartComman.commmonthsuccesscount}}
+                      </a>
+                    </td>
+
+                    <td class="print">
+
+
+                      {{(dashboardChartComman.commmonthsuccesscount) / ((dashboardChartComman.singlephasemeters +
+                      dashboardChartComman.threephasemeters + dashboardChartComman.ctmeters) -
+                      (dashboardChartComman.inactivedev + dashboardChartComman.activedev + dashboardChartComman.faultydev)) | percent: "1.0-2"}}
+                    </td>
+
+
+                  </tr>
+
+                  <tr>
+                    <td>
+                      Instatnt Read
+                    </td>
+                    <!-- <td class="noprint">
+                      {{dashboardChartComman.inactivedev}}
+                    </td>
+                    <td class="noprint">
+                      {{dashboardChartComman.activedev}}
+                    </td>
+                    <td class="noprint">
+                      {{dashboardChartComman.faultydev}}
+                    </td> -->
+                    <td class="noprint">
+                      <a href="javascript:void(0)" (click)="onTableget('Instant', 'Success','Today')">
+                        {{dashboardChartComman.instantdaysuccesscount}}
+                      </a>
+                    </td>
+
+                    <td class="print">
+
+
+                      {{(dashboardChartComman.instantdaysuccesscount) / ((dashboardChartComman.singlephasemeters +
+                      dashboardChartComman.threephasemeters + dashboardChartComman.ctmeters) -
+                      (dashboardChartComman.inactivedev + dashboardChartComman.activedev + dashboardChartComman.faultydev)) | percent: "1.0-2"}}
+                    </td>
+
+                    <td class="noprint">
+                      <a href="javascript:void(0)"
+                        (click)="onTableget('Instant', 'Success','Yesterday')">{{dashboardChartComman.instantyestsuccesscount}}
+                      </a>
+                    </td>
+
+                    <td class="print">
+
+
+                      {{(dashboardChartComman.instantyestsuccesscount) / ((dashboardChartComman.singlephasemeters +
+                      dashboardChartComman.threephasemeters + dashboardChartComman.ctmeters) -
+                      (dashboardChartComman.inactivedev + dashboardChartComman.activedev + dashboardChartComman.faultydev)) | percent: "1.0-2"}}
+                    </td>
+
+                    <td class="noprint"><a href="javascript:void(0)"
+                        (click)="onTableget('Instant', 'Success','Last Week')">{{dashboardChartComman.instantweeksuccesscount}}</a>
+                    </td>
+
+                    <td class="print">
+
+
+                      {{(dashboardChartComman.instantweeksuccesscount) / ((dashboardChartComman.singlephasemeters +
+                      dashboardChartComman.threephasemeters + dashboardChartComman.ctmeters) -
+                      (dashboardChartComman.inactivedev + dashboardChartComman.activedev + dashboardChartComman.faultydev)) | percent: "1.0-2"}}
+                    </td>
+
+                    <td class="noprint"><a href="javascript:void(0)"
+                        (click)="onTableget('Instant', 'Success','Last Month')">{{dashboardChartComman.instantmonthsuccesscount}}</a>
+                    </td>
+
+                    <td class="print">
+
+
+                      {{(dashboardChartComman.instantmonthsuccesscount) / ((dashboardChartComman.singlephasemeters +
+                      dashboardChartComman.threephasemeters + dashboardChartComman.ctmeters) -
+                      (dashboardChartComman.inactivedev + dashboardChartComman.activedev + dashboardChartComman.faultydev)) | percent: "1.0-2"}}
+                    </td>
+
+
+
+                  </tr>
+
+                  <tr>
+                    <td>
+                      DLP Data
+                    </td>
+                    <!-- <td class="noprint">
+                      {{dashboardChartComman.inactivedev}}
+                    </td>
+                    <td class="noprint">
+                      {{dashboardChartComman.activedev}}
+                    </td>
+                    <td class="noprint">
+                      {{dashboardChartComman.faultydev}}
+                    </td> -->
+                    <td class="noprint"><a href="javascript:void(0)"
+                        (click)="onTableget('DailyLP', 'Success','Today')">{{dashboardChartComman.dailydaysuccesscount}}</a>
+                    </td>
+
+                    <td class="print">
+
+
+                      {{(dashboardChartComman.dailydaysuccesscount) / ((dashboardChartComman.singlephasemeters +
+                      dashboardChartComman.threephasemeters + dashboardChartComman.ctmeters) -
+                      (dashboardChartComman.inactivedev + dashboardChartComman.activedev + dashboardChartComman.faultydev)) | percent: "1.0-2"}}
+                    </td>
+
+                    <td class="noprint"><a href="javascript:void(0)"
+                        (click)="onTableget('DailyLP', 'Success','Yesterday')">{{dashboardChartComman.dailyyestsuccesscount}}</a>
+                    </td>
+
+                    <td class="print">
+
+
+                      {{(dashboardChartComman.dailyyestsuccesscount) / ((dashboardChartComman.singlephasemeters +
+                      dashboardChartComman.threephasemeters + dashboardChartComman.ctmeters) -
+                      (dashboardChartComman.inactivedev + dashboardChartComman.activedev + dashboardChartComman.faultydev)) | percent: "1.0-2"}}
+                    </td>
+
+                    <td class="noprint"><a href="javascript:void(0)"
+                        (click)="onTableget('DailyLP', 'Success','Last Week')">{{dashboardChartComman.dailyweeksuccesscount}}
+                      </a></td>
+
+                    <td class="print">
+
+
+                      {{(dashboardChartComman.dailyweeksuccesscount) / ((dashboardChartComman.singlephasemeters +
+                      dashboardChartComman.threephasemeters + dashboardChartComman.ctmeters) -
+                      (dashboardChartComman.inactivedev + dashboardChartComman.activedev + dashboardChartComman.faultydev)) | percent: "1.0-2"}}
+                    </td>
+
+                    <td class="noprint"><a href="javascript:void(0)"
+                        (click)="onTableget('DailyLP', 'Success','Last Month')">{{dashboardChartComman.dailymonthsuccesscount}}</a>
+                    </td>
+
+
+                    <td class="print">
+
+
+                      {{(dashboardChartComman.dailymonthsuccesscount) / ((dashboardChartComman.singlephasemeters +
+                      dashboardChartComman.threephasemeters + dashboardChartComman.ctmeters) -
+                      (dashboardChartComman.inactivedev + dashboardChartComman.activedev + dashboardChartComman.faultydev)) | percent: "1.0-2"}}
+                    </td>
+
+
+
+
+                  </tr>
+
+                  <tr>
+                    <td>
+                      LP Read
+                    </td>
+                    <!-- <td class="noprint">
+                      {{dashboardChartComman.inactivedev}}
+                    </td>
+                    <td class="noprint">
+                      {{dashboardChartComman.activedev}}
+                    </td>
+                    <td class="noprint">
+                      {{dashboardChartComman.faultydev}}
+                    </td> -->
+                    <td class="noprint"><a href="javascript:void(0)"
+                        (click)="onTableget('DeltaLP', 'Success','Today')">{{dashboardChartComman.deltadaysuccesscount}}</a>
+                    </td>
+
+
+                    <td class="print">
+
+
+                      {{(dashboardChartComman.deltadaysuccesscount) / ((dashboardChartComman.singlephasemeters +
+                      dashboardChartComman.threephasemeters + dashboardChartComman.ctmeters) -
+                      (dashboardChartComman.inactivedev + dashboardChartComman.activedev + dashboardChartComman.faultydev)) | percent: "1.0-2"}}
+                    </td>
+
+
+                    <td class="noprint"><a href="javascript:void(0)"
+                        (click)="onTableget('DeltaLP', 'Success','Yesterday')">{{dashboardChartComman.deltayestsuccesscount}}
+                      </a></td>
+
+                    <td class="print">
+
+
+                      {{(dashboardChartComman.deltayestsuccesscount) / ((dashboardChartComman.singlephasemeters +
+                      dashboardChartComman.threephasemeters + dashboardChartComman.ctmeters) -
+                      (dashboardChartComman.inactivedev + dashboardChartComman.activedev + dashboardChartComman.faultydev)) | percent: "1.0-2"}}
+                    </td>
+
+                    <td class="noprint"><a href="javascript:void(0)"
+                        (click)="onTableget('DeltaLP', 'Success','Last Week')">{{dashboardChartComman.deltaweeksuccesscount}}</a>
+                    </td>
+
+                    <td class="print">
+
+
+                      {{(dashboardChartComman.deltaweeksuccesscount) / ((dashboardChartComman.singlephasemeters +
+                      dashboardChartComman.threephasemeters + dashboardChartComman.ctmeters) -
+                      (dashboardChartComman.inactivedev + dashboardChartComman.activedev + dashboardChartComman.faultydev)) | percent: "1.0-2"}}
+                    </td>
+
+                    <td class="noprint"><a href="javascript:void(0)"
+                        (click)="onTableget('DeltaLP', 'Success','Last Month')">{{dashboardChartComman.deltamonthsuccesscount}}</a>
+                    </td>
+
+                    <td class="print">
+
+
+                      {{(dashboardChartComman.deltamonthsuccesscount) / ((dashboardChartComman.singlephasemeters +
+                      dashboardChartComman.threephasemeters + dashboardChartComman.ctmeters) -
+                      (dashboardChartComman.inactivedev + dashboardChartComman.activedev + dashboardChartComman.faultydev)) | percent: "1.0-2"}}
+                    </td>
+
+
+
+                  </tr>
+
+                  <tr>
+                    <td>
+                      Billing Read
+                    </td>
+                    <!-- <td class="noprint">
+                      {{dashboardChartComman.inactivedev}}
+                    </td>
+                    <td class="noprint">
+                      {{dashboardChartComman.activedev}}
+                    </td>
+                    <td class="noprint">
+                      {{dashboardChartComman.faultydev}}
+                    </td> -->
+                    <td class="noprint"><a href="javascript:void(0)"
+                        (click)="onTableget('Billing', 'Success','Today')">{{dashboardChartComman.billingdaysuccesscount}}
+                      </a></td>
+
+
+                    <td class="print">
+
+
+                      {{(dashboardChartComman.billingdaysuccesscount) / ((dashboardChartComman.singlephasemeters +
+                      dashboardChartComman.threephasemeters + dashboardChartComman.ctmeters) -
+                      (dashboardChartComman.inactivedev + dashboardChartComman.activedev + dashboardChartComman.faultydev)) | percent: "1.0-2"}}
+                    </td>
+
+                    <td class="noprint"><a href="javascript:void(0)"
+                        (click)="onTableget('Billing', 'Success','Yesterday')">{{dashboardChartComman.billingyestsuccesscount}}</a>
+                    </td>
+
+                    <td class="print">
+
+
+                      {{(dashboardChartComman.billingyestsuccesscount) / ((dashboardChartComman.singlephasemeters +
+                      dashboardChartComman.threephasemeters + dashboardChartComman.ctmeters) -
+                      (dashboardChartComman.inactivedev + dashboardChartComman.activedev + dashboardChartComman.faultydev)) | percent: "1.0-2"}}
+                    </td>
+
+                    <td class="noprint"><a href="javascript:void(0)"
+                        (click)="onTableget('Billing', 'Success','Last Week')">{{dashboardChartComman.billingweeksuccesscount}}</a>
+                    </td>
+
+                    <td class="print">
+
+
+                      {{(dashboardChartComman.billingweeksuccesscount) / ((dashboardChartComman.singlephasemeters +
+                      dashboardChartComman.threephasemeters + dashboardChartComman.ctmeters) -
+                      (dashboardChartComman.inactivedev + dashboardChartComman.activedev + dashboardChartComman.faultydev)) | percent: "1.0-2"}}
+                    </td>
+
+
+                    <td class="noprint"><a href="javascript:void(0)"
+                        (click)="onTableget('Billing', 'Success','Last Month')">{{dashboardChartComman.billingmonthsuccesscount}}
+                      </a></td>
+
+                    <td class="print">
+
+
+                      {{(dashboardChartComman.billingmonthsuccesscount) / ((dashboardChartComman.singlephasemeters +
+                      dashboardChartComman.threephasemeters + dashboardChartComman.ctmeters) -
+                      (dashboardChartComman.inactivedev + dashboardChartComman.activedev + dashboardChartComman.faultydev)) | percent: "1.0-2"}}
+                    </td>
+
+
+                  </tr>
+
+                  <tr>
+                    <td>
+                      Event Read
+                    </td>
+                    <!-- <td class="noprint">
+                      {{dashboardChartComman.inactivedev}}
+                    </td>
+                    <td class="noprint">
+                      {{dashboardChartComman.activedev}}
+                    </td>
+                    <td class="noprint">
+                      {{dashboardChartComman.faultydev}}
+                    </td> -->
+                    <td class="noprint"><a href="javascript:void(0)"
+                        (click)="onTableget('Events', 'Success','Today')">{{dashboardChartComman.eventdaysuccesscount}}</a>
+                    </td>
+
+                    <td class="print">
+
+
+                      {{(dashboardChartComman.eventdaysuccesscount) / ((dashboardChartComman.singlephasemeters +
+                      dashboardChartComman.threephasemeters + dashboardChartComman.ctmeters) -
+                      (dashboardChartComman.inactivedev + dashboardChartComman.activedev + dashboardChartComman.faultydev)) | percent: "1.0-2"}}
+                    </td>
+
+
+
+
+                    <td class="noprint"><a href="javascript:void(0)"
+                        (click)="onTableget('Events', 'Success','Yesterday')">{{dashboardChartComman.eventyestsuccesscount}}</a>
+                    </td>
+
+                    <td class="print">
+
+
+                      {{(dashboardChartComman.eventyestsuccesscount) / ((dashboardChartComman.singlephasemeters +
+                      dashboardChartComman.threephasemeters + dashboardChartComman.ctmeters) -
+                      (dashboardChartComman.inactivedev + dashboardChartComman.activedev + dashboardChartComman.faultydev)) | percent: "1.0-2"}}
+                    </td>
+
+
+                    <td class="noprint"><a href="javascript:void(0)"
+                        (click)="onTableget('Events', 'Success','Last Week')">{{dashboardChartComman.eventweeksuccesscount}}</a>
+                    </td>
+
+
+                    <td class="print">
+
+
+                      {{(dashboardChartComman.eventweeksuccesscount) / ((dashboardChartComman.singlephasemeters +
+                      dashboardChartComman.threephasemeters + dashboardChartComman.ctmeters) -
+                      (dashboardChartComman.inactivedev + dashboardChartComman.activedev + dashboardChartComman.faultydev)) | percent: "1.0-2"}}
+                    </td>
+
+                    <td class="noprint"><a href="javascript:void(0)"
+                        (click)="onTableget('Events', 'Success','Last Month')">{{dashboardChartComman.eventmonthsuccesscount}}</a>
+                    </td>
+
+                    <td class="print">
+
+
+                      {{(dashboardChartComman.eventmonthsuccesscount) / ((dashboardChartComman.singlephasemeters +
+                      dashboardChartComman.threephasemeters + dashboardChartComman.ctmeters) -
+                      (dashboardChartComman.inactivedev + dashboardChartComman.activedev + dashboardChartComman.faultydev)) | percent: "1.0-2"}}
+                    </td>
+
+
+
+                  </tr>
+
+
+                </tbody>
+              </table>
+            </div>
+            <!-- /.span -->
+          </div>
+        </div>
+        <!-- /.row -->
+      </div>
+
+      <!-- /.page-content -->
+    </div>
+  </div>
+</div>

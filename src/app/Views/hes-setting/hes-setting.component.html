@@ -1,0 +1,245 @@
+<div class="main-content">
+  <div class="main-content-inner">
+    <div class="page-content">
+      <div class="page-header"></div>
+      <!-- /.page-header -->
+
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="row">
+            <div class="col-xs-12">
+              <table id="simple-table" class="table table-bordered table-hover">
+                <thead>
+                  <tr>
+                    <th>Data Reading</th>
+                    <th>Reading Frequency</th>
+                    <th>No Of Retry</th>
+                    <th>Start Time</th>
+
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr>
+                    <td>
+                      <a href="javascript:void(0)">Instant Data</a>
+                    </td>
+                    <td>
+                      <select name="FInstantData" [(ngModel)]="hescommand.FInstantData" class="form-control">
+                        <option value="15 min">15 min</option>
+                        <option value="30 min">30 min</option>
+                        <option value="60 min">1 hr</option>
+                        <option value="120 min">2 hr</option>
+                        <option value="240 min">4 hr</option>
+                        <option value="480 min">8 hr</option>
+                        <option value="960 min">16 hr</option>
+                        <option value="1440 min">24 hr</option>
+                      </select>
+                    </td>
+                    <td>
+                      <input type="number"  name="RInstantData"  class="form-control"
+                      [(ngModel)]="hescommand.RInstantData" />
+                    </td>
+                    <td>
+                      <input type="time" id="form-field-1" name="SInstantData" [(ngModel)]="hescommand.SInstantData"
+                        placeholder="KW" class="form-control" />
+                    </td>
+
+                  </tr>
+                  <tr>
+                    <td>
+                      <a href="javascript:void(0)">Daily Load Profile</a>
+                    </td>
+                    <td>
+                      <select name="FDailyLoadProfile" [(ngModel)]="hescommand.FDailyLoadProfile" class="form-control">
+                        <option value="15 min">15 min</option>
+                        <option value="30 min">30 min</option>
+                        <option value="60 min">1 hr</option>
+                        <option value="120 min">2 hr</option>
+                        <option value="240 min">4 hr</option>
+                        <option value="480 min">8 hr</option>
+                        <option value="960 min">16 hr</option>
+                        <option value="1440 min">24 hr</option>
+                      </select>
+                    </td>
+                    <td>
+                      
+                      <input type="number"  name="RDailyLoadProfile"  class="form-control"
+                      [(ngModel)]="hescommand.RDailyLoadProfile" />
+
+                    </td>
+                    <td>
+                      <input type="time" id="form-field-1" name="SDailyLoadProfile" placeholder="KW"
+                        [(ngModel)]="hescommand.SDailyLoadProfile" class="form-control" />
+                    </td>
+
+                  </tr>
+                  <tr>
+                    <td>
+                      <a href="javascript:void(0)">Load Profile</a>
+                    </td>
+                    <td>
+                      <select name="FLoadProfile" [(ngModel)]="hescommand.FLoadProfile" class="form-control">
+                        <option value="15 min">15 min</option>
+                        <option value="30 min">30 min</option>
+                        <option value="60 min">1 hr</option>
+                        <option value="120 min">2 hr</option>
+                        <option value="240 min">4 hr</option>
+                        <option value="480 min">8 hr</option>
+                        <option value="960 min">16 hr</option>
+                        <option value="1440 min">24 hr</option>
+                      </select>
+                    </td>
+                    <td>
+                     
+                      
+                      <input type="number"  name="RLoadProfile"  class="form-control"
+                      [(ngModel)]="hescommand.RLoadProfile" />
+
+                    </td>
+                    <td>
+                      <input type="time" id="form-field-1" name="SLoadProfile" placeholder="KW"
+                        [(ngModel)]="hescommand.SLoadProfile" class="form-control" />
+                    </td>
+
+                  </tr>
+                  <tr>
+                    <td>
+                      <a href="javascript:void(0)">Billing</a>
+                    </td>
+                    <td>
+                      <select name="FBilling" [(ngModel)]="hescommand.FBilling" class="form-control">
+                        <option value="15 min">15 min</option>
+                        <option value="30 min">30 min</option>
+                        <option value="60 min">1 hr</option>
+                        <option value="120 min">2 hr</option>
+                        <option value="240 min">4 hr</option>
+                        <option value="480 min">8 hr</option>
+                        <option value="960 min">16 hr</option>
+                        <option value="1440 min">24 hr</option>
+                      </select>
+                    </td>
+                    <td>
+                    
+                      
+                      
+                      <input type="number"  name="RBilling"  class="form-control"
+                      [(ngModel)]="hescommand.RBilling" />
+                    </td>
+                    <td>
+                      <input type="time" id="form-field-1" name="SBilling" placeholder="KW"
+                        [(ngModel)]="hescommand.SBilling" class="form-control" />
+                    </td>
+
+                  </tr>
+                  <tr>
+                    <td>
+                      <a href="javascript:void(0)">Events</a>
+                    </td>
+                    <td>
+                      <select name="FEvents" [(ngModel)]="hescommand.FEvents" class="form-control">
+                        <option value="15 min">15 min</option>
+                        <option value="30 min">30 min</option>
+                        <option value="60 min">1 hr</option>
+                        <option value="120 min">2 hr</option>
+                        <option value="240 min">4 hr</option>
+                        <option value="480 min">8 hr</option>
+                        <option value="960 min">16 hr</option>
+                        <option value="1440 min">24 hr</option>
+                      </select>
+                    </td>
+                    <td>
+                      
+                      <input type="number"  name="REvents"  class="form-control"
+                      [(ngModel)]="hescommand.REvents" />
+                    </td>
+                    <td>
+                      <input type="time" id="form-field-1" name="SEvents" placeholder="KW"
+                        [(ngModel)]="hescommand.SEvents" class="form-control" />
+                    </td>
+
+                  </tr>
+                  <tr>
+                    <td>
+                      <a href="javascript:void(0)">RTC Synchronization</a>
+                    </td>
+                    <td>
+                      <select name="FRTCSynchronization" class="form-control" [(ngModel)]="hescommand.FRTCSynchronization">
+                        <option value="15 min">15 min</option>
+                        <option value="30 min">30 min</option>
+                        <option value="60 min">1 hr</option>
+                        <option value="120 min">2 hr</option>
+                        <option value="240 min">4 hr</option>
+                        <option value="480 min">8 hr</option>
+                        <option value="960 min">16 hr</option>
+                        <option value="1440 min">24 hr</option>
+                      </select>
+                    </td>
+                    <td>
+                      <!-- <select [(ngModel)]="hescommand.RRTCSynchronization" name="RRTCSynchronization" class="form-control">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                      </select> -->
+                      <input type="number"  name="RRTCSynchronization"  class="form-control"
+                      [(ngModel)]="hescommand.RRTCSynchronization" />
+                    </td>
+                    <td>
+                      <input type="time" id="form-field-1" name="SRTCSynchronization" placeholder="KW" class="form-control"
+                        [(ngModel)]="hescommand.SRTCSynchronization" />
+                    </td>
+
+                  </tr>
+                  <tr>
+                    <td>
+                      <a href="javascript:void(0)">Configuration</a>
+                    </td>
+                    <td>
+                      <select name="FConfiguration" [(ngModel)]="hescommand.FConfiguration" class="form-control">
+                        <option value="15 min">15 min</option>
+                        <option value="30 min">30 min</option>
+                        <option value="60 min">1 hr</option>
+                        <option value="120 min">2 hr</option>
+                        <option value="240 min">4 hr</option>
+                        <option value="480 min">8 hr</option>
+                        <option value="960 min">16 hr</option>
+                        <option value="1440 min">24 hr</option>
+                      </select>
+                    </td>
+                    <td>
+                      
+                      <input type="number"  name="RConfiguration"  class="form-control"
+                      [(ngModel)]="hescommand.RConfiguration" />
+                      
+                    </td>
+                    <td>
+                      <input type="time" name="SConfiguration" [(ngModel)]="hescommand.SConfiguration" placeholder="KW"
+                        class="form-control" />
+                    </td>
+
+                  </tr>
+                  <tr>
+                    <td colspan="4" style="text-align: center">
+                      <div class="hidden-sm hidden-xs btn-group">
+                        <button class="btn btn-info" type="button" (click)="onSubmit()"
+                          [disabled]="iswritepermission === '0'">
+                          <i class="ace-icon fa fa-check bigger-110"></i>
+                          Submit
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- /.span -->
+          </div>
+        </div>
+        <!-- /.row -->
+      </div>
+      <!-- /.page-content -->
+    </div>
+  </div>
+</div>

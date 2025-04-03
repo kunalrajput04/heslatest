@@ -1,0 +1,559 @@
+<div class="main-content">
+  <div class="main-content-inner">
+    <div class="page-content">
+      <div class="page-header"></div>
+      <!-- /.page-header -->
+
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="row">
+            <div class="col-xs-12">
+              <form novalidate>
+                <div class="row">
+                  <div class="form-group col-md-4">
+                    <label class="block clearfix">
+                      <div>
+                        <select
+                          style="width: 100%"
+                          name="roleID"
+                          #roleID="ngModel"
+                          [(ngModel)]="formdata.roleID"
+                          (change)="changeAccessLevel($event.target.value)"
+                          required
+                        >
+                          <option value="">Select Access Level</option>
+                          <option value="1">Utility</option>
+                          <option value="2">Subdivision</option>
+                          <option value="3">Substation</option>
+                          <option value="4">Feeder</option>
+                          <option value="5">DT</option>
+                          <option value="6">METER</option>
+                        </select>
+                      </div>
+                    </label>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label class="block clearfix">
+                      <div class="">
+                        <!-- <select
+                          class=""
+                          id="useraccess"
+                          style="width: 100%"
+                          name="accessOwner"
+                          #accessOwner="ngModel"
+                          [(ngModel)]="formdata.accessOwner"
+                          (change)="changeUtility()"
+                          required
+                        >
+                          <option value="">Select Utility</option>
+
+                          <option
+                            *ngFor="let obj of UtilityDropdown"
+                            [Value]="obj"
+                          >
+                            {{ obj }}
+                          </option>
+                        </select> -->
+                        <input readonly class="form-control" style="width: 100%" name="accessOwner"
+                        #accessOwner="ngModel" [(ngModel)]="formdata.accessOwner"
+                        />
+                      </div>
+                    </label>
+                  </div>
+                  <div class="form-group col-md-4" *ngIf="isMeter">
+                    <label class="block clearfix">
+                      <div class="">
+                        <input placeholder="meter serial no"  class="form-control" style="width: 100%" name="designation"
+                        #designation="ngModel" [(ngModel)]="formdata.designation"
+                        />
+                      </div>
+                    </label>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label class="block clearfix" *ngIf="isSubdivision">
+                      <div class="">
+                        <select
+                          style="width: 100%"
+                          #accessSubdivision="ngModel"
+                          name="accessSubdivision"
+                          [ngClass]="
+                            accessSubdivision.invalid
+                              ? 'errorclass'
+                              : 'successclass'
+                          "
+                          [(ngModel)]="formdata.accessSubdivision"
+                          (change)="getSubstation($event.target.value)"
+                          required
+                        >
+                          <option selected="" value="">
+                            Select Subdivision
+                          </option>
+                          <option
+                            *ngFor="let obj of SubDivisionDropdown"
+                            [Value]="obj"
+                          >
+                            {{ obj }}
+                          </option>
+                        </select>
+                      </div>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="form-group col-md-4">
+                    <label class="block clearfix" *ngIf="isSubstation">
+                      <div class="">
+                        <select
+                          style="width: 100%"
+                          #accessSubStation="ngModel"
+                          name="accessSubStation"
+                          [ngClass]="
+                            accessSubStation.invalid
+                              ? 'errorclass'
+                              : 'successclass'
+                          "
+                          [(ngModel)]="formdata.accessSubStation"
+                          (change)="getFeeder($event.target.value)"
+                          required
+                        >
+                          <option selected="" value="">
+                            Select Substation
+                          </option>
+                          <option
+                            *ngFor="let obj of SubStationDropdown"
+                            [Value]="obj"
+                          >
+                            {{ obj }}
+                          </option>
+                        </select>
+                      </div>
+                    </label>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label class="block clearfix" *ngIf="isFeeder">
+                      <div class="">
+                        <select
+                          #accessFeeder="ngModel"
+                          name="accessFeeder"
+                          [ngClass]="
+                            accessFeeder.invalid ? 'errorclass' : 'successclass'
+                          "
+                          [(ngModel)]="formdata.accessFeeder"
+                          style="width: 100%"
+                          (change)="getDT($event.target.value)"
+                          required
+                        >
+                          <option selected="" value="">Select Feeder</option>
+                          <option
+                            *ngFor="let obj of FeederDropdown"
+                            [Value]="obj"
+                          >
+                            {{ obj }}
+                          </option>
+                        </select>
+                      </div>
+                    </label>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label class="block clearfix" *ngIf="isDT">
+                      <div class="">
+                        <select
+                          #accessDT="ngModel"
+                          name="accessDT"
+                          [ngClass]="
+                            accessDT.invalid ? 'errorclass' : 'successclass'
+                          "
+                          [(ngModel)]="formdata.accessDT"
+                          style="width: 100%"
+                          required
+                        >
+                          <option selected="" value="">Select DT</option>
+                          <option *ngFor="let obj of DTDropdown" [Value]="obj">
+                            {{ obj }}
+                          </option>
+                        </select>
+                      </div>
+                    </label>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-12">
+              <table id="simple-table" class="table table-bordered table-hover">
+                <thead>
+                  <tr>
+                    <th>Configuration type <input type="checkbox" name="forOnDemandConfig" [(ngModel)]="forOnDemandConfig" id="forOnDemandConfig" class="form-check-input" >On-Demand Config </th>
+                    <th>Configuration Value</th>
+                    <th class="hidden-480">Action</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr>
+                    <td>
+                      <a href="#">RTC Set</a>
+                    </td>
+                    <td>{{ currentTime }}</td>
+                    <td>
+                      <div class="hidden-sm hidden-xs btn-group">
+                        <button
+                          (click)="onSubmit('RTCClock')"
+                          class="btn btn-info"
+                          type="button"
+                          [disabled]="iswritepermission === '0'"
+                        >
+                          <i class="ace-icon fa fa-check bigger-110"></i>
+                          Submit
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <a href="javascript:void(0)">Demand Integration Period</a>
+                    </td>
+                    <td>
+                      <select
+                        name="demandIntegration"
+                        [(ngModel)]="demandIntegration"
+                      >
+                        <option value="900">900 Sec</option>
+                        <option value="1800">1800 Sec</option>
+                      </select>
+                    </td>
+                    <td>
+                      <div class="hidden-sm hidden-xs btn-group">
+                        <button
+                          (click)="onSubmit('DemandIntegrationPeriod')"
+                          class="btn btn-info"
+                          type="button"
+                          [disabled]="iswritepermission === '0'"
+                        >
+                          <i class="ace-icon fa fa-check bigger-110"></i>
+                          Submit
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>
+                      <a href="javascript:void(0)">Profile Capture Period</a>
+                    </td>
+                    <td>
+                      <select
+                        name="profileCaptured"
+                        [(ngModel)]="profileCaptured"
+                      >
+                        <option value="900">900 Sec</option>
+                        <option value="1800">1800 Sec</option>
+                      </select>
+                    </td>
+                    <td>
+                      <div class="hidden-sm hidden-xs btn-group">
+                        <button
+                          (click)="onSubmit('ProfileCapturePeriod')"
+                          class="btn btn-info"
+                          type="button"
+                          [disabled]="iswritepermission === '0'"
+                        >
+                          <i class="ace-icon fa fa-check bigger-110"></i>
+                          Submit
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>
+                      <a href="javascript:void(0)">Load Limit</a>
+                    </td>
+                    <td>
+                      <input
+                        type="text"
+                        id="form-field-1"
+                        name="loadLimit"
+                        [(ngModel)]="loadLimit"
+                        placeholder="KW"
+                        class="col-xs-10 col-sm-5"
+                      />
+                    </td>
+                    <td>
+                      <div class="hidden-sm hidden-xs btn-group">
+                        <button
+                          (click)="onSubmit('LoadLimit')"
+                          class="btn btn-info"
+                          type="button"
+                          [disabled]="iswritepermission === '0'"
+                        >
+                          <i class="ace-icon fa fa-check bigger-110"></i>
+                          Submit
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>
+                      <a href="javascript:void(0)">Metering Mode</a>
+                    </td>
+                    <td>
+                      <span>Import Only</span
+                      ><input
+                        name="meteringMode"
+                        value="0"
+                        [(ngModel)]="meteringMode"
+                        type="radio"
+                      />
+                      <span>Import/Export</span
+                      ><input
+                        name="meteringMode"
+                        value="1"
+                        [(ngModel)]="meteringMode"
+                        type="radio"
+                      />
+                    </td>
+                    <td>
+                      <div class="hidden-sm hidden-xs btn-group">
+                        <button
+                          (click)="onSubmit('MeteringMode')"
+                          class="btn btn-info"
+                          type="button"
+                          [disabled]="iswritepermission === '0'"
+                        >
+                          <i class="ace-icon fa fa-check bigger-110"></i>
+                          Submit
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <a href="javascript:void(0)">Load Control Mode</a>
+                    </td>
+                    <td>
+                      <select
+                        name="enableDisableDisconnectControl"
+                        [(ngModel)]="enableDisableDisconnectControl"
+                      >
+                        <option value="0">Mode 0</option>
+                        <option value="1">Mode 1</option>
+                        <option value="2">Mode 2</option>
+                        <option value="3">Mode 3</option>
+                        <option value="4">Mode 4</option>
+                        <option value="5">Mode 5</option>
+                        <option value="6">Mode 6</option>
+                      </select>
+                    </td>
+                    <td>
+                      <div class="hidden-sm hidden-xs btn-group">
+                        <button
+                          (click)="onSubmit('EnableDisableDisconnectControl')"
+                          class="btn btn-info"
+                          type="button"
+                          [disabled]="iswritepermission === '0'"
+                        >
+                          <i class="ace-icon fa fa-check bigger-110"></i>
+                          Submit
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <a href="javascript:void(0)">Clear TCover Open</a>
+                    </td>
+                    <td></td>
+                    <td>
+                      <div class="hidden-sm hidden-xs btn-group">
+                        <button
+                          (click)="onSubmit('CoverOpen')"
+                          class="btn btn-info"
+                          type="button"
+                          [disabled]="iswritepermission === '0'"
+                        >
+                          <i class="ace-icon fa fa-check bigger-110"></i>
+                          Submit
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <a href="javascript:void(0)">Instant Push IP</a>
+                    </td>
+                    <td>   <input
+                      type="text"
+                      name="InstantIPPush"
+                      [(ngModel)]="InstantIPPush"
+                      placeholder="[2400:5300:1::711]:4059"
+                      class="col-xs-10 col-sm-5"
+                    /></td>
+                    <td>
+                      <div class="hidden-sm hidden-xs btn-group">
+                        <button
+                          (click)="onSubmit('InstantIPPush')"
+                          class="btn btn-info"
+                          type="button"
+                          [disabled]="iswritepermission === '0'"
+                        >
+                          <i class="ace-icon fa fa-check bigger-110"></i>
+                          Submit
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <a href="javascript:void(0)">Alert Push IP</a>
+                    </td>
+                    <td>
+                      <input
+                        type="text"
+                        name="AlertIPPush"
+                        [(ngModel)]="AlertIPPush"
+                        placeholder="[2400:5300:1::711]:4059"
+                        class="col-xs-10 col-sm-5"
+                      />
+                    </td>
+                    <td>
+                      <div class="hidden-sm hidden-xs btn-group">
+                        <button
+                          (click)="onSubmit('AlertIPPush')"
+                          class="btn btn-info"
+                          type="button"
+                          [disabled]="iswritepermission === '0'"
+                        >
+                          <i class="ace-icon fa fa-check bigger-110"></i>
+                          Submit
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <a href="javascript:void(0)">Push Setup Duration</a>
+                    </td>
+                    <td>
+                      
+                      <input
+                      type="text"
+                      name="ActivitySchedulePush"
+                      [(ngModel)]="ActivitySchedulePush"
+                      placeholder="00:31:00,06:30:00,12:30:00,18:30:00"
+                      class="col-xs-10 col-sm-5"
+                    />
+                    </td>
+                    <td>
+                      <div class="hidden-sm hidden-xs btn-group">
+                        <button
+                          (click)="onSubmit('ActivitySchedulePush')"
+                          class="btn btn-info"
+                          type="button"
+                          [disabled]="iswritepermission === '0'"
+                        >
+                          <i class="ace-icon fa fa-check bigger-110"></i>
+                          Submit
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <a href="javascript:void(0)">Billing Date</a>
+                    </td>
+                    <td>
+                      
+                      <input
+                      type="text"
+                      name="BillingDatesValue"
+                      [(ngModel)]="BillingDatesValue"
+                      placeholder="1:12:15:00"
+                      class="col-xs-10 col-sm-5"
+                    />
+                    </td>
+                    <td>
+                      <div class="hidden-sm hidden-xs btn-group">
+                        <button
+                          (click)="onSubmit('BillingDates')"
+                          class="btn btn-info"
+                          type="button"
+                          [disabled]="iswritepermission === '0'"
+                        >
+                          <i class="ace-icon fa fa-check bigger-110"></i>
+                          Submit
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <a href="javascript:void(0)">MD Reset</a>
+                    </td>
+                    <td>
+                      
+                     
+                    </td>
+                    <td>
+                      <div class="hidden-sm hidden-xs btn-group">
+                        <button
+                          (click)="onSubmit('MdReset')"
+                          class="btn btn-info"
+                          type="button"
+                          [disabled]="iswritepermission === '0'"
+                        >
+                          <i class="ace-icon fa fa-check bigger-110"></i>
+                          Submit
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr >
+                    <td >
+                      <a  href="javascript:void(0)">TOD (Time, Date)</a>
+                    </td>
+                    <td>
+                      
+                      <input
+                      type="text"
+                      name="todTime"
+                      [(ngModel)]="todTime"
+                      placeholder="HH:mm:ss,HH:mm:ss,......"
+                      class="col-xs-10 col-sm-5"
+                    />
+                    <input
+                    type="datetime-local"
+                    class="col-xs-10 col-sm-5"
+                    name="todDate"
+                      [(ngModel)]="todDate"
+                  />
+                    </td>
+                    <td>
+                      <div class="hidden-sm hidden-xs btn-group">
+                        <button
+                          class="btn btn-info"
+                          type="button"
+                          (click)="onSubmit('ActivityCalendar')"
+                        >
+                          <i class="ace-icon fa fa-check bigger-110"></i>
+                          Submit 
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                 
+                </tbody>
+              </table>
+            </div>
+            <!-- /.span -->
+          </div>
+        </div>
+        <!-- /.row -->
+      </div>
+      <!-- /.page-content -->
+    </div>
+  </div>
+</div>

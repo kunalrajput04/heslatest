@@ -1,0 +1,323 @@
+<div id="navbar" class="navbar navbar-default ace-save-state">
+  <div class="navbar-container ace-save-state" id="navbar-container">
+    <button
+      type="button"
+      class="navbar-toggle menu-toggler pull-left"
+      id="menu-toggler"
+      data-target="#sidebar"
+    >
+      <span class="sr-only">Toggle sidebar</span>
+
+      <span class="icon-bar"></span>
+
+      <span class="icon-bar"></span>
+
+      <span class="icon-bar"></span>
+    </button>
+
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-3">
+          <a id="menuToggle" class="menutoggle"
+            ><i class="fa fa-bars" aria-hidden="true"></i
+          ></a>
+          <div class="navbar-header pull-left">
+            <ul class="breadcrumb">
+              <li>
+                <i
+                  class="ace-icon fa fa-home home-icon"
+                  style="color: white"
+                ></i>
+                <a routerLink="/" style="margin-top: 3px !important">Home</a>
+              </li>
+              <li *ngIf="data.firstlevel != ''">
+                <a
+                  href="javascript:void(0)"
+                  style="margin-top: 3px !important"
+                  >{{ data.firstlevel }}</a
+                >
+              </li>
+
+              <li>
+                <a
+                  routerLink="{{ data.url }}"
+                  style="margin-top: 3px !important"
+                  >{{ data.menuname }}</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="row">
+            <div class="navbar-header pull-left" style="width: 100%">
+              <ul class="breadcrumb" style="width: 100% !important">
+                <marquee
+                  style="color: white; font-size: 15px"
+                  scrollamount="4"
+                  >{{ welcomemessage }}</marquee
+                >
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div
+            class="navbar-buttons navbar-header pull-left"
+            role="navigation"
+            style="width: 100%"
+          >
+            <ul class="nav ace-nav">
+              <li class="brown dropdown-modal">
+                <div class="radio">
+                  <label>
+                    <input
+                      name="form-field-radio"
+                      (click)="myValue('All')"
+                      type="radio"
+                      class="ace"
+                      value="All"
+                      [ngModel]="meterphase"
+                    />
+                    <span class="lbl"> All</span>
+                  </label>
+                </div>
+              </li>
+              <li class="grey dropdown-modal">
+                <div class="radio">
+                  <label>
+                    <input
+                      name="form-field-radio"
+                      (click)="myValue('Evit')"
+                      type="radio"
+                      class="ace"
+                      value="Evit"
+                      [ngModel]="meterphase"
+                    />
+                    <span class="lbl"> 1P</span>
+                  </label>
+                </div>
+              </li>
+
+              <li class="purple dropdown-modal">
+                <div class="radio">
+                  <label>
+                    <input
+                      name="form-field-radio"
+                      (click)="myValue('Evit3P')"
+                      type="radio"
+                      class="ace"
+                      value="Evit3P"
+                      [ngModel]="meterphase"
+                    />
+                    <span class="lbl"> 3P</span>
+                  </label>
+                </div>
+              </li>
+
+              <li class="green dropdown-modal">
+                <div class="radio">
+                  <label>
+                    <input
+                      name="form-field-radio"
+                      (click)="myValue('Evit3P1')"
+                      type="radio"
+                      class="ace"
+                      value="Evit3P1"
+                      [ngModel]="meterphase"
+                    />
+                    <span class="lbl"> CT</span>
+                  </label>
+                </div>
+              </li>
+              <li class="green2 dropdown-modal">
+                <div class="radio">
+                  <label>
+                    <input
+                      name="form-field-radio"
+                      (click)="myValue('EvitHT')"
+                      type="radio"
+                      class="ace"
+                      value="EvitHT"
+                      [ngModel]="meterphase"
+                    />
+                    <span class="lbl"> HT</span>
+                  </label>
+                </div>
+              </li>
+
+              <li class="light-blue dropdown-modal">
+                <a data-toggle="dropdown" href="#" class="dropdown-toggle">
+                  <!-- <img
+                    class="nav-user-photo"
+                    src="assets/images/avatars/MeECL.png"
+                    alt="Jason's Photo"
+                  /> -->
+                  <img
+                    class="nav-user-photo"
+                    src="https://cdn-icons-png.flaticon.com/512/2037/2037265.png"
+                    alt="Jason's Photo"
+                  />
+                  <!-- <img
+                    class="nav-user-photo"
+                    src="/assets/images/avatars/iitkanpur.jpg"
+                    alt="Jason's Photo"
+                  /> -->
+                  <span class="user-info">
+                    <small>Welcome,</small>
+                    {{ userName }}
+                  </span>
+
+                  <i class="ace-icon fa fa-caret-down"></i>
+                </a>
+
+                <ul
+                  class="
+                    user-menu
+                    dropdown-menu-right
+                    dropdown-menu
+                    dropdown-yellow
+                    dropdown-caret
+                    dropdown-close
+                  "
+                >
+                  <li>
+                    <a
+                      class=""
+                      href="#"
+                      data-target="#changepassword"
+                      data-toggle="modal"
+                      ><i class="ace-icon fa fa-cog"></i>Change Password</a
+                    >
+                  </li>
+
+                  <li>
+                    <a href="profile.html">
+                      <i class="ace-icon fa fa-user"></i>
+                      Profile
+                    </a>
+                  </li>
+
+                  <li class="divider"></li>
+
+                  <li>
+                    <a href="javascript:void(0)" (click)="logout()">
+                      <i class="ace-icon fa fa-power-off"></i>
+                      Logout
+                    </a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+            <select
+              *ngIf="isdashboard"
+              class="select-b"
+              (change)="getDashboardChart($event.target.value)"
+            >
+              <option *ngFor="let obj of chartFilter" [ngValue]="obj.filter">
+                {{ obj.filter }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /.navbar-container -->
+</div>
+
+<div class="main-container ace-save-state" id="main-container">
+  <div id="sidebar" class="sidebar responsive ace-save-state">
+    <app-side-menu></app-side-menu>
+  
+    </div>
+
+  <router-outlet></router-outlet>
+</div>
+
+<div class="footer">
+  <div class="footer-inner">
+    <div class="footer-content">
+      <span style="float: left;">Version : {{hesVersion}} {{buildDate}}</span>
+      <span class="bigger-120">
+        <span class="blue bolder">Smart</span>
+        Meter &copy; 2020-2021
+      </span>
+
+      &nbsp; &nbsp;
+      <span class="action-buttons">
+        <a href="#">
+          <i class="ace-icon fa fa-twitter-square light-blue bigger-150"></i>
+        </a>
+
+        <a href="#">
+          <i class="ace-icon fa fa-facebook-square text-primary bigger-150"></i>
+        </a>
+
+        <a href="#">
+          <i class="ace-icon fa fa-rss-square orange bigger-150"></i>
+        </a>
+      </span>
+      <span style="float: right;">Last Updated Time : {{lastUpdatedTime}}</span>
+      
+    </div>
+  </div>
+</div>
+<a
+  href="javascript:void(0)"
+  id="btn-scroll-up"
+  class="btn-scroll-up btn btn-sm btn-inverse"
+>
+  <i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
+</a>
+
+<app-connect-and-disconnect></app-connect-and-disconnect>
+
+<div id="changepassword" class="modal fade" role="dialog">
+  <div class="modal-dialog" style="width: 362px; margin: 45px auto">
+    <div class="modal-content">
+      <div class="modal-body">
+        <button data-dismiss="modal" class="close">&times;</button>
+        <h4>Change Password</h4>
+        <form #form="ngForm" (submit)="changePassword(form)">
+          <input
+            type="password"
+            name="oldPassword"
+            required
+            #oldPassword="ngModel"
+            [(ngModel)]="changepassword.oldPassword"
+            class="password form-control"
+            placeholder="Old Password"
+          />
+          <input
+            type="password"
+            name="newPassword"
+            required
+            #newPassword="ngModel"
+            [(ngModel)]="changepassword.newPassword"
+            class="password form-control"
+            
+            placeholder="New Password"
+          />
+          <input
+            type="password"
+            required
+            name="reTypePassword"
+            [(ngModel)]="reTypePassword"
+            class="password form-control"
+            placeholder="Retype Password"
+          />
+          <input
+            class="btn changepassword"
+            style="width: 100%"
+            type="submit"
+            value="Change Password"
+            [disabled]="!form.valid"
+          />
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

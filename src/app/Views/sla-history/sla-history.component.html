@@ -1,0 +1,235 @@
+<!-- <div class="main-content" id="contentToConvert">
+
+    <div class="main-content-inner">
+        <div class="page-content">
+
+
+            <div class="center" style="display:none;">
+                <h1><b>SLA History</b> </h1>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <table id="simple-table" class="table table-bordered table-hover no-wrap">
+                                <thead>
+                                    <tr>
+                                        <th>SLA Date Time</th>
+                                        <th class="noprint">Installed</th>
+                                        <th class="noprint">Inactive</th>
+                                        <th class="noprint">Active</th>
+                                        <th class="noprint">Faulty</th>
+                                        <th class="print">Failure</th>
+                                        <th class="print">Success</th>
+                                        <th class="print">Success(%)</th>
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="i of slaData;">
+                                        <td class="noprint"><a href="javascript:void(0)">
+                                            {{i.slaDateTime}}
+                                        </a>
+                                        </td>
+                                        <td class="noprint"><a href="javascript:void(0)">
+                                            {{i.totalInstalled}}
+                                        </a>
+                                        </td>
+                                        <td class="noprint"><a href="javascript:void(0)"
+                                            >{{i.totalInactive}}</a>
+                                        </td>
+                                        <td class="noprint"><a href="javascript:void(0)"
+                                            >{{i.totalActive}}</a>
+                                        </td>
+                                        <td class="noprint"><a href="javascript:void(0)"
+                                            >{{i.totalFaulty}}</a>
+                                        </td>
+                                        <td class="noprint"><a href="javascript:void(0)"
+                                            >{{i.totalFailure}}</a>
+                                        </td>
+                                        <td class="noprint"><a href="javascript:void(0)"
+                                            >{{i.totalSuccess}}</a>
+                                        </td>
+                                        <td class="noprint"><a href="javascript:void(0)"
+                                            >{{i.totalSuccessPersent}}</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                    </div>
+                </div>
+                
+            </div>
+
+        </div>
+    </div>
+</div> -->
+
+<div class="main-content" id="#printingsection">
+  <div class="main-content-inner">
+    <div class="page-content">
+      <div class="center" style="display: none; padding: 12px">
+        <h2><b>SLA History Report</b></h2>
+        <h2><b>Utility: MPDCL</b></h2>
+      </div>
+      <!-- <div class="page-header">
+          <div></div>
+        </div> -->
+      <!-- /.page-header -->
+
+      <div class="row">
+        <div class="col-xs-12">
+          <!-- PAGE CONTENT BEGINS -->
+
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="table-header">
+                <form #form="ngForm" (submit)="onSubmit()">
+                  <div class="row">
+                    <div class="col-lg-2">
+                      <h4 class="title">SLA History</h4>
+                    </div>
+                    <div
+                      class="col-lg-1"
+                      style="margin-top: 4px; margin-bottom: 4px; width: 40px"
+                    >
+                      <span>From:</span>
+                    </div>
+                    <div
+                      class="col-lg-2"
+                      style="margin-top: 4px; margin-bottom: 4px"
+                    >
+                      <span>
+                        <input
+                          type="date"
+                          #fromdate="ngModel"
+                          name="fromdate"
+                          [(ngModel)]="formdata.fromdate"
+                          class="form-control"
+                        />
+                      </span>
+                    </div>
+                    <div
+                      class="col-lg-1"
+                      style="margin-top: 4px; margin-bottom: 4px; width: 10px"
+                    >
+                      <span>To:</span>
+                    </div>
+                    <div
+                      class="col-lg-2"
+                      style="margin-top: 4px; margin-bottom: 4px"
+                    >
+                      <span>
+                        <input
+                          type="date"
+                          #todate="ngModel"
+                          name="todate"
+                          [(ngModel)]="formdata.todate"
+                          class="form-control"
+                        />
+                      </span>
+                    </div>
+                    <!-- <div
+                        class="col-lg-1"
+                        style="margin-top: 4px; margin-bottom: 4px"
+                      >
+                        <span>Meter No:</span>
+                      </div>
+                      <div
+                        class="col-lg-2"
+                        style="margin-top: 4px; margin-bottom: 4px"
+                      >
+                        <span>
+                          <input
+                            type="text"
+                            #meterNo="ngModel"
+                            placeholder="meter number"
+                            name="meterNo"
+                            [(ngModel)]="formdata.meterNo"
+                            class="form-control"
+                          />
+                        </span>
+                      </div> -->
+                    <div
+                      class="col-lg-2"
+                      style="margin-top: 4px; margin-bottom: 4px"
+                    >
+                      <span>
+                        <button
+                          type="submit"
+                          class="btn brn-default"
+                          style="
+                            background: #707878;
+                            border-radius: 7px;
+                            color: white;
+                          "
+                        >
+                          Go
+                        </button>
+                      </span>
+                      <span style="padding-left: 4px; padding-right: 4px">
+                        <button
+                          (click)="convertpdf()"
+                          class="btn btn-success noprint"
+                          type="button"
+                          style="
+                            border-radius: 12px;
+                            padding-top: 4px;
+                            padding-bottom: 4px;
+                          "
+                        >
+                          <i class="fa fa-print"></i> Print
+                        </button>
+                      </span>
+                    </div>
+                  </div>
+                </form>
+              </div>
+
+              <div>
+                <div class="table-responsive">
+                  <button
+                    type="button"
+                    (click)="onBtnExport()"
+                    class="ag-gridbtn"
+                  >
+                    <i class="fa fa-download"></i> CSV Export Data
+                  </button>
+                </div>
+                <!-- <input
+                    type="text"
+                    id="filter-text-box"
+                    placeholder="Search"
+                    (input)="onFilterTextBoxChanged()"
+                  /> -->
+
+                <ag-grid-angular
+                  style="width: 100%; height: 450px"
+                  class="ag-theme-balham"
+                  [defaultColDef]="defaultColDef"
+                  [gridOptions]="gridOptions"
+                  [pagination]="true"
+                  [paginationPageSize]="14"
+                  enableCellTextSelection="true"
+                  (gridReady)="onGridReady($event)"
+                  [columnDefs]="columnDefs"
+                  [animateRows]="true"
+                >
+                </ag-grid-angular>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- print page ends -->
+        <!-- PAGE CONTENT ENDS -->
+      </div>
+      <!-- /.col -->
+
+      <!-- /.row -->
+    </div>
+
+    <!-- /.page-content -->
+  </div>
+</div>

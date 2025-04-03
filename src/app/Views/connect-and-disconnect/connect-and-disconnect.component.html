@@ -1,0 +1,86 @@
+<div class="modal fade niraj" id="ModalConnectDisconnect" role="dialog" aria-labelledby="exampleModalConnectDisconnect"
+  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title" id="exampleModalConnectDisconnect">
+          On Demand
+        </h4>
+      </div>
+
+      <form #form="ngForm" (submit)="onSubmit()">
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-4">
+              <label>Level</label>
+
+              <select class="form-control" name="roleID" #roleID="ngModel" [(ngModel)]="levelFormdata.roleID">
+                <option value="METER">Meter</option>
+                <option value="ALL">Utility</option>
+                <option value="SUBDIVISION">Subdivision</option>
+
+              </select>
+            </div>
+            <div class="col-md-4" *ngIf="levelFormdata.roleID=='ALL'">
+              <label>Owner</label>
+              <input type="text" #accessOwner="ngModel" name="accessOwner" [(ngModel)]="levelFormdata.accessOwner"
+                readonly>
+            </div>
+            <div class="col-md-4" *ngIf="levelFormdata.roleID=='SUBDIVISION'">
+              <label>Subdivision</label>
+              <select class="form-control" #accessSubdivision="ngModel" name="accessSubdivision"
+                [(ngModel)]="levelFormdata.accessSubdivision">
+                <option selected="" value="">Select Subdivision</option>
+                <option *ngFor="let obj of SubDivisionDropdown" [Value]="obj">
+                  {{ obj }}
+                </option>
+              </select>
+            </div>
+            <div class="col-md-4" *ngIf="levelFormdata.roleID=='METER'">
+              <label>Device</label>
+
+              <ng-select [items]="deviceno" name="devicesrno" class="custom" [loading]="loading" #devicesrno="ngModel"
+                [virtualScroll]="virtualScroll" [(ngModel)]="formdata.devicesrno">
+              </ng-select>
+            </div>
+            <div class="col-md-4">
+              <label>Command</label>
+              <select class="form-control" #command="ngModel" name="command" [(ngModel)]="formdata.command">
+                <option value="">Select Command</option>
+                <option *ngIf="iswritepermission>0" value="Connect">Connect</option>
+                <option *ngIf="iswritepermission>0" value="DisConnect">Disconnect</option>
+                <option *ngIf="iswritepermission>0" value="InstantRead">Instant Read</option>
+                <option *ngIf="iswritepermission>=2" value="NamePlate">NAMEPLATE</option>
+                <option *ngIf="iswritepermission>=3" value="FullData">Full Data Read</option>
+                <option *ngIf="iswritepermission==4" value="Billing">BILLING</option>
+                <option *ngIf="iswritepermission==4" value="DailyLP">DAILY_LP</option>
+                <option *ngIf="iswritepermission==4" value="DeltaLP">DELTA_LP</option>
+                <option *ngIf="iswritepermission==4" value="PowerEvents">POWER_EVENTS</option>
+                <option *ngIf="iswritepermission==4" value="VoltageEvents">VOLTAGE_EVENTS</option>
+                <option *ngIf="iswritepermission==4" value="CurrentEvents">CURRENT_EVENTS</option>
+                <option *ngIf="iswritepermission==4" value="OtherEvents">OTHER_EVENTS</option>
+                <option *ngIf="iswritepermission==4" value="TransactionEvents">TRANSACTION_EVENTS</option>
+                <option *ngIf="iswritepermission==4" value="ControlEvents">CONTROL_EVENTS</option>
+                <option value="ConnectStatus">Connect Status</option>
+                <option value="DisConnectStatus">Disconnect Status</option>
+                <option value="RTCClock">RTCClock Status</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal" style="float: left">
+            Close
+          </button>
+
+          <button type="submit" class="btn btn-default" style="float: right">
+            Submit
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

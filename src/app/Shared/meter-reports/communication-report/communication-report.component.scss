@@ -1,0 +1,114 @@
+table#instantdatatbl {
+    display: block !important;
+    overflow: auto !important;
+  }
+  .main-content {
+    margin-left: 200px;
+  }
+  div#tblDeviceList_info {
+    margin-top: 1em;
+  }
+  table#dynamic-table {
+    overflow: auto !important;
+    display: block !important;
+  }
+  input.form-control.input-sm {
+    float: right;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  .dataTables_filter input[type="search"],
+  .dataTables_filter input[type="text"] {
+    width: 200px;
+    height: 20px;
+    line-height: 18px;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+    padding: 4px 6px;
+  }
+  .edit-b {
+    background: #307ecc;
+    border-color: #155ba0;
+  
+    border-radius: 5px;
+    outline: none;
+    color: #fff;
+    float: left;
+    border: none;
+    margin-right: 15px;
+    width: 28px;
+    height: 28px;
+  }
+  .det-b {
+    background: red;
+    border-color: #d01a1a;
+    border-radius: 5px;
+    outline: none;
+    color: #fff;
+    float: left;
+    border: none;
+    width: 28px;
+    height: 28px;
+  }
+  
+  button.btn.brn-default {
+    height: 34px;
+    padding: revert;
+  }
+  
+.progress-bar-container {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 8px; /* Increased height for a thicker progress bar */
+  background-color: #f3f3f3;
+  z-index: 1000;
+  // margin-bottom: 10px; /* Add spacing below the progress bar */
+}
+
+.progress-bar {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-bar-inner {
+  width: 100%;
+  height: 100%;
+  background-color: #f22a23;
+  animation: progressBarAnimation 0.8s linear infinite;
+}
+
+@keyframes progressBarAnimation {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.circular-progress-container {
+  display: inline-block;
+  width: 30px; /* Increased size for better visibility */
+  height: 30px;
+  margin-left: 10px; /* Space between the button and the loader */
+  border: 4px solid #e0e0e0; /* Light gray background for better contrast */
+  border-top: 4px solid #007bff; /* Blue progress color for better visibility */
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+  

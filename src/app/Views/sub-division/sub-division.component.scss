@@ -1,0 +1,57 @@
+.main-content {
+  margin-left: 200px;
+}
+div#tblDeviceList_info {
+  margin-top: 1em;
+}
+table#dynamic-table {
+  overflow: auto;
+  display: block;
+}
+input.form-control.input-sm {
+  float: right;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.dataTables_filter input[type="search"],
+.dataTables_filter input[type="text"] {
+  width: 200px;
+  height: 20px;
+  line-height: 18px;
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+  padding: 4px 6px;
+}
+.edit-b {
+  background: #307ecc;
+  border-color: #155ba0;
+
+  border-radius: 5px;
+  outline: none;
+  color: #fff;
+  float: left;
+  border: none;
+  margin-right: 15px;
+  width: 21px;
+  height: 20px;
+}
+.det-b {
+  background: red;
+  border-color: #d01a1a;
+  border-radius: 5px;
+  outline: none;
+  color: #fff;
+  float: left;
+  border: none;
+  width: 21px;
+  height: 20px;
+}
+
+.errorclass {
+  border-color: red;
+}
+
+.successclass {
+  border-color: green;
+}
