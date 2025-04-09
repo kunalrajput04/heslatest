@@ -30,6 +30,7 @@ import { InactiveReportComponent } from './Shared/meter-reports/inactive-report/
 import { FailureNeverReportComponent } from './Shared/meter-reports/failurenever-report/failurenever-report.component';
 import { LayoutComponent } from './Shared/layout/layout.component';
 import { MeterSummaryComponent } from './Shared/meter-reports/meter-summary/meter-summary.component';
+import { MetercountComponent } from './Views/Communication/metercount/metercount.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { MeterSummaryComponent } from './Shared/meter-reports/meter-summary/mete
     InactiveReportComponent,
     FailureNeverReportComponent,
     MeterSummaryComponent,
+    MetercountComponent,
     // LayoutComponent,
   ],
   imports: [

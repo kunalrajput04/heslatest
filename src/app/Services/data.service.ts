@@ -706,6 +706,29 @@ export class DataService {
     );
   }
   //sla history by rajneesh
+  getMeterCount(
+   
+    startdate: string,
+    enddate: string
+  ) {
+    let bodyData = {
+     
+      startDate: startdate,
+      endDate: enddate,
+    };
+    const httpOptions = {
+      headers: new HttpHeaders({
+        apiKey: localStorage.getItem('apikey'),
+      }),
+    };
+    return this.http.post(
+      // `https://meghasmarts.com:8443/sla2/rest/Evit/getMonthlySLANew`,
+      `https://meghasmarts.com:6005/monthlySla/getList`,
+      bodyData,
+      httpOptions
+    );
+  }
+  //sla history by rajneesh
   getSLAReportHistoryData1(
     levelname: string,
     levelvalue: string,

@@ -49,6 +49,7 @@ import { FailureReportComponent } from './Shared/meter-reports/failure-report/fa
 import { InactiveReportComponent } from './Shared/meter-reports/inactive-report/inactive-report.component';
 import { FailureNeverReportComponent } from './Shared/meter-reports/failurenever-report/failurenever-report.component';
 import { MeterSummaryComponent } from './Shared/meter-reports/meter-summary/meter-summary.component';
+import { MetercountComponent } from './Views/Communication/metercount/metercount.component';
 
 const routes: Routes = [
   {
@@ -144,6 +145,7 @@ const routes: Routes = [
       { path: 'meter-reports/inactive-report', component: InactiveReportComponent },
       { path: 'meter-reports/failurenever-report', component: FailureNeverReportComponent },
       { path: 'meter-reports/meter-summary', component: MeterSummaryComponent },
+      { path: 'meter-reports/meter-counts', component: MetercountComponent },
     ],
   },
 
