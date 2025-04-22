@@ -41,7 +41,7 @@ export class MeterreportService {
     console.log('Headers being sent:', httpOptions.headers); // Log the headers
 
     return this.http.post(
-      `${environment.apiBaseUrl}/Evit/getLastCommDevicesList`, // Use environment variable for base URL
+      `https://meghasmarts.com:6005/sla/getList`, // Use environment variable for base URL
       payload, // Ensure payload is sent as an object
       httpOptions
     ).pipe(

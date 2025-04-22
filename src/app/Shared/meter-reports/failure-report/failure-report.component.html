@@ -16,13 +16,13 @@
                 <form #form="ngForm" (submit)="onSubmit()">
                   <div class="row">
                     <div class="col-lg-2">
-                      <h4 class="title">Never Communicated Meter Report</h4>
+                      <h4 class="title">Never Communicating Meter </h4>
                     </div>
                     <div
                       class="col-lg-1"
-                      style="margin-top: 4px; margin-bottom: 4px; display: flex; align-items: center;"
+                      style="margin-top: 4px; margin-bottom: 4px; width: 40px"
                     >
-                      <span>Date:</span>
+                      <span>Start:</span>
                     </div>
                     <div
                       class="col-lg-2"
@@ -31,18 +31,20 @@
                       <span>
                         <input
                           type="date"
-                          #fromdate="ngModel"
-                          name="fromdate"
-                          [(ngModel)]="formdata.fromdate"
+                          #startDate="ngModel"
+                          name="startDate"
+                          [(ngModel)]="formdata.startDate"
+                          (change)="onDateChange('start')"
                           class="form-control"
                         />
                       </span>
                     </div>
+                    
                     <div
                       class="col-lg-1"
-                      style="margin-top: 4px; margin-bottom: 4px"
+                      style="margin-top: 4px; margin-bottom: 4px; width: 40px"
                     >
-                      <span>Meter No:</span>
+                      <span>End:</span>
                     </div>
                     <div
                       class="col-lg-2"
@@ -50,11 +52,11 @@
                     >
                       <span>
                         <input
-                          type="text"
-                          #meterNo="ngModel"
-                          placeholder="meter number"
-                          name="meterNo"
-                          [(ngModel)]="formdata.meterNo"
+                          type="date"
+                          #endDate="ngModel"
+                          name="endDate"
+                          [(ngModel)]="formdata.endDate"
+                          (change)="onDateChange('end')"
                           class="form-control"
                         />
                       </span>
@@ -76,7 +78,7 @@
                           Go
                         </button>
                       </span>
-                       <div *ngIf="isLoading" class="circular-progress-container"></div>
+                      <div *ngIf="isLoading" class="circular-progress-container"></div>
                     </div>
                    
                   </div>

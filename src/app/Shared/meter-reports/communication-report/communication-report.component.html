@@ -1,106 +1,141 @@
 <div class="main-content">
-    <div class="main-content-inner">
-      <div class="page-content">
-        <div class="page-header">
-          <div></div>
-        </div>
-        <!-- /.page-header -->
-  
-        <div class="row">
-          <div class="col-xs-12">
-            <!-- PAGE CONTENT BEGINS -->
-  
-            <div class="row">
-              <div class="col-xs-12">
-                <div class="table-header">
-                  <form #form="ngForm" (submit)="onSubmit()">
-                    <div class="row">
-                      <div class="col-lg-2">
-                        <h4 class="title">Communicating Meter Report</h4>
-                      </div>
-                      <div
-                        class="col-lg-1"
-                        style="margin-top: 4px; margin-bottom: 4px; width: 40px"
-                      >
-                        <span>Date:</span>
-                      </div>
-                      <div
-                        class="col-lg-2"
-                        style="margin-top: 4px; margin-bottom: 4px"
-                      >
-                        <span>
-                          <input
-                            type="date"
-                            #fromdate="ngModel"
-                            name="fromdate"
-                            [(ngModel)]="formdata.fromdate"
-                            class="form-control"
-                          />
-                        </span>
-                      </div>
-                      <div
-                        class="col-lg-1"
-                        style="margin-top: 4px; margin-bottom: 4px"
-                      >
-                        <span>Meter No:</span>
-                      </div>
-                      <div
-                        class="col-lg-2"
-                        style="margin-top: 4px; margin-bottom: 4px"
-                      >
-                        <span>
-                          <input
-                            type="text"
-                            #meterNo="ngModel"
-                            placeholder="meter number"
-                            name="meterNo"
-                            [(ngModel)]="formdata.meterNo"
-                            class="form-control"
-                          />
-                        </span>
-                      </div>
-                      <div
-                        class="col-lg-1"
-                        style="margin-top: 4px; margin-bottom: 4px; display: flex; align-items: center;"
-                      >
-                        <span>
-                          <button
-                            type="submit"
-                            class="btn brn-default"
-                            style="
-                              background: #707878;
-                              border-radius: 7px;
-                              color: white;
-                            "
-                          >
-                            Go
-                          </button>
-                        </span>
-                        <div *ngIf="isLoading" class="circular-progress-container"></div>
-                      </div>
-                     
+  <div class="main-content-inner">
+    <div class="page-content">
+      <div class="page-header">
+        <div></div>
+      </div>
+      <!-- /.page-header -->
+
+      <div class="row">
+        <div class="col-xs-12">
+          <!-- PAGE CONTENT BEGINS -->
+
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="table-header">
+                <form #form="ngForm" (submit)="onSubmit()">
+                  <div class="row">
+                    <div class="col-lg-2">
+                      <h4 class="title">Communicating Meter Status</h4>
                     </div>
-                  </form>
-                </div>
-  
-                <div>
-                  <div class="table-responsive">
-                    <button
+                    <div
+                      class="col-lg-1"
+                      style="margin-top: 4px; margin-bottom: 4px; width: 40px"
+                    >
+                      <span>Start:</span>
+                    </div>
+                    <div
+                      class="col-lg-2"
+                      style="margin-top: 4px; margin-bottom: 4px"
+                    >
+                      <span>
+                        <input
+                          type="date"
+                          #startDate="ngModel"
+                          name="startDate"
+                          [(ngModel)]="formdata.startDate"
+                          class="form-control"
+                        />
+                      </span>
+                    </div>
+
+                    <div
+                      class="col-lg-1"
+                      style="margin-top: 4px; margin-bottom: 4px; width: 40px"
+                    >
+                      <span>End:</span>
+                    </div>
+                    <div
+                      class="col-lg-2"
+                      style="margin-top: 4px; margin-bottom: 4px"
+                    >
+                      <span>
+                        <input
+                          type="date"
+                          #endDate="ngModel"
+                          name="endDate"
+                          [(ngModel)]="formdata.endDate"
+                          class="form-control"
+                        />
+                      </span>
+                    </div>
+
+                    <div
+                      class="col-lg-1"
+                      style="margin-top: 4px; margin-bottom: 4px; width: 50px"
+                    >
+                      <span>Status:</span>
+                    </div>
+                    <div
+                      class="col-lg-2"
+                      style="margin-top: 4px; margin-bottom: 4px"
+                    >
+                      <span>
+                        <select
+                          name="statusFilter"
+                          [(ngModel)]="statusFilter"
+                          (change)="onStatusFilterChange()"
+                          class="form-control"
+                        >
+                          <option value="All">All</option>
+                          <option value="Success">Success</option>
+                          <option value="Inactive">Inactive</option>
+                          <option value="Failure">Failure</option>
+                          <option value="Non Communication">Non Communication</option>
+                          <option value="Never Communication">Never Communication</option>
+                        </select>
+                      </span>
+                    </div>
+
+                    <div
+                      class="col-lg-1"
+                      style="
+                        margin-top: 4px;
+                        margin-bottom: 4px;
+                        display: flex;
+                        align-items: center;
+                      "
+                    >
+                      <span>
+                        <button
+                          type="submit"
+                          class="btn brn-default"
+                          style="
+                            background: #707878;
+                            border-radius: 7px;
+                            color: white;
+                          "
+                        >
+                          Go
+                        </button>
+                      </span>
+                      <div
+                        *ngIf="isLoading"
+                        class="circular-progress-container"
+                      ></div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+
+              <div>
+                <div class="table-responsive">
+                  <button
                     type="button"
                     (click)="onBtnExport()"
-                   class="ag-gridbtn"
+                    class="ag-gridbtn"
                   >
-                  <i class="fa fa-download"></i>  CSV Export Data
+                    <i class="fa fa-download"></i> CSV Export Data
                   </button>
-                    <input
+                  <input
                     type="text"
                     id="filter-text-box"
                     placeholder="Search"
                     (input)="onFilterTextBoxChanged()"
                   />
-               
-                    <ag-grid-angular
-                    style="width: 100%; height: 450px;"
+
+                  <ag-grid-angular
+                    style="width: 100%; height: 450px"
                     class="ag-theme-balham"
                     [defaultColDef]="defaultColDef"
                     [gridOptions]="gridOptions"
@@ -111,20 +146,19 @@
                     [columnDefs]="columnDefs"
                     [rowData]="tableData"
                     [animateRows]="true"
-                    >
-                </ag-grid-angular>
-                  </div>
+                  >
+                  </ag-grid-angular>
                 </div>
               </div>
             </div>
-  
-           
-            <!-- PAGE CONTENT ENDS -->
           </div>
-          <!-- /.col -->
+
+          <!-- PAGE CONTENT ENDS -->
         </div>
-        <!-- /.row -->
+        <!-- /.col -->
       </div>
-      <!-- /.page-content -->
+      <!-- /.row -->
     </div>
+    <!-- /.page-content -->
   </div>
+</div>

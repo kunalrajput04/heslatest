@@ -16,68 +16,61 @@
                 <form #form="ngForm" (submit)="onSubmit()">
                   <div class="row">
                     <div class="col-lg-2">
-                      <h4 class="title">Non Communicating Report</h4>
+                      <h4 class="title"> Non Communicating Meter </h4>
                     </div>
                     <div
                       class="col-lg-1"
                       style="margin-top: 4px; margin-bottom: 4px; width: 40px"
                     >
-                      <span>Date:</span>
+                      <span>Start:</span>
                     </div>
                     <div
                       class="col-lg-2"
                       style="margin-top: 4px; margin-bottom: 4px"
                     >
-                      <span>
-                        <input
-                          type="date"
-                          #fromdate="ngModel"
-                          name="fromdate"
-                          [(ngModel)]="formdata.fromdate"
-                          class="form-control"
-                        />
-                      </span>
+                      <input
+                        type="date"
+                        name="startDate"
+                        [(ngModel)]="formdata.startDate"
+                        class="form-control"
+                      />
                     </div>
+                    
                     <div
                       class="col-lg-1"
-                      style="margin-top: 4px; margin-bottom: 4px"
+                      style="margin-top: 4px; margin-bottom: 4px; width: 40px"
                     >
-                      <span>Meter No:</span>
+                      <span>End:</span>
                     </div>
                     <div
                       class="col-lg-2"
                       style="margin-top: 4px; margin-bottom: 4px"
                     >
-                      <span>
-                        <input
-                          type="text"
-                          #meterNo="ngModel"
-                          placeholder="meter number"
-                          name="meterNo"
-                          [(ngModel)]="formdata.meterNo"
-                          class="form-control"
-                        />
-                      </span>
+                      <input
+                        type="date"
+                        name="endDate"
+                        [(ngModel)]="formdata.endDate"
+                        class="form-control"
+                      />
                     </div>
                     <div
                       class="col-lg-1"
                       style="margin-top: 4px; margin-bottom: 4px; display: flex; align-items: center;"
                     >
-                      <span>
-                        <button
-                          type="submit"
-                          class="btn brn-default"
-                          style="
-                            background: #707878;
-                            border-radius: 7px;
-                            color: white;
-                          "
-                        >
-                          Go
-                        </button>
-                      </span>
+                      <button
+                        type="submit"
+                        class="btn brn-default"
+                        style="
+                          background: #707878;
+                          border-radius: 7px;
+                          color: white;
+                        "
+                      >
+                        Go
+                      </button>
                       <div *ngIf="isLoading" class="circular-progress-container"></div>
                     </div>
+                   
                   </div>
                 </form>
               </div>
@@ -116,6 +109,7 @@
               </div>
             </div>
           </div>
+
          
           <!-- PAGE CONTENT ENDS -->
         </div>

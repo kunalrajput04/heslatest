@@ -19,6 +19,7 @@ export class CommunicationReportComponent {
   gridColumnApi: any;
   tableData: any[] = [];
   isLoading: boolean = false; 
+  statusFilter: string = 'All'; // Default filter value
 
   data: any = {
     firstlevel: 'Meter Data',
@@ -47,7 +48,8 @@ export class CommunicationReportComponent {
   }
 
   ngOnInit(): void {
-    this.formdata.fromdate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+    this.formdata.startDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+    this.formdata.endDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
   }
 
   onBtnExport() {
@@ -81,77 +83,67 @@ export class CommunicationReportComponent {
   }
 
   onSubmit() {
-    const selectedDate = this.formdata.fromdate ? new Date(this.formdata.fromdate) : null;
-    if (!selectedDate || isNaN(selectedDate.getTime())) {
-      alert('Please select a valid date.');
-      
+    const startDate = this.formdata.startDate ? new Date(this.formdata.startDate) : null;
+    const endDate = this.formdata.endDate ? new Date(this.formdata.endDate) : null;
+
+    if (!startDate || isNaN(startDate.getTime()) || !endDate || isNaN(endDate.getTime())) {
+      alert('Please select valid start and end dates.');
       return;
     }
+
+    if (startDate > endDate) {
+      alert('Start date cannot be after end date.');
+      return;
+    }
+
     this.isLoading = true;
-  
+
     const payload = {
-      commandType: 'LastComm',
-      levelName: 'All',
-      levelValue: 'MPDCL',
-      startDate: this.datePipe.transform(selectedDate, 'yyyy-MM-dd'),
-      status: 'Success',
-      meterType: 'All',
+      startDate: this.datePipe.transform(startDate, 'yyyy-MM-dd'),
+      endDate: this.datePipe.transform(endDate, 'yyyy-MM-dd'),
     };
-  
-    console.log('Submitting payload:', JSON.stringify(payload, null, 2));
-  
+
+    console.log('Submitting payload with selected dates:', payload);
+
     this.service.getMeterReport(payload).subscribe(
       (res: any) => {
         console.log('API Response:', res);
-  
-        if (res && res.data && Array.isArray(res.data) && res.data.length > 0) {
-          const nestedData = res.data.length > 1 ? res.data[1] : res.data[0];
-          const tableDataArray = Object.values(nestedData);
-  
-          if (!tableDataArray || tableDataArray.length === 0) {
-            this.gridApi.setRowData([]);
-            this.isLoading = false;
-            return;
-          }
-  
-          const now = new Date();
-          const filteredData = tableDataArray.filter((item: any) => {
-            const lastCommDate = item[3] ? new Date(item[3]) : null;
-            if (!lastCommDate || isNaN(lastCommDate.getTime())) return false;
-  
-            const timeDiff = now.getTime() - lastCommDate.getTime();
-            return timeDiff >= 0 && timeDiff <= 24 * 60 * 60 * 1000; // within 24 hours
-          });
-  
-          this.tableData = filteredData.map((item: any) => {
-            return {
-              'MeterSNo': item[0] || 'N/A',
-              'Consumer No': item[1],
-              'Subdivision': item[2],
-              'Last Communication Date': item[3],
-              'Last Energy KWH': item[4],
-              'Date of Installation': item[5],
-              'IP Address Main': item[6],
-              'Meter Type': item[7],
-              'Network Type': item[8],
-              'Never Communicated': item[9] ? 'Yes' : 'No',
-              'Non Communicated': item[10] ? 'Yes' : 'No',
-            };
-          });
-  
-          console.log('Filtered & Mapped Table Data:', this.tableData);
-  
-          if (this.gridApi) {
-            this.gridApi.setColumnDefs(this.getColumnName());
-            this.gridApi.setRowData(this.tableData);
-            this.gridApi.refreshCells();
-            this.gridColumnApi.autoSizeAllColumns();
+
+        if (res && res.data && Array.isArray(res.data)) {
+          if (res.data.length > 0) {
+            this.tableData = res.data.map((item: any) => ({
+              deviceSerialNumber: item[0] || 'N/A',
+              slaMonth: item[1] || 'N/A',
+              lastUpdateDate: item[2] && !isNaN(new Date(item[2]).getTime()) 
+                ? this.datePipe.transform(item[2], 'yyyy-MM-dd') 
+                : 'N/A',
+              consumerName: item[3] || 'N/A',
+              consumerNo: item[4] || 'N/A',
+              meterType: item[5] || 'N/A',
+              simType: item[6] || 'N/A',
+              status: item[7] || 'N/A',
+              nicIpv6: item[8] || 'N/A',
+              latitude: item[9] || 'N/A',
+              longitude: item[10] || 'N/A',
+            }));
+
+            console.log('Mapped Table Data:', this.tableData);
+
+            if (this.gridApi) {
+              this.gridApi.setColumnDefs(this.getColumnName());
+              this.gridApi.setRowData(this.tableData);
+              this.gridApi.refreshCells();
+              this.gridColumnApi.autoSizeAllColumns();  
+            }
+          } else {
+            console.warn('No data found for the selected dates.');
+            this.gridApi.setRowData([]); // Clear the grid
           }
         } else {
-          console.error('Unexpected API response structure or insufficient data:', res);
-          alert('Unexpected API response. Please contact support.');
+          console.error('Unexpected API response structure:', res);
+          alert('No data available for the selected dates.');
         }
-        this.isLoading = false; 
+        this.isLoading = false;
       },
       (error) => {
         console.error('Error during API call:', error);
@@ -173,17 +165,43 @@ export class CommunicationReportComponent {
 
   getColumnName(): any {
     return [
-      { field: 'MeterSNo', headerName: 'Meter S.No.', sortable: true, filter: true, width: 150 },
-      { field: 'Consumer No', headerName: 'Consumer No', sortable: true, filter: true, width: 150 },
-      { field: 'Subdivision', headerName: 'Subdivision', sortable: true, filter: true, width: 150 },
-      { field: 'Last Communication Date', headerName: 'Last Communication Date', sortable: true, filter: true, width: 200 },
-      { field: 'Last Energy KWH', headerName: 'Last Energy KWH', sortable: true, filter: true, width: 150 },
-      { field: 'Date of Installation', headerName: 'Date of Installation', sortable: true, filter: true, width: 200 },
-      { field: 'IP Address Main', headerName: 'IP Address Main', sortable: true, filter: true, width: 200 },
-      { field: 'Meter Type', headerName: 'Meter Type', sortable: true, filter: true, width: 150 },
-      { field: 'Network Type', headerName: 'Network Type', sortable: true, filter: true, width: 150 },
-      // { field: 'Never Communicated', headerName: 'Never Communicated', sortable: true, filter: true, width: 180 },
-      // { field: 'Non Communicated', headerName: 'Non Communicated', sortable: true, filter: true, width: 180 },
+      { field: 'deviceSerialNumber', headerName: 'Device Serial Number', sortable: true, filter: true, width: 200 },
+      { field: 'slaMonth', headerName: 'SLA Month', sortable: true, filter: true, width: 150 },
+      { field: 'lastUpdateDate', headerName: 'Last Update Date', sortable: true, filter: true, width: 200 },
+      { field: 'consumerName', headerName: 'Consumer Name', sortable: true, filter: true, width: 200 },
+      { field: 'consumerNo', headerName: 'Consumer No', sortable: true, filter: true, width: 150 },
+      { field: 'meterType', headerName: 'Meter Type', sortable: true, filter: true, width: 150 },
+      { field: 'simType', headerName: 'SIM Type', sortable: true, filter: true, width: 150 },
+      { field: 'status', headerName: 'Status', sortable: true, filter: true, width: 150 },
+      { field: 'nicIpv6', headerName: 'NIC IPv6', sortable: true, filter: true, width: 200 },
+      { field: 'latitude', headerName: 'Latitude', sortable: true, filter: true, width: 150 },
+      { field: 'longitude', headerName: 'Longitude', sortable: true, filter: true, width: 150 },
     ];
   }
-}
+
+  onStatusFilterChange() {
+    if (!this.gridApi) {
+      console.warn('Grid API is not initialized.');
+      return;
+    }
+  
+    if (this.statusFilter === 'All') {
+      this.gridApi.setRowData(this.tableData); // Show all data
+    } else {
+      let filteredData;
+  
+      if (this.statusFilter.toLowerCase() === 'failure') {
+        filteredData = this.tableData.filter((item) =>
+          item.status &&
+          ['failure', 'non communication', 'never communication'].includes(item.status.toLowerCase())
+        );
+      } else {
+        filteredData = this.tableData.filter(
+          (item) => item.status && item.status.toLowerCase() === this.statusFilter.toLowerCase()
+        );
+      }
+  
+      this.gridApi.setRowData(filteredData); // Show filtered data
+    }
+  }
+  }

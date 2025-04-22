@@ -23,51 +23,108 @@ export class MeterSummaryComponent implements OnInit {
 
   fetchMeterData() {
     const payload = {
-      commandType: 'LastComm',
-      levelName: 'All',
-      levelValue: 'MPDCL',
-      startDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd') || '',
-      status: 'Success',
-      meterType: 'All',
+      startDate: this.datePipe.transform(new Date('2021-01-31'), 'yyyy-MM-dd') || '', // Only date
+      endDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd') || '', // Only date
     };
 
     this.service.getMeterReport(payload).subscribe(
       (res: any) => {
         console.log('API Response:', res); // Log the API response for debugging
+
         if (res && res.data && Array.isArray(res.data) && res.data.length > 0) {
-          const nestedData = res.data.length > 1 ? res.data[1] : res.data[0];
-          const tableDataArray = Object.values(nestedData);
+          const tableDataArray = res.data.slice(1); // Ignore the first response of three
 
-          const now = new Date();
-          this.tableData = tableDataArray.map((item: any) => ({
-            'MeterSNo': item[0] || 'N/A',
-            'Consumer No': item[1],
-            'Subdivision': item[2],
-            'Last Communication Date': item[3],
-            'Last Energy KWH': item[4],
-            'Date of Installation': item[5],
-            'IP Address Main': item[6],
-            'Meter Type': item[7],
-            'Network Type': item[8],
-            'Never Communicated': item[9] ? 'Yes' : 'No',
-            'Non Communicated': item[10] ? 'Yes' : 'No',
-          }));
+          if (!tableDataArray || tableDataArray.length === 0) {
+            console.warn('No data available to display.');
+            return;
+          }
 
+          const today = new Date();
+          today.setHours(0, 0, 0, 0); // Reset time to midnight for comparison
+
+          this.tableData = [];
+          tableDataArray.forEach((item: any) => {
+            const lastUpdateDate = item[2] ? new Date(item[2]) : null; // Access the correct index for lastUpdateDate
+
+            // Handle missing or invalid lastUpdateDate
+            if (!lastUpdateDate || isNaN(lastUpdateDate.getTime())) {
+              this.tableData.push({
+                deviceSerialNumber: item[0] || 'N/A',
+                slaMonth: item[1] || 'N/A',
+                lastUpdateDate: 'Never Communicated',
+                consumerName: item[3] || 'N/A',
+                consumerNo: item[4] || 'N/A',
+                meterType: item[5] || 'N/A',
+                simType: item[6] || 'N/A',
+                status: item[7] || 'N/A',
+                nicIpv6: item[8] || 'N/A',
+                latitude: item[9] || 'N/A',
+                longitude: item[10] || 'N/A',
+              });
+              return;
+            }
+
+            lastUpdateDate.setHours(0, 0, 0, 0); // Reset time to midnight for comparison
+
+            // Filter rows based on conditions
+            if (lastUpdateDate.toDateString() === today.toDateString()) {
+              this.tableData.push({
+                deviceSerialNumber: item[0] || 'N/A',
+                slaMonth: item[1] || 'N/A',
+                lastUpdateDate: this.datePipe.transform(lastUpdateDate, 'yyyy-MM-dd') || 'N/A',
+                consumerName: item[3] || 'N/A',
+                consumerNo: item[4] || 'N/A',
+                meterType: item[5] || 'N/A',
+                simType: item[6] || 'N/A',
+                status: item[7] || 'N/A',
+                nicIpv6: item[8] || 'N/A',
+                latitude: item[9] || 'N/A',
+                longitude: item[10] || 'N/A',
+              });
+            } else if (lastUpdateDate < today) {
+              this.tableData.push({
+                deviceSerialNumber: item[0] || 'N/A',
+                slaMonth: item[1] || 'N/A',
+                lastUpdateDate: this.datePipe.transform(lastUpdateDate, 'yyyy-MM-dd') || 'N/A',
+                consumerName: item[3] || 'N/A',
+                consumerNo: item[4] || 'N/A',
+                meterType: item[5] || 'N/A',
+                simType: item[6] || 'N/A',
+                status: item[7] || 'N/A',
+                nicIpv6: item[8] || 'N/A',
+                latitude: item[9] || 'N/A',
+                longitude: item[10] || 'N/A',
+              });
+            }
+          });
+
+          // Update counts
           this.communicatingCount = this.tableData.filter((item: any) => {
-            const lastCommDate = item['Last Communication Date'] ? new Date(item['Last Communication Date']) : null;
-            return lastCommDate && (now.getTime() - lastCommDate.getTime()) <= 24 * 60 * 60 * 1000;
+            const lastCommDate = item['lastUpdateDate'] ? new Date(item['lastUpdateDate']) : null;
+            return lastCommDate && lastCommDate.toDateString() === today.toDateString();
           }).length;
 
           this.nonCommunicatingCount = this.tableData.filter((item: any) => {
-            const lastCommDate = item['Last Communication Date'] ? new Date(item['Last Communication Date']) : null;
-            return lastCommDate && (now.getTime() - lastCommDate.getTime()) > 24 * 60 * 60 * 1000;
+            const lastCommDate = item['lastUpdateDate'] ? new Date(item['lastUpdateDate']) : null;
+            return lastCommDate && lastCommDate < today;
           }).length;
 
-          this.neverCommunicatedCount = this.tableData.filter((item: any) => !item['Last Communication Date']).length;
+          this.neverCommunicatedCount = this.tableData.filter((item: any) => !item['lastUpdateDate'] || item['lastUpdateDate'] === 'Never Communicated').length;
+
+          console.log('Filtered & Mapped Table Data:', this.tableData);
+          console.log('Communicating Count:', this.communicatingCount);
+          console.log('Non-Communicating Count:', this.nonCommunicatingCount);
+          console.log('Never Communicated Count:', this.neverCommunicatedCount);
+        } else {
+          console.error('Unexpected API response structure or insufficient data:', res);
+          alert('Unexpected API response. Please contact support.');
         }
       },
       (error) => {
-        console.error('Error fetching meter data:', error); // Log any errors for debugging
+        console.error('Error during API call:', error);
+        if (error.error && error.error.message) {
+          alert(`API Error: ${error.error.message}`);
+        }
       }
     );
   }
@@ -77,31 +134,35 @@ export class MeterSummaryComponent implements OnInit {
     let filteredData: any[] = [];
     let fileName = '';
     const columnNames = [
-      'MeterSNo',
-      'Consumer No',
-      'Subdivision',
-      'Last Communication Date',
-      'Last Energy KWH',
-      'Date of Installation',
-      'IP Address Main',
-      'Meter Type',
-      'Network Type'
+      'deviceSerialNumber',
+      'slaMonth',
+      'lastUpdateDate',
+      'consumerName',
+      'consumerNo',
+      'meterType',
+      'simType',
+      'status',
+      'nicIpv6',
+      'latitude',
+      'longitude'
     ];
 
     if (category === 'communicating') {
       filteredData = this.tableData.filter((item: any) => {
-        const lastCommDate = item['Last Communication Date'] ? new Date(item['Last Communication Date']) : null;
-        return lastCommDate && (new Date().getTime() - lastCommDate.getTime()) <= 24 * 60 * 60 * 1000;
+        const lastCommDate = item['lastUpdateDate'] ? new Date(item['lastUpdateDate']) : null;
+        const today = new Date();
+        return lastCommDate && lastCommDate.toDateString() === today.toDateString();
       });
       fileName = 'CommunicatingMeters.csv';
     } else if (category === 'nonCommunicating') {
       filteredData = this.tableData.filter((item: any) => {
-        const lastCommDate = item['Last Communication Date'] ? new Date(item['Last Communication Date']) : null;
-        return lastCommDate && (new Date().getTime() - lastCommDate.getTime()) > 24 * 60 * 60 * 1000;
+        const lastCommDate = item['lastUpdateDate'] ? new Date(item['lastUpdateDate']) : null;
+        const today = new Date();
+        return lastCommDate && lastCommDate.toDateString() !== today.toDateString();
       });
       fileName = 'NonCommunicatingMeters.csv';
     } else if (category === 'neverCommunicated') {
-      filteredData = this.tableData.filter((item: any) => !item['Last Communication Date']);
+      filteredData = this.tableData.filter((item: any) => !item['lastUpdateDate']);
       fileName = 'NeverCommunicatedMeters.csv';
     } else if (category === 'total') {
       filteredData = this.tableData; // Include all data for total
@@ -129,18 +190,20 @@ export class MeterSummaryComponent implements OnInit {
 
     if (category === 'communicating') {
       filteredData = this.tableData.filter((item: any) => {
-        const lastCommDate = item['Last Communication Date'] ? new Date(item['Last Communication Date']) : null;
-        return lastCommDate && (new Date().getTime() - lastCommDate.getTime()) <= 24 * 60 * 60 * 1000;
+        const lastCommDate = item['lastUpdateDate'] ? new Date(item['lastUpdateDate']) : null;
+        const today = new Date();
+        return lastCommDate && lastCommDate.toDateString() === today.toDateString();
       });
       fileName = 'CommunicatingMeters.pdf';
     } else if (category === 'nonCommunicating') {
       filteredData = this.tableData.filter((item: any) => {
-        const lastCommDate = item['Last Communication Date'] ? new Date(item['Last Communication Date']) : null;
-        return lastCommDate && (new Date().getTime() - lastCommDate.getTime()) > 24 * 60 * 60 * 1000;
+        const lastCommDate = item['lastUpdateDate'] ? new Date(item['lastUpdateDate']) : null;
+        const today = new Date();
+        return lastCommDate && lastCommDate.toDateString() !== today.toDateString();
       });
       fileName = 'NonCommunicatingMeters.pdf';
     } else if (category === 'neverCommunicated') {
-      filteredData = this.tableData.filter((item: any) => !item['Last Communication Date']);
+      filteredData = this.tableData.filter((item: any) => !item['lastUpdateDate']);
       fileName = 'NeverCommunicatedMeters.pdf';
     } else if (category === 'total') {
       filteredData = this.tableData; // Include all data for total
@@ -148,15 +211,17 @@ export class MeterSummaryComponent implements OnInit {
     }
 
     const columnNames = [
-      'MeterSNo',
-      'Consumer No',
-      'Subdivision',
-      'Last Communication Date',
-      'Last Energy KWH',
-      'Date of Installation',
-      'IP Address Main',
-      'Meter Type',
-      'Network Type'
+      'deviceSerialNumber',
+      'slaMonth',
+      'lastUpdateDate',
+      'consumerName',
+      'consumerNo',
+      'meterType',
+      'simType',
+      'status',
+      'nicIpv6',
+      'latitude',
+      'longitude'
     ];
 
     // Prepare data for the table
