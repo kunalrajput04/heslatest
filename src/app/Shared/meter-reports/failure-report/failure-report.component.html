@@ -1,0 +1,132 @@
+<div class="main-content">
+  <div class="main-content-inner">
+    <div class="page-content">
+      <div class="page-header">
+        <div></div>
+      </div>
+      <!-- /.page-header -->
+
+      <div class="row">
+        <div class="col-xs-12">
+          <!-- PAGE CONTENT BEGINS -->
+
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="table-header">
+                <form #form="ngForm" (submit)="onSubmit()">
+                  <div class="row">
+                    <div class="col-lg-2">
+                      <h4 class="title">Never Communicating Meter </h4>
+                    </div>
+                    <div
+                      class="col-lg-1"
+                      style="margin-top: 4px; margin-bottom: 4px; width: 40px"
+                    >
+                      <span>Start:</span>
+                    </div>
+                    <div
+                      class="col-lg-2"
+                      style="margin-top: 4px; margin-bottom: 4px"
+                    >
+                      <span>
+                        <input
+                          type="date"
+                          #startDate="ngModel"
+                          name="startDate"
+                          [(ngModel)]="formdata.startDate"
+                          (change)="onDateChange('start')"
+                          class="form-control"
+                        />
+                      </span>
+                    </div>
+                    
+                    <div
+                      class="col-lg-1"
+                      style="margin-top: 4px; margin-bottom: 4px; width: 40px"
+                    >
+                      <span>End:</span>
+                    </div>
+                    <div
+                      class="col-lg-2"
+                      style="margin-top: 4px; margin-bottom: 4px"
+                    >
+                      <span>
+                        <input
+                          type="date"
+                          #endDate="ngModel"
+                          name="endDate"
+                          [(ngModel)]="formdata.endDate"
+                          (change)="onDateChange('end')"
+                          class="form-control"
+                        />
+                      </span>
+                    </div>
+                    <div
+                      class="col-lg-1"
+                      style="margin-top: 4px; margin-bottom: 4px; display: flex; align-items: center;"
+                    >
+                      <span>
+                        <button
+                          type="submit"
+                          class="btn brn-default"
+                          style="
+                            background: #707878;
+                            border-radius: 7px;
+                            color: white;
+                          "
+                        >
+                          Go
+                        </button>
+                      </span>
+                      <div *ngIf="isLoading" class="circular-progress-container"></div>
+                    </div>
+                   
+                  </div>
+                </form>
+              </div>
+
+              <div>
+                <div class="table-responsive">
+                  <button
+                  type="button"
+                  (click)="onBtnExport()"
+                 class="ag-gridbtn"
+                >
+                <i class="fa fa-download"></i>  CSV Export Data
+                </button>
+                  <input
+                  type="text"
+                  id="filter-text-box"
+                  placeholder="Search"
+                  (input)="onFilterTextBoxChanged()"
+                />
+             
+                  <ag-grid-angular
+                  style="width: 100%; height: 450px;"
+                  class="ag-theme-balham"
+                  [defaultColDef]="defaultColDef"
+                  [gridOptions]="gridOptions"
+                  [pagination]="true"
+                  [paginationPageSize]="15"
+                  enableCellTextSelection="true"
+                  (gridReady)="onGridReady($event)"
+                  [columnDefs]="columnDefs"
+                  [rowData]="tableData"
+                  [animateRows]="true"
+                  >
+              </ag-grid-angular>
+                </div>
+              </div>
+            </div>
+          </div>
+
+         
+          <!-- PAGE CONTENT ENDS -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </div>
+    <!-- /.page-content -->
+  </div>
+</div>
