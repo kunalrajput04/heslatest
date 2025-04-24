@@ -213,10 +213,10 @@
             >
             <select
               class="browser-default custom-select HideSubdivisionDropDown"
-              #subdivisionName="ngModel"
-              name="subdivisionName"
-              id="subdivisionName"
-              [(ngModel)]="formdata.subdivisionName"
+              #subDivisionName="ngModel"
+              name="subDivisionName"
+              id="subDivisionName"
+              [(ngModel)]="formdata.subDivisionName"
               style="width: 100%; height: 40px"
               required
             >
@@ -231,13 +231,13 @@
             >
             <input
               type="text"
-              #substation_name="ngModel"
+              #subStationName="ngModel"
               [ngClass]="
-                substation_name.invalid ? 'errorclass' : 'successclass'
+                subStationName.invalid ? 'errorclass' : 'successclass'
               "
-              name="substation_name"
-              id="substation_name"
-              [(ngModel)]="formdata.substation_name"
+              name="subStationName"
+              id="subStationName"
+              [(ngModel)]="formdata.subStationName"
               class="form-control"
               [readonly]="isEdit"
               pattern="[a-zA-Z-0-9\/)|\(_-][a-zA-Z0-9 -\/)|\(_-]+[a-zA-Z-0-9\/)|\(_-]$"

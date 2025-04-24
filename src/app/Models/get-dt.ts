@@ -1,4 +1,4 @@
 export class GetDT {
-  user_id: string = '';
+  //ownerName: string = '';
   feederName: string = '';
 }

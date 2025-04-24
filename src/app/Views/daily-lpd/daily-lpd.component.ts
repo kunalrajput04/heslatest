@@ -109,7 +109,7 @@ export class DailyLpdComponent implements OnInit {
 
     this.service.getDailyLoadProfileData(this.formdata.fromdate, this.formdata.todate, this.formdata.meterNo)
       .subscribe((res: any) => {
-        if (res != null && res.message != 'Key Is Not Valid') {
+       // if (res != null && res.message != 'Key Is Not Valid') {
           if (res.data != null) {
             for (let item in res.data[0]) {
               if (parseInt(item) !== 1) {
@@ -130,10 +130,7 @@ export class DailyLpdComponent implements OnInit {
             this.gridColumnApi.autoSizeAllColumns();
           } else
             this.gridApi.setRowData([]);
-        } else {
-
-          this.logout();
-        }
+     
       });
 
   }

@@ -12092,8 +12092,8 @@ th .lbl:only-child {
 .table-header {
   background-color: #307ecc;
   color: #fff;
-  font-size: 14px;
-  line-height: 31px;
+  font-size: 14px;  
+  line-height: 18.5px;
   padding-left: 10px;
 }
 

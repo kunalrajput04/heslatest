@@ -114,7 +114,7 @@ export class HesSettingComponent implements OnInit {
         }
         else {
 
-          this.logout();
+          
         }
 
       });

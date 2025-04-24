@@ -108,10 +108,10 @@ export class ReturnInstantDataComponent implements OnInit {
     this.gridColumnApi.autoSizeAllColumns();
     this.gridApi.showLoadingOverlay();
 
-    this.service.getReturnInstantData(this.formdata.todate, this.formdata.meterNo)
-      .subscribe((res: any) => {
-        if (res != null && res.message != 'Key Is Not Valid') {
-          if (res.data != null) {
+    this.service.getReturnInstantData(this.formdata.todate, this.formdata.meterNo)    
+        .subscribe({
+          next: (res: any) => {
+            if (res?.result === true && res.data?.[0]) {  
             for (let item in res.data[0]) {
               if (parseInt(item) !== 1) {
                 this.tableData.push({
@@ -136,11 +136,8 @@ export class ReturnInstantDataComponent implements OnInit {
             this.gridColumnApi.autoSizeAllColumns();
           } else
             this.gridApi.setRowData([]);
-        } else {
-
-          this.logout();
-        }
-      });
+      
+      }});
 
   }
 

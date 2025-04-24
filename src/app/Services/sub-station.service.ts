@@ -16,24 +16,13 @@ export class SubStationService {
   levels: Levls = new Levls();
   subdivision: SubdivisionNameKey = new SubdivisionNameKey();
   constructor(private http: HttpClient) {
-  
-   
   }
 
   addSubStation(formdata: SubStation) {
-    formdata.user_id = localStorage.getItem('UserID');
-
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
-
+    formdata.ownerName = localStorage.getItem('UserID');
     return this.http.post(
-      `${environment.apiUrl}/Evit/addSubstation`,
-      formdata,
-      httpOptions
-    );
+      `${environment.apiUrl}/asset/addSubStation`,
+      formdata);
   }
 
   getSubstationData() {
@@ -41,46 +30,38 @@ export class SubStationService {
       levelName: localStorage.getItem('levelName'),
       levelValue: localStorage.getItem('levelValue'),
     };
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
-
+  
     return this.http.post(
-      `${environment.apiUrl}/Evit/getSubstationList/`,
-      this.levels,
-      httpOptions
-    );
+      `${environment.apiUrl}/asset/getSubStationList`,
+      this.levels);
   }
   getSubstationBySubdivision(name: string) {
-    this.subdivision.subdivisionName = name;
-
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
-
+    this.subdivision.subDivisionName = name; 
     return this.http.post(
-      `${environment.apiUrl}/Evit/getSubstation`,
-      this.subdivision,
-      httpOptions
-    );
+      `${environment.apiUrl}/asset/getSubStation`,
+      this.subdivision);
   }
+  // deleteSubstationData(formdata: SubStation) {
+  //   formdata.ownerName = localStorage.getItem('UserID');
+  //   return this.http.post(
+  //     `${environment.apiUrl}/asset/deleteSubStation`,
+  //     formdata);
+  // }
+  // deleteSubstationData(formdata: SubStation) {
+  //   return this.http.delete(
+  //     `${environment.apiUrl}/asset/deleteSubStation/${formdata.subStationName}`
+  //   );
+  // }
   deleteSubstationData(formdata: SubStation) {
-    formdata.user_id = localStorage.getItem('UserID');
-
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
-
-    return this.http.post(
-      `${environment.apiUrl}/Evit/deleteSubstation`,
-      formdata,
-      httpOptions
+    formdata.ownerName = localStorage.getItem('UserID');
+    return this.http.request('DELETE',
+      `${environment.apiUrl}/asset/deleteSubStation`,
+      {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json'
+        }),
+        body: formdata
+      }
     );
   }
 }

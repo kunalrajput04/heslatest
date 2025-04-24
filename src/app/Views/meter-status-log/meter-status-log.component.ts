@@ -34,7 +34,6 @@ export class MeterStatusLogComponent implements OnInit {
   constructor(
     private service: DataService,
     private router: Router,
-
     private datePipe: DatePipe,
     private datasharedservice: DataSharedService,
 
@@ -124,7 +123,7 @@ export class MeterStatusLogComponent implements OnInit {
             this.gridApi.setRowData([]);
         } else {
 
-          this.logout();
+          
         }
       });
 

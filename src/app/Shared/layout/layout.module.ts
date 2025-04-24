@@ -56,6 +56,13 @@ import { TodRWComponent } from '../../Views/tod-rw/tod-rw.component';
 import { MeterStatusComponent } from 'src/app/Views/meter-status/meter-status.component';
 import { MeterStatusLogComponent } from 'src/app/Views/meter-status-log/meter-status-log.component';
 import { SystemCheckComponent } from 'src/app/Views/system-check/system-check.component';
+import { DcuinfoComponent } from 'src/app/Views/dcuinfo/dcuinfo.component';
+import { DcuoutageComponent } from 'src/app/Views/dcuoutage/dcuoutage.component';
+import { DcuComponent } from 'src/app/Views/dcu/dcu.component';
+import { CircleComponent } from 'src/app/Views/circle/circle.component';
+import { DcuHierarchyComponent } from 'src/app/Views/dcu-hierarchy/dcu-hierarchy.component';
+import { DivisionComponent } from 'src/app/Views/division/division.component';
+import { ZoneComponent } from 'src/app/Views/zone/zone.component';
 
 
 @NgModule({
@@ -63,7 +70,7 @@ import { SystemCheckComponent } from 'src/app/Views/system-check/system-check.co
     LayoutComponent,
     HomeComponent,
     SideMenuComponent,
-    DeviceInfoComponent,
+    DeviceInfoComponent,DcuinfoComponent, DcuComponent, DcuoutageComponent,
     InstantDataComponent,
     InsantDataPushComponent,
     DailyLpdComponent,
@@ -100,7 +107,7 @@ import { SystemCheckComponent } from 'src/app/Views/system-check/system-check.co
     RtcSyncComponent,
     TodRWComponent,
     MeterStatusComponent,
-    MeterStatusLogComponent,SystemCheckComponent
+    MeterStatusLogComponent,SystemCheckComponent, ZoneComponent, CircleComponent, DivisionComponent, DcuHierarchyComponent
   ],
   imports: [
     CommonModule,

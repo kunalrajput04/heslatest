@@ -21,7 +21,7 @@ import { DataSharedService } from 'src/app/Services/data-shared.service';
 })
 export class ConfigurationComponent implements OnInit {
   currentTime = this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss');
-
+  isAsync = false;
   formdata: UserCreate = new UserCreate();
   UtilityDropdown: any[] = [];
   SubDivisionDropdown: any[] = [];
@@ -101,7 +101,7 @@ export class ConfigurationComponent implements OnInit {
         }
         else {
 
-          this.logout();
+          
         }
       });
   }
@@ -221,7 +221,6 @@ export class ConfigurationComponent implements OnInit {
       this.getSubdivision();
     }
   }
-
   onSubmit(command: string) {
     this.spinner.show();
     this.getLevelValue();
@@ -260,47 +259,220 @@ export class ConfigurationComponent implements OnInit {
       commandValue = this.todTime + '|' + this.datePipe.transform(this.todDate, 'yyyy-MM-dd hh:mm:ss');
     }
 
-    if (!this.forOnDemandConfig) {
-      this.ondemmand
-        .executeCommandForConfiguration(
-          command,
-          commandValue,
-          this.levelName,
-          this.levelValue
-        )
-        .subscribe((res: any) => {
+    if (!this.forOnDemandConfig) {      
+      const apiCall = this.isAsync
+        ? this.ondemmand.executeCommandForConfigurationAsync(
+            command,
+            commandValue,
+            this.levelName,
+            this.levelValue
+          )
+        : this.ondemmand.executeCommandForConfiguration(
+            command,
+            commandValue,
+            this.levelName,
+            this.levelValue
+          );
+
+      apiCall.subscribe({
+        next: (res: any) => {
           this.spinner.hide();
-
-          if (res.data != null) {
-            if (res.data == true) {
-              this.toaster.success('Updated Successfully');
-            } else {
-              this.toaster.success('Something went wrong !!');
-            }
-          }
-        });
-    }
-    else{
-      this.ondemmand
-      .executeOnDemandConfig(
-        command,
-        commandValue,
-        this.levelName,
-        this.levelValue
-      )
-      .subscribe((res: any) => {
-        this.spinner.hide();
-
-        if (res.data != null) {
-          if (res.data == true) {
+          if (res && res.result === true) {
             this.toaster.success('Updated Successfully');
           } else {
-            this.toaster.success('Something went wrong !!');
+            this.toaster.error('Something went wrong!');
+          }
+        },
+        error: (err) => {
+          this.spinner.hide();
+          this.toaster.error('Oops! Something Went Wrong.');
+        }
+      });
+    } else {
+      
+      const apiCall = this.isAsync
+        ? this.ondemmand.executeOnDemandConfigAsync(
+            command,
+            commandValue,
+            this.levelName,
+            this.levelValue
+          )
+        : this.ondemmand.executeOnDemandConfig(
+            command,
+            commandValue,
+            this.levelName,
+            this.levelValue
+          );
+
+      apiCall.subscribe({
+        next: (res: any) => {
+          this.spinner.hide();
+          if (res && res.result === true) {
+            this.toaster.success('Updated Successfully');
+          } else {
+            this.toaster.error('Something went wrong!');
           }
         }
       });
     }
   }
+  // onSubmit(command: string) {
+  //   this.spinner.show();
+  //   this.getLevelValue();
+  //   let commandValue;
+  //   if (command == 'RTCClock') {
+  //     commandValue = '';
+  //   } else if (command == 'DemandIntegrationPeriod') {
+  //     commandValue = this.demandIntegration;
+  //   } else if (command == 'LoadLimit') {
+  //     commandValue = this.loadLimit;
+  //   } else if (command == 'MeteringMode') {
+  //     commandValue = this.meteringMode;
+  //   } else if (command == 'ProfileCapturePeriod') {
+  //     commandValue = this.profileCaptured;
+  //   } else if (command == 'EnableDisableDisconnectControl') {
+  //     commandValue = this.enableDisableDisconnectControl;
+  //   } else if (command == 'CoverOpen') {
+  //     commandValue = this.CoverOpen;
+  //   }
+  //   else if (command == 'AlertIPPush') {
+  //     commandValue = this.AlertIPPush;
+  //   }
+  //   else if (command == 'ActivitySchedulePush') {
+  //     commandValue = this.ActivitySchedulePush;
+  //   }
+  //   else if (command == 'InstantIPPush') {
+  //     commandValue = this.InstantIPPush;
+  //   }
+  //   else if (command == 'MdReset') {
+  //     commandValue = 45;
+  //   }
+  //   else if (command == 'BillingDates') {
+  //     commandValue = this.BillingDatesValue;
+  //   }
+  //   else if (command == 'ActivityCalendar') {
+  //     commandValue = this.todTime + '|' + this.datePipe.transform(this.todDate, 'yyyy-MM-dd hh:mm:ss');
+  //   }
 
+  //   if (!this.forOnDemandConfig) {
+  //     this.ondemmand
+  //       .executeCommandForConfiguration(
+  //         command,
+  //         commandValue,
+  //         this.levelName,
+  //         this.levelValue
+  //       )
+  //       .subscribe({
+  //         next: (res: any) => {
+  //           this.spinner.hide();
+  //             if (res && res.result === true) {
+  //             this.toaster.success('Updated Successfully');
+  //           } else {
+  //             this.toaster.error('Something went wrong!');
+  //           }
+  //         },
+  //         error: (err) => {
+  //           this.spinner.hide();
+  //           this.toaster.error('Oops! Something Went Wrong.');
+  //         }
+  //       }); 
+  //   }
+  //   else{
+  //     this.ondemmand
+  //     .executeOnDemandConfig(
+  //       command,
+  //       commandValue,
+  //       this.levelName,
+  //       this.levelValue
+  //     )
+  //     .subscribe({
+  //       next: (res: any) => {
+  //         this.spinner.hide();
+  //           if (res && res.result === true) {
+  //           this.toaster.success('Updated Successfully');
+  //         } else {
+  //           this.toaster.error('Something went wrong!');
+  //         }
+  //       }
+  //     });   
+  //   }
+  // }
+  // onSubmitAsync(command: string) {
+  //   this.spinner.show();
+  //   this.getLevelValue();
+  //   let commandValue;
 
+  //   // Reuse the same command value logic
+  //   if (command == 'RTCClock') {
+  //     commandValue = '';
+  //   } else if (command == 'DemandIntegrationPeriod') {
+  //     commandValue = this.demandIntegration;
+  //   } else if (command == 'LoadLimit') {
+  //     commandValue = this.loadLimit;
+  //   } else if (command == 'MeteringMode') {
+  //     commandValue = this.meteringMode;
+  //   } else if (command == 'ProfileCapturePeriod') {
+  //     commandValue = this.profileCaptured;
+  //   } else if (command == 'EnableDisableDisconnectControl') {
+  //     commandValue = this.enableDisableDisconnectControl;
+  //   } else if (command == 'CoverOpen') {
+  //     commandValue = this.CoverOpen;
+  //   } else if (command == 'AlertIPPush') {
+  //     commandValue = this.AlertIPPush;
+  //   } else if (command == 'ActivitySchedulePush') {
+  //     commandValue = this.ActivitySchedulePush;
+  //   } else if (command == 'InstantIPPush') {
+  //     commandValue = this.InstantIPPush;
+  //   } else if (command == 'MdReset') {
+  //     commandValue = 45;
+  //   } else if (command == 'BillingDates') {
+  //     commandValue = this.BillingDatesValue;
+  //   } else if (command == 'ActivityCalendar') {
+  //     commandValue = this.todTime + '|' + this.datePipe.transform(this.todDate, 'yyyy-MM-dd hh:mm:ss');
+  //   }
+
+  //   if (!this.forOnDemandConfig) {
+  //     this.ondemmand
+  //       .executeCommandForConfigurationAsync( 
+  //         command,
+  //         commandValue,
+  //         this.levelName,
+  //         this.levelValue
+  //       )
+  //       .subscribe({
+  //         next: (res: any) => {
+  //           this.spinner.hide();
+  //           if (res && res.result === true) {
+  //             this.toaster.success('Command added to queue');
+  //           } else {
+  //             this.toaster.error('Something went wrong!');
+  //           }
+  //         },
+  //         error: (err) => {
+  //           this.spinner.hide();
+  //           this.toaster.error('Oops! Something Went Wrong.');
+  //         }
+  //       });
+  //   } else {
+  //     this.ondemmand
+  //       .executeOnDemandConfigAsync( 
+  //         command,
+  //         commandValue,
+  //         this.levelName,
+  //         this.levelValue
+  //       )
+  //       .subscribe({
+  //         next: (res: any) => {
+  //           this.spinner.hide();
+  //           if (res && res.result === true) {
+  //             this.toaster.success('Command added to queue');
+  //           } else {
+  //             this.toaster.error('Something went wrong!');
+  //           }
+  //         }
+  //       });
+  //   }
+  // }
 }
+
+

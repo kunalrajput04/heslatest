@@ -1,10 +1,12 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { ConnectDisconnect } from '../Models/connect-disconnect';
 import { HesSetting } from '../Models/hes-setting';
 import { IHesSetting } from '../Models/ihes-setting';
+import { MeterDatas } from '../Models/meter-data';
+import { catchError, tap } from 'rxjs/operators';
 export interface Command {
   commandName: string;
   device;
@@ -26,63 +28,62 @@ export class OnDemandService {
     commandName: '',
     device: '',
   };
+  getdata: MeterDatas = new MeterDatas();
   configData: ConfigCommand = new ConfigCommand();
   constructor(private http: HttpClient) { }
 
-  getConnectDisconnectDevice(): Observable<any> {
-    let levelValue = localStorage.getItem('levelValue');
-    let levelName = localStorage.getItem('levelName');
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
+  // getConnectDisconnectDevice(): Observable<any> {
+  //   let levelValue = localStorage.getItem('levelValue');
+  //   let levelName = localStorage.getItem('levelName');
+  //   const httpOptions = {
+  //     headers: new HttpHeaders({
+  //       apiKey: localStorage.getItem('apikey'),
+  //     }),
+  //   };
 
-    return this.http.get(
-      `${environment.apiUrl}/Evit/getDevice1/` + levelName + `/` + levelValue,
-      httpOptions
+  //   return this.http.get(
+  //     `${environment.apiUrl}/Evit/getDevice1/` + levelName + `/` + levelValue,
+  //     httpOptions
+  //   );
+  // }
+  getConnectDisconnectDevice(): Observable<any> { 
+    const requestBody = {
+      levelName: localStorage.getItem('levelName'),
+      levelValue: localStorage.getItem('levelValue')
+    };
+  
+    return this.http.post(
+      `${environment.apiUrl}/devices/getDevice1`,
+      requestBody
+      
     );
   }
+  
   getDeviceForDT(levelValue: string) {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
+
 
     return this.http.get(
-      `${environment.apiUrl}/Evit/getDevice1/DT/` + levelValue,
-      httpOptions
+      `${environment.apiUrl}/Evit/getDevice1/DT/` + levelValue
     );
   }
   getRTCList(levelValue: string, levelName: string) {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
+
     let data = {
       levelName: levelName,
       levelValue: levelValue
     };
     return this.http.post(
-      `${environment.apiUrl}/Evit/getClockData`, data,
-      httpOptions
+      `${environment.apiUrl}/Evit/getClockData`, data
     );
   }
   getTODList(levelValue: string, levelName: string) {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
+
     let data = {
       levelName: levelName,
       levelValue: levelValue
     };
     return this.http.post(
-      `${environment.apiUrl}/Evit/getTODData`, data,
-      httpOptions
+      `${environment.apiUrl}/Evit/getTODData`, data
     );
   }
 
@@ -91,16 +92,11 @@ export class OnDemandService {
       commandName: Command,
       device: DeviceSerialNo,
     };
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
+
 
     return this.http.post(
-      `${environment.apiUrl}/Evit/addCommand/`,
-      this.data,
-      httpOptions
+      `${environment.apiUrl}/cmd/sync`,
+      this.data
     );
   }
 
@@ -109,35 +105,49 @@ export class OnDemandService {
       commandName: Command,
       device: DeviceSerialNo,
     };
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
+  
 
     return this.http.post(
-      `${environment.apiUrl}/Evit/directOnMeterCmd/`,
-      this.data,
-      httpOptions
+      `${environment.apiUrl}/cmd/sync`,
+      this.data
+      
     );
   }
+  connectDisconnectAsync(Command: any, DeviceSerialNo: any) {
+    this.data = {
+      commandName: Command,
+      device: DeviceSerialNo,
+    };
+  
 
+    return this.http.post(
+      `${environment.apiUrl}/cmd/async`,
+      this.data
+      
+    );
+  }
   connectDisconnectForAllLevel(Command: string, levelname: string, levelvalue: string) {
     let body = {
       commandName: Command,
       levelName: levelname,
       levelValue: levelvalue
     }
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
-
-    return this.http.post(
-      `${environment.apiUrl}/Evit/meters/onDemand/`,
-      body,
-      httpOptions
+      return this.http.post(
+      `${environment.apiUrl}/cmd/sync`,
+      body
+      
+    );
+  }
+  connectDisconnectForAllLevelAsync(Command: string, levelname: string, levelvalue: string) {
+    let body = {
+      commandName: Command,
+      levelName: levelname,
+      levelValue: levelvalue
+    }
+      return this.http.post(
+      `${environment.apiUrl}/cmd/async`,
+      body
+      
     );
   }
   OnDemandStatus(Command: string, levelname: string, levelvalue: string) {
@@ -149,16 +159,12 @@ export class OnDemandService {
         Command
       ]
     }
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
+  
 
     return this.http.post(
-      `${environment.apiUrl}/Evit/meters/onDemand/`,
-      body,
-      httpOptions
+      `${environment.apiUrl}/cmd/sync`,
+      body
+      
     );
   }
   connectDisconnectFullData(Command: any, DeviceSerialNo: any) {
@@ -166,16 +172,23 @@ export class OnDemandService {
       commandName: Command,
       device: DeviceSerialNo,
     };
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
+
 
     return this.http.post(
-      `${environment.apiUrl}/Evit/addCommand`,
-      this.data,
-      httpOptions
+      `${environment.apiUrl}/cmd/sync`,
+      this.data
+    );
+  }
+  connectDisconnectFullDataAsync(Command: any, DeviceSerialNo: any) {
+    this.data = {
+      commandName: Command,
+      device: DeviceSerialNo,
+    };
+
+
+    return this.http.post(
+      `${environment.apiUrl}/cmd/async`,
+      this.data
     );
   }
   RTCFullDataRead(levelName: string, levelValue: string) {
@@ -185,16 +198,11 @@ export class OnDemandService {
       command: "InstantaneousRead",
       commandsVal: ""
     };
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
+
 
     return this.http.post(
-      `${environment.apiUrl}/Evit/addInstantCommand`,
-      data,
-      httpOptions
+      `${environment.apiUrl}/cmd/sync`,
+      data
     );
   }
 
@@ -203,19 +211,14 @@ export class OnDemandService {
       commandName: Command,
       device: DeviceSerialNo,
     };
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
+
 
     return this.http.post(
-      `${environment.apiUrl}/Evit/addCommand/`,
-      this.data,
-      httpOptions
+      `${environment.apiUrl}/cmd/sync`,
+      this.data
     );
   }
-
+  
   executeCommandForConfiguration(
     command: string,
     commandvalue: string,
@@ -227,16 +230,29 @@ export class OnDemandService {
     this.configData.commandsVal = commandvalue;
     this.configData.levelName = levelname;
     this.configData.levelValue = levelvalue;
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
+
 
     return this.http.post(
-      `${environment.apiUrl}/Evit/addConfigsCommand`,
-      this.configData,
-      httpOptions
+      `${environment.apiUrl}/cfg/config/sync`,
+      this.configData
+    );
+  }
+  executeCommandForConfigurationAsync(
+    command: string,
+    commandvalue: string,
+    levelname: string,
+    levelvalue: string
+  ) {
+
+    this.configData.command = command;
+    this.configData.commandsVal = commandvalue;
+    this.configData.levelName = levelname;
+    this.configData.levelValue = levelvalue;
+
+
+    return this.http.post(
+      `${environment.apiUrl}/cfg/config/async`,
+      this.configData
     );
   }
 
@@ -254,16 +270,32 @@ export class OnDemandService {
       levelName: levelname,
       levelValue: levelvalue
     }
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
+
 
     return this.http.post(
       `${environment.apiUrl}/Evit/meters/onDemandConfig`,
-      body,
-      httpOptions
+      body
+    );
+  }
+  executeOnDemandConfigAsync(
+    command: string,
+    commandvalue: string,
+    levelname: string,
+    levelvalue: string
+  ) {
+
+    let body = {
+      configVals: {
+        [command]: commandvalue
+      },
+      levelName: levelname,
+      levelValue: levelvalue
+    }
+
+
+    return this.http.post(
+      `${environment.apiUrl}/Evit/meters/onDemandConfig`,
+      body
     );
   }
   executeMultipleCommandForConfiguration(
@@ -278,29 +310,19 @@ export class OnDemandService {
       levelValue: levelvalue,
       configVals: commands
     }
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
+
 
     return this.http.post(
-      `${environment.apiUrl}/Evit/mutiple/configsCommand/add`,
-      body,
-      httpOptions
+      `${environment.apiUrl}/cfg/mutiple/sync`,
+      body
     );
   }
   executeCommandForHESsettings(data: HesSetting) {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
+
 
     return this.http.post(
-      `${environment.apiUrl}/Reports/changeHESSetting`,
-      data,
-      httpOptions
+      `${environment.apiUrl}/cfg/changeHESSetting`,
+      data
     );
   }
 
@@ -337,62 +359,65 @@ export class OnDemandService {
       "updatedDatetime": data.updatedDatetime
     }
 
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
-
     return this.http.post(
-      `${environment.apiUrl}/Reports/addHesScheduling`,
-      hesData,
-      httpOptions
+      `${environment.apiUrl}/cfg/addHesScheduling`,
+      hesData
     );
   }
 
   getHesScheduling() {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
+
     let data = {
       ownerName: localStorage.getItem('UserID')
     }
     return this.http.post(
-      `${environment.apiUrl}/Reports/getHesScheduling`,
-      data,
-      httpOptions
+      `${environment.apiUrl}/cfg/getHesScheduling`,
+      data
     );
   }
 
+  // addFirmware(postedFile: File, status: string, version: string, manufacturer: string) {
+  //   let data = {
+  //     owner: localStorage.getItem("UserID"),
+  //     fileName: postedFile.name.replace(/\.[^/.]+$/, ""),
+  //     status: status,
+  //     version: version,
+  //     manufacturer: manufacturer,
+  //     imageIdentifier: postedFile.name.replace(/\.[^/.]+$/, ""),
+  //   }
+
+  //   const formData = new FormData();
+  //   formData.append('firmwareFile', postedFile);
+  //   formData.append('data', new Blob([JSON.stringify(data)], { type: 'application/json' }));
+
+
+  //   return this.http.post(
+  //     `${environment.apiUrl}/firmware/uploadFile`,
+  //     formData
+  //   );
+  // }
   addFirmware(postedFile: File, status: string, version: string, manufacturer: string) {
-
-
     let data = {
-      owner: localStorage.getItem("UserID"),
-      fileName: postedFile.name.replace(/\.[^/.]+$/, ""),
-      status: status,
-      version: version,
-      manufacturer: manufacturer,
-      imageIdentifier: postedFile.name.replace(/\.[^/.]+$/, ""),
+        owner: localStorage.getItem("UserID"),
+        fileName: postedFile.name.replace(/\.[^/.]+$/, ""),
+        status: status,
+        version: version,
+        manufacturer: manufacturer,
+        imageIdentifier: postedFile.name.replace(/\.[^/.]+$/, ""),
     }
-
-    const formData = new FormData();
+    const formData = new FormData();    
+    formData.append('data', JSON.stringify(data));    
     formData.append('firmwareFile', postedFile);
-    formData.append('data', new Blob([JSON.stringify(data)], { type: 'application/json' }));
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
-
     return this.http.post(
-      `${environment.apiUrl}/firmware/uploadFile`,
-      formData,
-      httpOptions
+        `${environment.apiUrl}/firmware/uploadFile`,
+        formData,
+        {
+            headers: {                
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+        }
     );
-  }
+}
   addConfigs(levelName: string, levelValue: string, configVals: any, skipOtherManufacturer: boolean) {
 
     let data = {
@@ -401,110 +426,156 @@ export class OnDemandService {
       configVals: configVals,
       skipOtherManufacturer: skipOtherManufacturer
     }
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
-
     return this.http.post(
       `${environment.apiUrl}/firmware/configs/add`,
-      data,
-      httpOptions
+      data
     );
   }
   getFirmwareList() {
     let data = {
       owner: localStorage.getItem("UserID")
     }
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
-
     return this.http.post(
       `${environment.apiUrl}/firmware/list`,
-      data,
-      httpOptions
+      data
     );
   }
-  getFirmwareLogs(fromdate: any, todate: any) {
-    let data = {
-      level_name: localStorage.getItem('levelName'),
-      level_value: localStorage.getItem('levelValue'),
-      start_date: fromdate,
-      end_date: todate
-    }
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
-
-    return this.http.post(
-      `${environment.apiUrl}/Reports/getFirmwareLogs`,
-      data,
-      httpOptions
-    );
-  }
-
-  deleteFirmwareList(data: any) {
-
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-      body: data
-    };
-    return this.http.delete(
-      `${environment.apiUrl}/firmware/list`,
-      httpOptions
-    );
-  }
-  updateFirmwareList(data: any) {
-    let dataList = [
-      {
-        owner: data.owner,
-        status: data.status,
-        version: data.version,
-        manufacturer: data.manufacturer,
-        fileName: data.fileName,
-        imageIdentifier: data.imageIdentifier
+ getFirmwareLogs(fromdate: any, todate: any, meterNo: string) {
+      if (meterNo != '') {
+        this.getdata.levelName = 'METER';
+        this.getdata.levelValue = meterNo;
+      } else {
+        this.getdata.levelName = localStorage.getItem('levelName');
+        this.getdata.levelValue = localStorage.getItem('levelValue');
       }
-    ]
-
-
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
-    return this.http.put(
-      `${environment.apiUrl}/firmware/list`,
-      dataList,
-      httpOptions
-    );
-
-  }
-  getFullConfigLog(fromdate: any, todate: any) {
-    let data = {
-      level_name: localStorage.getItem('levelName'),
-      level_value: localStorage.getItem('levelValue'),
-      start_date: fromdate,
-      end_date: todate
+      this.getdata.startDate = fromdate;
+      this.getdata.endDate = todate; 
+      return this.http.post(
+        `${environment.apiUrl}/cfg/getFirmwareLogs`,
+        this.getdata,
+        
+      );
     }
 
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
-    return this.http.post(
-      `${environment.apiUrl}/Reports/getFullConfigLogs`,
-      data,
-      httpOptions
-    );
+  // deleteFirmwareList(data: any) {
 
+  //   const httpOptions = {
+  //     headers: new HttpHeaders({
+  //       apiKey: localStorage.getItem('apikey'),
+  //     }),
+  //     body: data
+  //   };
+  //   return this.http.delete(
+  //     `${environment.apiUrl}/cfg/firmware/list`
+  //   );
+  // }
+
+deleteFirmwareList(data: any) {
+
+  const token = localStorage.getItem('apikey');
+  const ownerName = localStorage.getItem('UserID');   
+  if (!token) {
+      return throwError(() => new Error('Authentication token is missing'));
+  }
+  if (!ownerName) {
+      return throwError(() => new Error('Owner name is missing'));
+  }
+  const requestData =[{
+      owner: ownerName,  
+      fileName: data.fileName
+  }];
+return this.http.request('DELETE', 
+      `${environment.apiUrl}/firmware/list`, 
+      {
+          headers: new HttpHeaders({
+              'Content-Type': 'application/json',
+              'Accept': 'application/json, text/plain, */*',
+              'Authorization': `Bearer ${token}`
+          }),
+          body: requestData
+      }
+  );
+}
+
+  // updateFirmwareList(data: any) {
+  //   let dataList = [
+  //     {
+  //       owner: data.owner,
+  //       status: data.status,
+  //       version: data.version,
+  //       manufacturer: data.manufacturer,
+  //       fileName: data.fileName,
+  //       imageIdentifier: data.imageIdentifier
+  //     }
+  //   ]
+
+  //   return this.http.put(
+  //     `${environment.apiUrl}/firmware/list`,
+  //     dataList
+  //   );
+
+  // }
+//   updateFirmwareList(data: any) {
+//     const token = localStorage.getItem('apikey');
+    
+//     if (!token) {
+//         console.error('No token found');
+//         return throwError(() => new Error('Authentication token is missing'));
+//     }
+
+//     // Format data to match the expected payload
+//     const requestData = [{
+//         status: data.status,
+//         version: data.version,
+//         manufacturer: data.manufacturer,
+//         fileName: data.fileName,
+//         imageIdentifier: data.fileName // Using same as fileName as per your example
+//     }];
+
+//     console.log('Update request data:', requestData);
+
+//     return this.http.put(
+//         `${environment.apiUrl}/cfg/firmware/list`,
+//         requestData,
+//         {
+//             headers: new HttpHeaders({
+//                 'Content-Type': 'application/json',
+//                 'Accept': 'application/json, text/plain, */*',
+//                 'Authorization': `Bearer ${token}`
+//             })
+//         }
+//     );
+// }
+updateFirmwareList(data: any) {
+  const ownerName = localStorage.getItem('UserID');
+  const dataList = [{
+      owner: ownerName, 
+      status: data.status,
+      version: data.version,
+      manufacturer: data.manufacturer,
+      fileName: data.fileName,
+      imageIdentifier: data.imageIdentifier
+  }];
+  
+  return this.http.put(
+      `${environment.apiUrl}/firmware/list`,
+      dataList
+  );
+}
+  getFullConfigLog(fromdate: any, todate: any, meterNo: string) {
+    if (meterNo != '') {
+      this.getdata.levelName = 'METER';
+      this.getdata.levelValue = meterNo;
+    } else {
+      this.getdata.levelName = localStorage.getItem('levelName');
+      this.getdata.levelValue = localStorage.getItem('levelValue');
+    }
+    this.getdata.startDate = fromdate;
+    this.getdata.endDate = todate;
+
+    return this.http.post(
+      `${environment.apiUrl}/cfg/getFullConfigLogs`,
+      this.getdata
+    );
   }
 }

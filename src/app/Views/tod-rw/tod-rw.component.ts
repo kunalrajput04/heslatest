@@ -121,7 +121,7 @@ export class TodRWComponent implements OnInit {
       }
       else {
 
-        this.logout();
+        
       }
     }, (err) => {
       this.tableData = [];

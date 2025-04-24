@@ -3,75 +3,44 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Dropdown } from '../Models/dropdown';
 import { GetSubdivision } from '../Models/get-subdivision';
-import { SubDivision } from '../Models/sub-division';
-import { UserKey } from '../Models/user-key';
+import { SubDivision,SubDivision1 } from '../Models/sub-division';
+import { UserKey1 } from '../Models/user-key';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SubDivisionService {
-  data: UserKey = new UserKey();
+  data: UserKey1 = new UserKey1();
   ownerdata: GetSubdivision = new GetSubdivision();
-  constructor(private http: HttpClient) {
-  
-  
-  }
+  constructor(private http: HttpClient) {}
 
   addSubdivision(formdata: SubDivision) {
-    formdata.user_id = localStorage.getItem('UserID');
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
-
+    formdata.ownerName = localStorage.getItem('UserID');
     return this.http.post(
-      `${environment.apiUrl}/Evit/addSubdevision`,
-      formdata,
-      httpOptions
+      `${environment.apiUrl}/asset/addSubDivision`,
+      formdata
     );
   }
 
   getSubdivision() {
     this.ownerdata = {
-      ownerName: localStorage.getItem('UserID'),
-    };
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
+        ownerName: localStorage.getItem('UserID'),    
     };
     return this.http.post(
-      `${environment.apiUrl}/Evit/getSubdivision`,
-      this.ownerdata,
-      httpOptions
+      `${environment.apiUrl}/asset/getSubDivision`,
+      this.ownerdata
     );
   }
   getSubdivisionForRegistration(data: string) {
-    
-    this.ownerdata.ownerName = data;
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
+    this.ownerdata.ownerName = data; 
     return this.http.post(
-      `${environment.apiUrl}/Evit/getSubdivision`,
-      this.ownerdata,
-      httpOptions
+      `${environment.apiUrl}/asset/getSubDivision`,
+      this.ownerdata      
     );
   }
 
   getUtility() {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
-    return this.http.get(
-      `${environment.apiUrl}/Evit/getOwnerList/XXXXX`,
-      httpOptions
-    );
+    return this.http.get(`${environment.apiUrl}/Evit/getOwnerList/XXXXX`);
   }
 
   //#region oldListingapi
@@ -80,49 +49,49 @@ export class SubDivisionService {
 
   getAllSubDivisioin() {
     this.data = {
-      user_id: localStorage.getItem('UserID'),
-    };
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
-
+      ownerName: localStorage.getItem('UserID'), 
+    }; 
     return this.http.post(
-      `${environment.apiUrl}/Evit/getSubdivisionList`,
-      this.data,
-      httpOptions
+      `${environment.apiUrl}/asset/getSubDivisionList`,
+      this.data
     );
   }
 
   getSubDivisionById(username: any, deviceid: any) {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
-
     return this.http.get(
-      `${environment.apiUrl}/Evit/getSubdevision/` +
+      `${environment.apiUrl}/asset/getSubDivision` +
         username +
         `/` +
         deviceid +
-        ``,
-      httpOptions
+        ``
     );
   }
 
-  deleteSubDivion(data: SubDivision) {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
+  // deleteSubDivion(data: SubDivision) {
+  //   return this.http.post(
+  //     `${environment.apiUrl}/asset/deleteSubDivision`,
+  //     data
+      
+  //   );
+  // }
+  // deleteSubDivion(data: SubDivision1) {
 
-    return this.http.post(
-      `${environment.apiUrl}/Evit/deleteSubdevision/`,
-      data,
-      httpOptions
+  //   return this.http.delete(
+  //     `${environment.apiUrl}/asset/deleteSubDivision`,
+  //     data
+      
+  //   );
+  // }
+  
+  deleteSubDivion(data: SubDivision1) {
+    return this.http.request('DELETE',
+      `${environment.apiUrl}/asset/deleteSubDivision`,
+      {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json'
+        }),
+        body: data
+      }
     );
   }
 }

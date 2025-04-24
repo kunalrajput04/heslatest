@@ -231,10 +231,10 @@
               ><br />
               <select
                 class="browser-default custom-select HideSubdivisionDropDown"
-                #subdivisionName="ngModel"
-                name="subdivisionName"
-                id="subdivisionName"
-                [(ngModel)]="formdata.subdivisionName"
+                #subDivisionName="ngModel"
+                name="subDivisionName"
+                id="subDivisionName"
+                [(ngModel)]="formdata.subDivisionName"
                 style="width: 100%; height: 40px"
                 (change)="getSubstation($event.target.value)"
               >
@@ -250,10 +250,10 @@
               ><br />
               <select
                 class="browser-default custom-select HideSubdivisionDropDown"
-                #substationName="ngModel"
-                name="substationName"
-                id="substationName"
-                [(ngModel)]="formdata.substationName"
+                #subStationName="ngModel"
+                name="subStationName"
+                id="subStationName"
+                [(ngModel)]="formdata.subStationName"
                 style="width: 100%; height: 40px"
                 required
               >
@@ -266,13 +266,13 @@
             <label style="margin-bottom: 1em">Feeder Name</label>
             <input
               type="text"
-              #feeder_name="ngModel"
-              name="feeder_name"
-              [(ngModel)]="formdata.feeder_name"
+              #feederName="ngModel"
+              name="feederName"
+              [(ngModel)]="formdata.feederName"
               class="form-control"
               placeholder=""
               [readonly]="isEdit"
-              [ngClass]="feeder_name.invalid ? 'errorclass' : 'successclass'"
+              [ngClass]="feederName.invalid ? 'errorclass' : 'successclass'"
               pattern="[a-zA-Z-0-9\/)|\(_-][a-zA-Z0-9 -\/)|\(_-]+[a-zA-Z-0-9\/)|\(_-]$"
               required
              

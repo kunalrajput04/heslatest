@@ -1,3 +1,8 @@
 export class UserKey {
-  user_id: string = '';
+  ownerName: string = '';
+}
+
+
+export class UserKey1 {
+  ownerName: string = '';
 }

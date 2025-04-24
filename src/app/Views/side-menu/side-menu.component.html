@@ -3,60 +3,13 @@
     <a id="RedirectToDashboard" routerLink="/">
       <span class="menu-text">Dashboard </span>
     </a>
-
     <b class="arrow"></b>
   </li>
-    <li class="dropdown">
-      <a href="javascript:void(0)" class="dropdown-toggle">
-        <i class="menu-icon fa fa-file"></i>
-        <span class="menu-text"> Meter Reports </span>
-        <b class="arrow fa fa-angle-down"></b>
-      </a>
-      <ul class="submenu">
-        <li>
-          <a routerLink="/meter-reports/meter-counts">
-            <i class="menu-icon fa fa-caret-right"></i>
-            Meter Summery Counts
-          </a>
-        </li>
-        <li>
-          <a routerLink="/meter-reports/meter-summary">
-            <i class="menu-icon fa fa-caret-right"></i>
-            Meter Summery
-          </a>
-        </li>
-        <li>
-          <a routerLink="/meter-reports/communication-report">
-            <i class="menu-icon fa fa-caret-right"></i>
-            Communication Report
-          </a>
-        </li>
-        <li>
-          <a routerLink="/meter-reports/failure-report">
-            <i class="menu-icon fa fa-caret-right"></i>
-            Never Communication Report
-          </a>
-        </li>
-        <!-- <li>
-          <a routerLink="/meter-reports/inactive-report">
-            <i class="menu-icon fa fa-caret-right"></i>
-            Inactive Report
-          </a>
-        </li>-->
-        <li> 
-          <a routerLink="/meter-reports/failurenever-report">
-            <i class="menu-icon fa fa-caret-right"></i>
-            Non Communicated Report
-          </a>
-        </li>
-      </ul>
-    </li>
-  
 
   <li class="">
     <a href="javascript:void(0);" class="dropdown-toggle">
       <i class="menu-icon fa fa-pencil-square-o"></i>
-      <span class="menu-text">Devices </span>
+      <span class="menu-text">Meters </span>
 
       <b class="arrow fa fa-angle-down"></b>
     </a>
@@ -71,9 +24,52 @@
       <li class="">
         <a routerLink="/nameplate">
           <i class="menu-icon fa fa-plug"></i>
-          <span class="menu-text">Meter Name Plate Data</span>
+          <span class="menu-text">Nameplate Data</span>
         </a>
       </li>
+      <!-- <li class="">
+        <a routerLink="/dcuInfo">
+          <i class="menu-icon fa fa-plug"></i>
+          <span class="menu-text">DCU Info </span>
+        </a>
+      </li> -->
+      <!-- <li class="">
+        <a routerLink="/dcu">
+          <i class="menu-icon fa fa-exclamation-triangle"></i>
+          <span class="menu-text">DCU Info</span>
+        </a>
+      </li> -->
+      <!-- <li class="">
+        <a routerLink="/dcuOutage">
+          <i class="menu-icon fa fa-plug"></i>
+          <span class="menu-text">DCU Outage</span>
+        </a>
+      </li> -->
+    </ul>
+
+    <b class="arrow"></b>
+  </li>
+  <li class="">
+    <a href="javascript:void(0);" class="dropdown-toggle">
+      <i class="menu-icon fa fa-pencil-square-o"></i>
+      <span class="menu-text">SLA </span>
+
+      <b class="arrow fa fa-angle-down"></b>
+    </a>
+    <b class="arrow"></b>
+    <ul class="submenu nav-hide" style="display: none">
+      <!-- <li class="">
+        <a routerLink="/deviceInfo">
+          <i class="menu-icon fa fa-plug"></i>
+          <span class="menu-text">Meter Info </span>
+        </a>
+      </li>
+      <li class="">
+        <a routerLink="/nameplate">
+          <i class="menu-icon fa fa-plug"></i>
+          <span class="menu-text">Meter Name Plate Data</span>
+        </a>
+      </li> -->
       <li class="">
         <a routerLink="/commsummary">
           <i class="menu-icon fa fa-plug"></i>
@@ -92,12 +88,12 @@
           <span class="menu-text">History SLA Summary</span>
         </a>
       </li>
-      <li class="">
+      <!-- <li class="">
         <a routerLink="/sysAbility">
           <i class="menu-icon fa fa-plug"></i>
           <span class="menu-text">System Availability</span>
         </a>
-      </li>
+      </li> -->
       <li class="">
         <a routerLink="/commreporthistory">
           <i class="menu-icon fa fa-plug"></i>
@@ -108,7 +104,6 @@
 
     <b class="arrow"></b>
   </li>
-
   <li class="">
     <a href="javascript:void(0);" class="dropdown-toggle">
       <i class="menu-icon fa fa-pencil-square-o"></i>
@@ -237,14 +232,14 @@
         <b class="arrow"></b>
       </li>
 
-      <li class="ShowHideDTNav">
+      <!-- <li class="ShowHideDTNav">
         <a href="javascript:void(0)" id="RedirectToDTListPage">
           <i class="menu-icon fa fa-bolt"></i>
           <span class="menu-text">HES Settings </span>
         </a>
 
         <b class="arrow"></b>
-      </li>
+      </li> -->
       <li class="ShowHideDTNav">
         <a href="javascript:void(0)" id="RedirectToDTListPage">
           <i class="menu-icon fa fa-bolt"></i>
@@ -420,6 +415,30 @@
       <li class="ShowHideSubdivisionNav">
         <a href="javascript:void(0)">
           <i class="menu-icon fa fa-industry"></i>
+          <span class="menu-text">Zone </span>
+        </a>
+
+        <b class="arrow"></b>
+      </li>
+      <li class="ShowHideSubdivisionNav">
+        <a href="javascript:void(0)">
+          <i class="menu-icon fa fa-industry"></i>
+          <span class="menu-text">Circle </span>
+        </a>
+
+        <b class="arrow"></b>
+      </li>
+      <li class="ShowHideSubdivisionNav">
+        <a href="javascript:void(0)">
+          <i class="menu-icon fa fa-industry"></i>
+          <span class="menu-text">Division </span>
+        </a>
+
+        <b class="arrow"></b>
+      </li>
+      <li class="ShowHideSubdivisionNav">
+        <a href="javascript:void(0)">
+          <i class="menu-icon fa fa-industry"></i>
           <span class="menu-text">Subdivision </span>
         </a>
 
@@ -449,8 +468,40 @@
 
         <b class="arrow"></b>
       </li>
+      <!-- <li class="ShowHideDTNav">
+        <a href="javascript:void(0)" id="RedirectToDTListPage">
+          <i class="menu-icon fa fa-bolt"></i>
+          <span class="menu-text">Zone </span>
+        </a>
+
+        <b class="arrow"></b>
+      </li> -->
     </ul>
     <ul *ngIf="isWriteAccess" class="submenu nav-hide" style="display: none">
+      <li class="ShowHideSubdivisionNav">
+        <a routerLink="/zone">
+          <i class="menu-icon fa fa-industry"></i>
+          <span class="menu-text">Zone </span>
+        </a>
+
+        <b class="arrow"></b>
+      </li>
+      <li class="ShowHideSubdivisionNav">
+        <a routerLink="/circle">
+          <i class="menu-icon fa fa-industry"></i>
+          <span class="menu-text">Circle </span>
+        </a>
+
+        <b class="arrow"></b>
+      </li>
+      <li class="ShowHideSubdivisionNav">
+        <a routerLink="/division">
+          <i class="menu-icon fa fa-industry"></i>
+          <span class="menu-text">Division </span>
+        </a>
+
+        <b class="arrow"></b>
+      </li>
       <li class="ShowHideSubdivisionNav">
         <a routerLink="/subdivision">
           <i class="menu-icon fa fa-industry"></i>
@@ -459,7 +510,6 @@
 
         <b class="arrow"></b>
       </li>
-
       <li class="ShowHideSubstationNav">
         <a routerLink="/Substation" id="RedirectToSubstationListPage">
           <i class="menu-icon fa fa-rss"></i>
@@ -483,6 +533,14 @@
 
         <b class="arrow"></b>
       </li>
+      <!-- <li class="ShowHideSubdivisionNav">
+        <a routerLink="/dcuHierarchy">
+          <i class="menu-icon fa fa-industry"></i>
+          <span class="menu-text">Dcu </span>
+        </a>
+
+        <b class="arrow"></b>
+      </li> -->
     </ul>
   </li>
 
@@ -506,13 +564,13 @@
       id="ddlSubdivisionForFilter"
       (change)="getSubstation($event.target.value)"
     >
-      <option selected="" value="">Select Subdivision</option>
+      <option selected="" value="">Select Group</option>
       <option *ngFor="let obj of subdivisionDropDown" [Value]="obj">
         {{ obj }}
       </option>
     </select>
   </li>
-  <li class="HideShowFilterSubstaion" *ngIf="isSubstation">
+  <!-- <li class="HideShowFilterSubstaion" *ngIf="isSubstation">
     <select
       class="browser-default custom-select"
       style="width: 188px"
@@ -565,5 +623,5 @@
         {{ obj }}
       </option>
     </select>
-  </li>
+  </li> -->
 </ul>

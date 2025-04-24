@@ -1,3 +1,3 @@
 export class SubdivisionNameKey {
-  subdivisionName: string = '';
+  subDivisionName: string = '';
 }

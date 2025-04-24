@@ -1,201 +1,125 @@
 function GetMap() {
-  var localStoragedetails = localStorage;
-  let token = localStoragedetails.apikey;
-  let UserID = localStoragedetails.UserID;
-  let levelName = localStoragedetails.levelName;
-  let levelValue = localStoragedetails.levelValue;
+  const token = localStorage.getItem("apikey");
+  const levelName = localStorage.getItem("levelName");
+  const levelValue = localStorage.getItem("levelValue");
 
-  var mydata = {
-    levelValue: levelValue,
-    levelName: levelName,
-  };
+  const payload = { levelName, levelValue };
 
   $.ajax({
-    url: "https://meghasmarts.com:8443/dlms/rest/Evit/dashboardDetails/",
+    url: "http://hesapi.mizopower.com:6005/api/v1/dashboard/dashboardDetails",
     crossDomain: true,
     type: "POST",
-    // host: "115.124.96.29:8081",
     contentType: "application/json; charset=utf-8",
-    data: JSON.stringify(mydata),
+    data: JSON.stringify(payload),
     dataType: "json",
     headers: {
-      apikey: token,
+      "Authorization": `Bearer ${token}`,
+      "Accept": "application/json",
     },
 
     success: function (r) {
-
-      var res = r["data"];
-      var deviceSrNo = res["DEVICE"];
-      var consumerno = res["CRN"];
-      var ipv6 = res["NICIP"];
-      var loadstatus = res["METERTYPE"];
-      var lattitude = res["LATITUDE"];
-      var longitude = res["LONGITUDE"];
-      var deviceType = res["DEVICE_TYPE"];
-      var ccmsstatus = res["STATUS"];
-      var consumer = res["CONSUMER_NAME"];
-      var subdivision = res["SUBDIVISION"];
-      var feeder = res["FEEDER"];
-      var substation = res["SUBSTATION"];
-      var dt = res["DT"];
-      var gprs = 'GPRS';
-      var planes = [];
-      for (var i = 0; i < lattitude.length; i++) {
-        var arr = [deviceSrNo[i], lattitude[i], longitude[i]];
-        planes.push(arr);
+      const data = r?.data;
+      if (!data || !data["DEVICE"] || !data["LATITUDE"] || !data["LONGITUDE"]) {
+        $('#map').html('<p>No valid map data found.</p>');
+        return;
       }
-      var markers = L.markerClusterGroup();
-      if (lattitude.length > 0) {
-        var map = L.map("map").setView([lattitude[0], longitude[0]], 9);
-        mapLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>';
-        L.tileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-          attribution: "&copy; " + mapLink + " Contributors",
-          minZoom: 0,
-        }).addTo(map);
 
-        var LeafIcon = L.Icon.extend({
-          options: {
-            iconSize: [40, 40],
-            iconAnchor: [22, 94],
-            popupAnchor: [-3, -76],
-          },
-        });
+      const {
+        DEVICE,
+        LATITUDE,
+        LONGITUDE,
+        DEVICE_TYPE,
+        NICIP,
+        CONSUMER_NAME,
+        SUBDIVISION,
+        FEEDER,
+        SUBSTATION,
+        DT
+      } = data;
 
-        var subdivisionimg = new LeafIcon({
-          iconUrl: "assets/images/subdivisionimg.png",
-        }),
-          feederimg = new LeafIcon({
-            iconUrl: "assets/images/feederimg.png",
-          }),
-          substationimg = new LeafIcon({
-            iconUrl: "assets/images/substationimg.png",
-          }),
-          dtimg = new LeafIcon({ iconUrl: "assets/images/dtimg.png" }),
-          deviceimg = new LeafIcon({
-            iconUrl: "assets/images/deviceimg.png",
+      const planes = [];
+
+      for (let i = 0; i < DEVICE.length; i++) {
+        const lat = parseFloat(LATITUDE[i]);
+        const lon = parseFloat(LONGITUDE[i]);
+        if (!isNaN(lat) && !isNaN(lon)) {
+          planes.push({ 
+            serial: DEVICE[i],
+            lat, 
+            lon, 
+            index: i,
+            type: DEVICE_TYPE[i],
+            ipv6: NICIP[i],
+            consumer: CONSUMER_NAME[i],
+            subDiv: SUBDIVISION[i],
+            feeder: FEEDER[i],
+            substation: SUBSTATION[i],
+            dt: DT[i]
           });
-
-        L.icon = function (options) {
-          return new L.Icon(options);
-        };
-        for (var i = 0; i < planes.length; i++) {
-          if (planes[i][1] != "null" && planes[i][1] != "-" && planes[i][1] != "--" && planes[i][1] != "NaN" && planes[i][2] != "null" && planes[i][2] != "-" && planes[i][2] != "--" && planes[i][2] != "NaN") {
-            if (deviceType[i] == "METER") {
-              var marker = L.marker([planes[i][1], planes[i][2]], {
-                icon: deviceimg,
-              });
-              var title =
-                '<div style="height:auto; width: auto; color:black;font-weigh:bold;font-size:14px;text-align:left;">' +
-                "<b>CONSUMER NUMBER :</b>" +
-                consumerno[i] +
-                "<br><b>CONSUMER NAME :</b>" +
-                consumer[i] +
-                "<br><b>METER S.NO :</b> " +
-                deviceSrNo[i] +
-                "<br><b>NIC TYPE :</b> " +
-                gprs +
-                "<br><b>NIC IPV6 :</b>" +
-                ipv6[i] +
-                "<br><b>LOAD STATUS :</b>" +
-                loadstatus[i] +
-                "<br><b>STATUS :</b>" +
-                ccmsstatus[i] +
-                "<br><b>SUBDIVISION :</b>" +
-                subdivision[i] +
-                "<br><b>SUBSTATION :</b>" +
-                substation[i] +
-                "<br><b>FEEDER :</b>" +
-                feeder[i] +
-                "<br><b>DT :</b>" +
-                dt[i] +
-                "<br><b>LATITUDE :</b> " +
-                lattitude[i] +
-                "<br><b>LONGITUDE :</b> " +
-                longitude[i] +
-                "</div>";
-              marker.bindPopup(title);
-              markers.addLayer(marker);
-
-            } else if (deviceType[i] == "SUBDIVISION") {
-              var marker = L.marker([planes[i][1], planes[i][2]], {
-                icon: subdivisionimg,
-              });
-
-              var title =
-                '<div style="height:auto; width: auto; color:black;font-weigh:bold;font-size:14px;text-align:left;">' +
-                "<b>" +
-                deviceType[i] +
-                " NAME :</b> " +
-                deviceSrNo[i] +
-                "<br><b>LATITUDE :</b> " +
-                lattitude[i] +
-                "<br><b>LONGITUDE :</b> " +
-                longitude[i] +
-                "</div>";
-              marker.bindPopup(title);
-              markers.addLayer(marker);
-            } else if (deviceType[i] == "FEEDER") {
-              var marker = L.marker([planes[i][1], planes[i][2]], {
-                icon: feederimg,
-              });
-
-              var title =
-                '<div style="height:auto; width: auto; color:black;font-weigh:bold;font-size:14px;text-align:left;">' +
-                "<b>" +
-                deviceType[i] +
-                " NAME :</b> " +
-                deviceSrNo[i] +
-                "<br><b>LATITUDE :</b> " +
-                lattitude[i] +
-                "<br><b>LONGITUDE :</b> " +
-                longitude[i] +
-                "</div>";
-              marker.bindPopup(title);
-              markers.addLayer(marker);
-            } else if (deviceType[i] == "SUBSTATION") {
-              var marker = L.marker([planes[i][1], planes[i][2]], {
-                icon: substationimg,
-              });
-
-              var title =
-                '<div style="height:auto; width: auto; color:black;font-weigh:bold;font-size:14px;text-align:left;">' +
-                "<b>" +
-                deviceType[i] +
-                " NAME :</b> " +
-                deviceSrNo[i] +
-                "<br><b>LATITUDE :</b> " +
-                lattitude[i] +
-                "<br><b>LONGITUDE :</b> " +
-                longitude[i] +
-                "</div>";
-              marker.bindPopup(title);
-              markers.addLayer(marker);
-            } else if (deviceType[i] == "DT") {
-              var marker = L.marker([planes[i][1], planes[i][2]], {
-                icon: dtimg,
-              });
-
-              var title =
-                '<div style="height:auto; width: auto; color:black;font-weigh:bold;font-size:14px;text-align:left;">' +
-                "<b>" +
-                deviceType[i] +
-                " NAME :</b> " +
-                deviceSrNo[i] +
-                "<br><b>LATITUDE :</b> " +
-                lattitude[i] +
-                "<br><b>LONGITUDE :</b> " +
-                longitude[i] +
-                "</div>";
-              marker.bindPopup(title);
-              markers.addLayer(marker);
-            }
-          }
         }
-        map.addLayer(markers);
       }
+
+      if (planes.length === 0) {
+        $('#map').html('<p>No valid coordinates to display.</p>');
+        return;
+      }
+
+      if (window.mapInstance) window.mapInstance.remove();
+
+      const map = L.map("map").setView([planes[0].lat, planes[0].lon], 9);
+      window.mapInstance = map;
+
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
+      }).addTo(map);
+
+      const LeafIcon = L.Icon.extend({
+        options: { iconSize: [30, 30] }
+      });
+
+      const icons = {
+        default: new LeafIcon({ iconUrl: "assets/images/deviceimg.png" }),
+        subdivision: new LeafIcon({ iconUrl: "assets/images/subdivisionimg.png" }),
+        feeder: new LeafIcon({ iconUrl: "assets/images/feederimg.png" }),
+        substation: new LeafIcon({ iconUrl: "assets/images/substationimg.png" }),
+        dt: new LeafIcon({ iconUrl: "assets/images/dtimg.png" })
+      };
+
+      const markers = L.markerClusterGroup();
+
+      planes.forEach((point) => {
+        let icon = icons.default;
+        if (point.type === "SUBDIVISION") icon = icons.subdivision;
+        else if (point.type === "FEEDER") icon = icons.feeder;
+        else if (point.type === "SUBSTATION") icon = icons.substation;
+        else if (point.type === "DT") icon = icons.dt;
+
+        const popup = `
+          <div style="font-size:14px; color:black;">
+            <b>DEVICE:</b> ${point.serial}<br>
+            <b>TYPE:</b> ${point.type}<br>
+            <b>NIC IPV6:</b> ${point.ipv6}<br>
+            <b>CONSUMER:</b> ${point.consumer}<br>
+            <b>SUBDIVISION:</b> ${point.subDiv}<br>
+            <b>FEEDER:</b> ${point.feeder}<br>
+            <b>SUBSTATION:</b> ${point.substation}<br>
+            <b>DT:</b> ${point.dt}<br>
+            <b>LAT:</b> ${point.lat}<br>
+            <b>LON:</b> ${point.lon}
+          </div>
+        `;
+
+        const marker = L.marker([point.lat, point.lon], { icon });
+        marker.bindPopup(popup);
+        markers.addLayer(marker);
+      });
+
+      map.addLayer(markers);
     },
-    falied: function (r) {
-      alert(r);
-    },
+
+    error: function (err) {
+      console.error("Map API error:", err);
+      $('#map').html('<p>Error loading map data.</p>');
+    }
   });
 }

@@ -1,0 +1,13 @@
+/* Ensure that table headers and data are scrollable */
+.table-responsive table {
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+/* Ensure that table header remains fixed */
+.table-responsive table thead th {
+    position: sticky;
+    top: 0;
+    background-color: #fff; /* Add background color as needed */
+    z-index: 1;
+}

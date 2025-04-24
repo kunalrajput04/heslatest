@@ -34,7 +34,7 @@ export interface sytemLogInfo {
 export class SystemCheckComponent implements OnInit {
     formdata: MeterData = new MeterData();
     levelName: string = 'ALL';
-    levelValue: string = 'MPDCL';
+    levelValue: string = 'MZR';
     //startDate: string = "2022-10-14";
     //endDate: string = "2023-12-28";
     gridOptions: any;
@@ -114,7 +114,7 @@ export class SystemCheckComponent implements OnInit {
                   });
                 }
                 // else{
-                //   this.logout();
+                //   
                 // }
               }
               //table creation

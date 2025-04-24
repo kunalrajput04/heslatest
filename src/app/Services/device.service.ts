@@ -14,6 +14,7 @@ import { Levls } from '../Models/levls';
   providedIn: 'root',
 })
 export class DeviceService {
+  
   data: Levls = new Levls();
   deviceNo: getDevice = new getDevice();
   delDevice: deleteDevice = new deleteDevice();
@@ -22,30 +23,21 @@ export class DeviceService {
   }
   AddDevice(model: DeviceInformation) {
     model.ownerName = localStorage.getItem('UserID');
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
-
     return this.http.post(
-      `${environment.apiUrl}/Evit/addDevice/`,
-      model,
-      httpOptions
+      `${environment.apiUrl}/devices/addDevice`,
+      model
+      
     );
   }
 
   getDeviceInfo(deviceno: getDevice) {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
+    
 
     return this.http.post(
-      `${environment.apiUrl}/Devices/getMeterInfo/`,
-      deviceno,
-      httpOptions
+      `${environment.apiUrl}/devices/getDevice`,
+      // `${environment.apiUrl}/Devices/getMeterInfo`,
+      deviceno
+      
     );
   }
 
@@ -58,19 +50,13 @@ export class DeviceService {
     else {
       this.data.levelName = localStorage.getItem('levelName');
       this.data.levelValue = localStorage.getItem('levelValue');
-
     }
 
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
-
+ 
     return this.http.post(
-      `${environment.slaiNfoNEW}/Evit/getDevice`,
-      this.data,
-      httpOptions
+      `${environment.apiUrl}/devices/getDevice`,
+      this.data
+      
     );
   }
   getRenderDeviceList(data: any) {
@@ -90,48 +76,48 @@ export class DeviceService {
       search: data.search
     }
 
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-
-      }),
-
-    };
 
     return this.http.post(
       `${environment.apiRenderUrl}/devices/getList`,
-      datasend,
-      httpOptions
+      datasend
+      
     );
   }
   getRenderDeviceCount() {
     this.data.levelName = localStorage.getItem('levelName');
     this.data.levelValue = localStorage.getItem('levelValue');
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
+  
 
     return this.http.post(
       `${environment.apiRenderUrl}/devices/count`,
-      this.data,
-      httpOptions
+      this.data
+      
     );
   }
+  // deleteDevice(meterno: string, reason: string) {
+  //   this.delDevice.deviceSerialNo = meterno;
+  //   this.delDevice.reason = reason;
+
+  
+  //   return this.http.post(
+  //     `${environment.apiUrl}/devices/deleteDevice`,
+  //     this.delDevice
+      
+  //   );
+  // }
+ 
   deleteDevice(meterno: string, reason: string) {
     this.delDevice.deviceSerialNo = meterno;
     this.delDevice.reason = reason;
-
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
-    return this.http.post(
-      `${environment.apiUrl}/Evit/deleteDevice/`,
-      this.delDevice,
-      httpOptions
+    return this.http.request('DELETE', 
+      `${environment.apiUrl}/devices/deleteDevice`,
+      {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json'
+        }),
+        body: this.delDevice  
+      }
     );
   }
+
 }

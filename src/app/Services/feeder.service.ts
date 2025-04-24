@@ -16,76 +16,55 @@ export class FeederService {
   }
 
   addFeeder(formdata: Feeder) {
-    formdata.user_id = localStorage.getItem('UserID');
-
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
+    formdata.ownerName = localStorage.getItem('UserID');  
     return this.http.post(
-      `${environment.apiUrl}/Evit/addFeeder`,
-      formdata,
-      httpOptions
+      `${environment.apiUrl}/asset/addFeeder`,
+      formdata  
     );
   }
 
-  //#region  OldApi
+
   getFeederList() {
     this.data.levelName = localStorage.getItem('levelName');
     this.data.levelValue = localStorage.getItem('levelValue');
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
-
     return this.http.post(
-      `${environment.apiUrl}/Evit/getFeederList/`,
-      this.data,
-      httpOptions
+      `${environment.apiUrl}/asset/getFeederList`,
+      this.data      
     );
   }
 
+  // deleteFeeder(data: Feeder) {
+  //   return this.http.post(
+  //     `${environment.apiUrl}/asset/deleteFeeder`,
+  //     data,
+      
+  //   );
+  // }
   deleteFeeder(data: Feeder) {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
-
-    return this.http.post(
-      `${environment.apiUrl}/Evit/deleteFeeder/`,
-      data,
-      httpOptions
+    return this.http.request('DELETE',
+      `${environment.apiUrl}/asset/deleteFeeder`,
+      {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json'
+        }),
+        body: data
+      }
     );
   }
-
   getFeederInfo(feerderId: any) {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
-
     return this.http.get(
-      `${environment.apiUrl}/Evit/deleteFeeder/` + feerderId + ``,
-      httpOptions
+      `${environment.apiUrl}/asset/deleteFeeder` + feerderId + ``,
+      
     );
   }
 
-  getFeederBySubstation(name: string) {
-    this.substationdata.substationName = name;
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
+  getFeederBySubstation(name: string) {    
+    this.substationdata.subStationName = name; 
 
     return this.http.post(
-      `${environment.apiUrl}/Evit/getFeeders/`,
-      this.substationdata,
-      httpOptions
+      `${environment.apiUrl}/asset/getFeeder`,
+      this.substationdata
+      
     );
   }
 }

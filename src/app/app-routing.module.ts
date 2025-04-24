@@ -44,12 +44,13 @@ import { SubDivisionComponent } from './Views/sub-division/sub-division.componen
 import { SubstationComponent } from './Views/substation/substation.component';
 import { TodRWComponent } from './Views/tod-rw/tod-rw.component';
 import { SystemCheckComponent } from './Views/system-check/system-check.component';
-import { CommunicationReportComponent } from './Shared/meter-reports/communication-report/communication-report.component';
-import { FailureReportComponent } from './Shared/meter-reports/failure-report/failure-report.component';
-import { InactiveReportComponent } from './Shared/meter-reports/inactive-report/inactive-report.component';
-import { FailureNeverReportComponent } from './Shared/meter-reports/failurenever-report/failurenever-report.component';
-import { MeterSummaryComponent } from './Shared/meter-reports/meter-summary/meter-summary.component';
-import { MetercountComponent } from './Views/Communication/metercount/metercount.component';
+import { DcuinfoComponent } from './Views/dcuinfo/dcuinfo.component';
+import { DcuComponent } from './Views/dcu/dcu.component';
+import { DcuoutageComponent } from './Views/dcuoutage/dcuoutage.component';
+import { CircleComponent } from './Views/circle/circle.component';
+import { DcuHierarchyComponent } from './Views/dcu-hierarchy/dcu-hierarchy.component';
+import { DivisionComponent } from './Views/division/division.component';
+import { ZoneComponent } from './Views/zone/zone.component';
 
 const routes: Routes = [
   {
@@ -61,12 +62,15 @@ const routes: Routes = [
     children: [
       { path: '', component: HomeComponent },
       { path: 'deviceInfo', component: DeviceInfoComponent },
+      { path: 'dcuInfo', component: DcuinfoComponent },
+      {path:'dcu',component:DcuComponent},
+      {path:'dcuOutage',component:DcuoutageComponent},
       { path: 'nameplate', component: DeviceNamePlateComponent },
       { path: 'commsummary', component: CommunicationsummaryComponent },
       { path: 'commreport', component: CommReportComponent },
       { path: 'commreporthistory', component: CommreporthistoryComponent },
       { path: 'slahistory', component: SlaHistoryComponent },
-      {path:'sysAbility',component:SystemCheckComponent},
+      { path: 'sysAbility', component: SystemCheckComponent },
       { path: 'InstantData', component: InstantDataComponent },
       { path: 'InstantDataPush', component: InsantDataPushComponent },
       { path: 'RecentInstantData', component: ReturnInstantDataComponent },
@@ -82,12 +86,15 @@ const routes: Routes = [
       {
         path: 'ConnectAndDisconnect',
         component: ConnectAndDisconnectComponent,
-      },
-
+      }, 
+     {path: 'zone', component: ZoneComponent},
+     {path: 'circle', component: CircleComponent},
+      {path: 'division', component: DivisionComponent},  
       { path: 'subdivision', component: SubDivisionComponent },
       { path: 'Substation', component: SubstationComponent },
       { path: 'Feeder', component: FeederComponent },
       { path: 'DT', component: DTComponent },
+      {path: 'dcuHierarchy', component: DcuHierarchyComponent},
       {
         path: 'InstentenousChartPopup',
         component: InstentenousChartPopupComponent,
@@ -140,17 +147,11 @@ const routes: Routes = [
         path: 'meterstatuslog',
         component: MeterStatusLogComponent,
       },
-      { path: 'meter-reports/communication-report', component: CommunicationReportComponent },
-      { path: 'meter-reports/failure-report', component: FailureReportComponent },
-      { path: 'meter-reports/inactive-report', component: InactiveReportComponent },
-      { path: 'meter-reports/failurenever-report', component: FailureNeverReportComponent },
-      { path: 'meter-reports/meter-summary', component: MeterSummaryComponent },
-      { path: 'meter-reports/meter-counts', component: MetercountComponent },
     ],
   },
 
   { path: 'login', component: LoginComponent },
-  { path: 'meecl', component: SelectProjectComponent },
+  // { path: 'meecl', component: SelectProjectComponent },
   { path: 'forgetpassord', component: ForgetPassordComponent },
   { path: 'register', component: RegisterComponent },
 ];

@@ -19,6 +19,7 @@ import { Subject } from 'rxjs';
 import { DataTableDirective } from 'angular-datatables';
 import { AuthService } from 'src/app/Services/auth.service';
 import { Utility } from 'src/app/Shared/utility';
+import { Common } from 'src/app/Shared/Common/common';
 
 declare let $: any;
 @Component({
@@ -37,7 +38,7 @@ export class DTComponent implements OnInit {
   dtTrigger: Subject<any> = new Subject<any>();
   @ViewChild(DataTableDirective, { static: false })
   dtElement: DataTableDirective;
-
+commonClass: Common;
   formdata: DT = new DT();
   subdivisionDropDown: any[] = [];
   substationDropdown: any[] = [];
@@ -63,6 +64,7 @@ export class DTComponent implements OnInit {
     private authservice: AuthService
   ) {
     this.datasharedservice.chagneHeaderNav(this.data);
+    this.commonClass = new Common(datasharedservice);
   }
 
   ngOnInit(): void {
@@ -110,7 +112,7 @@ export class DTComponent implements OnInit {
 
       } else {
         this.spinner.hide();
-        this.logout();
+        
       }
     });
   }
@@ -139,19 +141,14 @@ export class DTComponent implements OnInit {
 
     this.subdivisionservice.getSubdivision().subscribe((res: any) => {
       this.spinner.hide();
-      if (res != null && (res.message != 'Key Is Not Valid' && res.message != 'Session Is Expired')) {
+      const validData = this.commonClass.checkDataExists(res);
         this.subdivisionDropDown = [];
         let obj = res.data[0];
         for (var item in obj) {
           this.subdivisionDropDown.push(obj[item][0]);
         }
         this.utility.updateApiKey(res.apiKey);;
-
-      }
-      else {
-
-        this.logout();
-      }
+    
     });
   }
   getSubstation(subdivision: string) {
@@ -203,8 +200,9 @@ export class DTComponent implements OnInit {
     this.spinner.show();
     this.dtservice.addDT(form.value).subscribe((res: any) => {
       this.spinner.hide();
-      if (res != null && (res.message != 'Key Is Not Valid' && res.message != 'Session Is Expired')) {
-        if (res.data == true) {
+      const validData = this.commonClass.checkDataExists(res);
+        // if (res.data == true) {
+          if (res && res.result === true) {
           this.rerender();
           if (this.isEdit) {
             this.toaster.success('Updated Successfully');
@@ -214,31 +212,54 @@ export class DTComponent implements OnInit {
           this.utility.updateApiKey(res.apiKey);;
         }
         else {
-
           this.toaster.error(res.message);
-
         }
-      }
     
-      else {
-
-          this.logout();
-        }
       });
   }
 
   onChangePage(pageOfItems: Array<any>) {
     this.pageOfItems = pageOfItems;
   }
+  // deleteDTInfo(dtname: string) {
+  //   this.formdata.dtName = dtname;
+  //   Swal.fire({
+  //     title: 'Are you sure?',
+  //     input: 'text',
+  //     inputAttributes: {
+  //       autocapitalize: 'off',
+  //     },
+
+  //     text: 'You will not be able to recover this data! Enter your reason',
+  //     icon: 'warning',
+  //     showCancelButton: true,
+  //     confirmButtonColor: '#3085d6',
+  //     cancelButtonColor: '#d33',
+  //     confirmButtonText: 'Yes, delete it!',
+  //   }).then((result) => {
+  //     if (result.value == '') {
+  //       Swal.fire('Please Enter Delete Reason!', '', 'error');
+  //     } else if (result.isConfirmed) {
+  //       this.dtservice.deleteDTData(this.formdata).subscribe((res: any) => {
+  //         const validData = this.commonClass.checkDataExists(res);
+  //           this.formdata = new DT();
+  //           Swal.fire('deleted successfully', '', 'success');
+  //           this.utility.updateApiKey(res.apiKey);;
+  //           this.rerender();
+       
+  //       });
+  //     }
+  //   });
+  // }
   deleteDTInfo(dtname: string) {
     this.formdata.dtName = dtname;
+    
     Swal.fire({
       title: 'Are you sure?',
       input: 'text',
       inputAttributes: {
         autocapitalize: 'off',
       },
-
       text: 'You will not be able to recover this data! Enter your reason',
       icon: 'warning',
       showCancelButton: true,
@@ -249,18 +270,23 @@ export class DTComponent implements OnInit {
       if (result.value == '') {
         Swal.fire('Please Enter Delete Reason!', '', 'error');
       } else if (result.isConfirmed) {
-        this.dtservice.deleteDTData(this.formdata).subscribe((res: any) => {
-          if (res != null && (res.message != 'Key Is Not Valid' && res.message != 'Session Is Expired')) {
-            this.formdata = new DT();
-            Swal.fire('deleted successfully', '', 'success');
-            this.utility.updateApiKey(res.apiKey);;
-            this.rerender();
-          }
-          else {
-
-            this.logout();
-          }
-        });
+        this.dtservice.deleteDTData(this.formdata)
+          .subscribe({
+            next: (res: any) => {
+              const validData = this.commonClass.checkDataExists(res);
+              if (validData) {
+                this.formdata = new DT();
+                Swal.fire('Deleted successfully', '', 'success');
+                this.utility.updateApiKey(res.apiKey);
+                this.rerender();
+              } else {
+                Swal.fire('Error', res.message || 'Failed to delete DT', 'error');
+              }
+            },
+            error: (error) => {
+              Swal.fire('Error', 'Failed to delete DT', 'error');
+            }
+          });
       }
     });
   }

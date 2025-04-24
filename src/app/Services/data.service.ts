@@ -30,60 +30,36 @@ export class DataService {
 
   getInstantData(fromdate: any, todate: any, meterNo: string) {
     if (meterNo != '') {
-      this.getdata.level_name = 'METER';
-      this.getdata.level_value = meterNo;
+      this.getdata.levelName = 'METER';
+      this.getdata.levelValue = meterNo;
     } else {
-      this.getdata.level_name = localStorage.getItem('levelName');
-      this.getdata.level_value = localStorage.getItem('levelValue');
+      this.getdata.levelName = localStorage.getItem('levelName');
+      this.getdata.levelValue = localStorage.getItem('levelValue');
     }
-    this.getdata.start_date = fromdate;
-    this.getdata.end_date = todate;
-
-    let meterPhase = sessionStorage.getItem('MeterPhase');
-
-    if (meterPhase == null || meterPhase == 'All' || meterPhase == 'Evit') {
-      meterPhase = 'Evit';
-    } else {
-      meterPhase = 'Evit3P';
-    }
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
+    this.getdata.startDate = fromdate;
+    this.getdata.endDate = todate;
+    // Add devType from localStorage or default to '3P'
+    this.getdata.devType = localStorage.getItem('devType') || '3P';
 
     return this.http.post(
-      `${environment.apiUrl}/` + meterPhase + `/getInstantData/` + ``,
-      this.getdata,
-      httpOptions
+      `${environment.apiUrl}/instant/getUiInstantData`,
+      this.getdata
     );
   }
   getMeterStatusLogData(fromdate: any, todate: any, meterNo: string) {
     if (meterNo != '') {
-      this.getdata.level_name = 'METER';
-      this.getdata.level_value = meterNo;
+      this.getdata.levelName = 'METER';
+      this.getdata.levelValue = meterNo;
     } else {
-      this.getdata.level_name = localStorage.getItem('levelName');
-      this.getdata.level_value = localStorage.getItem('levelValue');
+      this.getdata.levelName = localStorage.getItem('levelName');
+      this.getdata.levelValue = localStorage.getItem('levelValue');
     }
-    this.getdata.start_date = fromdate;
-    this.getdata.end_date = todate;
-
-    let meterPhase = sessionStorage.getItem('MeterPhase');
-
-    if (meterPhase == null || meterPhase == 'All') {
-      meterPhase = 'Evit';
-    }
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
+    this.getdata.startDate = fromdate;
+    this.getdata.endDate = todate;
 
     return this.http.post(
       `${environment.apiUrl}/Reports/getMeterStatusCommandLogs/` + ``,
-      this.getdata,
-      httpOptions
+      this.getdata
     );
   }
   getMeterStatusData(meterNo: string) {
@@ -99,16 +75,10 @@ export class DataService {
         level_value: localStorage.getItem('levelValue'),
       };
     }
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
 
     return this.http.post(
       `${environment.apiUrl}/Reports/getMeterStatus/` + ``,
-      body,
-      httpOptions
+      body
     );
   }
 
@@ -129,22 +99,7 @@ export class DataService {
       };
     }
 
-    let meterPhase = sessionStorage.getItem('MeterPhase');
-
-    if (meterPhase == null || meterPhase == 'All') {
-      meterPhase = 'Evit';
-    }
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
-
-    return this.http.post(
-      `${environment.apiUrl}/` + meterPhase + `/getNamePlate/` + ``,
-      body,
-      httpOptions
-    );
+    return this.http.post(`${environment.apiUrl}/devices/getNamePlate`, body);
   }
 
   getReturnInstantData(todate: any, meterNo: string) {
@@ -154,80 +109,66 @@ export class DataService {
     } else {
       this.getrecentdata.levelName = localStorage.getItem('levelName');
       this.getrecentdata.levelValue = localStorage.getItem('levelValue');
+
     }
 
     this.getrecentdata.date = todate;
 
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
-
     return this.http.post(
-      `${environment.apiUrl}/Evit/getRecentInstantData/` + ``,
-      this.getrecentdata,
-      httpOptions
+      `${environment.apiUrl}/instant/getRecentInstantData`,
+      this.getrecentdata
     );
   }
 
-  getConfigrationReportData(fromdate: any, todate: any) {
-    this.getdata.level_name = localStorage.getItem('levelName');
-    this.getdata.level_value = localStorage.getItem('levelValue');
-    this.getdata.start_date = fromdate;
-    this.getdata.end_date = todate;
-
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
-
+  getConfigrationReportData(fromdate: any, todate: any, meterNo: string) {
+    if (meterNo != '') {
+      this.getdata.levelName = 'METER';
+      this.getdata.levelValue = meterNo;
+    } else {
+      this.getdata.levelName = localStorage.getItem('levelName');
+      this.getdata.levelValue = localStorage.getItem('levelValue');
+    }
+    this.getdata.startDate = fromdate;
+    this.getdata.endDate = todate;
     return this.http.post(
-      `${environment.apiUrl}/Reports/getConfigurations`,
-      this.getdata,
-      httpOptions
+      `${environment.apiUrl}/cfg/getConfigurations`,
+      this.getdata
     );
   }
 
-  getAllCommandLogs(fromdate: any, todate: any) {
-    this.getdata.level_name = localStorage.getItem('levelName');
-    this.getdata.level_value = localStorage.getItem('levelValue');
-    this.getdata.start_date = fromdate;
-    this.getdata.end_date = todate;
-
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
+  getAllCommandLogs(fromdate: any, todate: any, meterNo: string) {
+    if (meterNo != '') {
+      this.getdata.levelName = 'METER';
+      this.getdata.levelValue = meterNo;
+    } else {
+      this.getdata.levelName = localStorage.getItem('levelName');
+      this.getdata.levelValue = localStorage.getItem('levelValue');
+    }
+    this.getdata.startDate = fromdate;
+    this.getdata.endDate = todate;
 
     return this.http.post(
-      `${environment.apiUrl}/Reports/getFullDataCommandLogs`,
-      this.getdata,
-      httpOptions
+      `${environment.apiUrl}/cfg/getFullDataCommandLogs`,
+      this.getdata
     );
   }
 
-  getCommandLogData(fromdate: any, todate: any) {
-    this.getdata.level_name = localStorage.getItem('levelName');
-    this.getdata.level_value = localStorage.getItem('levelValue');
-    this.getdata.start_date = fromdate;
-    this.getdata.end_date = todate;
-
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
+  getCommandLogData(fromdate: any, todate: any, meterNo: string) {
+    if (meterNo != '') {
+      this.getdata.levelName = 'METER';
+      this.getdata.levelValue = meterNo;
+    } else {
+      this.getdata.levelName = localStorage.getItem('levelName');
+      this.getdata.levelValue = localStorage.getItem('levelValue');
+    }
+    this.getdata.startDate = fromdate;
+    this.getdata.endDate = todate;
 
     return this.http.post(
-      `${environment.apiUrl}/Reports/getCommandsLogs`,
-      this.getdata,
-      httpOptions
+      `${environment.apiUrl}/cfg/getCommandsLogs`,
+      this.getdata
     );
   }
-
   getCommandLogChartData(fromdate: any, todate: any, commandname: string) {
     this.logdata.levelName = localStorage.getItem('levelName');
     this.logdata.levelValue = localStorage.getItem('levelValue');
@@ -235,300 +176,131 @@ export class DataService {
     this.logdata.endDate = todate;
     //this.logdata.commandName = commandname;
 
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
-
     return this.http.post(
-      `${environment.apiUrl}/Reports/getDeviceCommandLogsCount`,
-      this.logdata,
-      httpOptions
+      `${environment.apiUrl}/cfg/getDeviceCommandLogsCount`,
+      this.logdata
     );
   }
 
   getInstantPushData(fromdate: any, todate: any, meterNo: string) {
     if (meterNo != '') {
-      this.getdata.level_name = 'METER';
-      this.getdata.level_value = meterNo;
+      this.getdata.levelName = 'METER';
+      this.getdata.levelValue = meterNo;
     } else {
-      this.getdata.level_name = localStorage.getItem('levelName');
-      this.getdata.level_value = localStorage.getItem('levelValue');
+      this.getdata.levelName = localStorage.getItem('levelName');
+      this.getdata.levelValue = localStorage.getItem('levelValue');
     }
 
-    this.getdata.start_date = fromdate;
-    this.getdata.end_date = todate;
-
-    let meterPhase = sessionStorage.getItem('MeterPhase');
-
-    if (meterPhase == null || meterPhase == 'All') {
-      meterPhase = 'Evit';
-    }
-
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
+    this.getdata.startDate = fromdate;
+    this.getdata.endDate = todate;
 
     return this.http.post(
-      `${environment.apiUrl}/` + meterPhase + `/getInstantPushData/` + ``,
-      this.getdata,
-      httpOptions
+      `${environment.apiUrl}/instant/getInstantPushData`,
+      this.getdata
     );
   }
 
   getDailyLoadProfileData(fromdate: any, todate: any, meterNo: string) {
     if (meterNo != '') {
-      this.getdata.level_name = 'METER';
-      this.getdata.level_value = meterNo;
+      this.getdata.levelName = 'METER';
+      this.getdata.levelValue = meterNo;
     } else {
-      this.getdata.level_name = localStorage.getItem('levelName');
-      this.getdata.level_value = localStorage.getItem('levelValue');
+      this.getdata.levelName = localStorage.getItem('levelName');
+      this.getdata.levelValue = localStorage.getItem('levelValue');
     }
-    this.getdata.start_date = fromdate;
-    this.getdata.end_date = todate;
-    let meterPhase = sessionStorage.getItem('MeterPhase');
-
-    if (meterPhase == null || meterPhase == 'All' || meterPhase == 'Evit') {
-      meterPhase = 'Evit';
-    } else {
-      meterPhase = 'Evit3P';
-    }
-
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
-
+    this.getdata.startDate = fromdate;
+    this.getdata.endDate = todate;
     return this.http.post(
-      `${environment.apiUrl}/` + meterPhase + `/getDailyLoadProfileData/` + ``,
-      this.getdata,
-      httpOptions
+      `${environment.apiUrl}/daily/getDailyLoadProfileData`,
+      this.getdata
     );
   }
 
   getEventData(fromdate: any, todate: any, meterNo: string) {
     if (meterNo != '') {
-      this.getdata.level_name = 'METER';
-      this.getdata.level_value = meterNo;
+      this.getdata.levelName = 'METER';
+      this.getdata.levelValue = meterNo;
     } else {
-      this.getdata.level_name = localStorage.getItem('levelName');
-      this.getdata.level_value = localStorage.getItem('levelValue');
+      this.getdata.levelName = localStorage.getItem('levelName');
+      this.getdata.levelValue = localStorage.getItem('levelValue');
     }
-    this.getdata.start_date = fromdate;
-    this.getdata.end_date = todate;
-
-    let meterPhase = sessionStorage.getItem('MeterPhase');
-
-    if (meterPhase == null || meterPhase == 'All' || meterPhase == 'Evit') {
-      meterPhase = 'Evit';
-    } else {
-      meterPhase = 'Evit3P';
-    }
-
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
-
+    this.getdata.startDate = fromdate;
+    this.getdata.endDate = todate;
     return this.http.post(
-      `${environment.apiUrl}/` + meterPhase + `/getEventData` + ``,
-      this.getdata,
-      httpOptions
+      `${environment.apiUrl}/events/getEventData`,
+      this.getdata
     );
   }
 
   getEventPushData(fromdate: string, todate: string, meterNo: string) {
     if (meterNo != '') {
-      this.getdata.level_name = 'METER';
-      this.getdata.level_value = meterNo;
+      this.getdata.levelName = 'METER';
+      this.getdata.levelValue = meterNo;
     } else {
-      this.getdata.level_name = localStorage.getItem('levelName');
-      this.getdata.level_value = localStorage.getItem('levelValue');
+      this.getdata.levelName = localStorage.getItem('levelName');
+      this.getdata.levelValue = localStorage.getItem('levelValue');
     }
-    this.getdata.start_date = fromdate;
-    this.getdata.end_date = todate;
-
-    let meterPhase = sessionStorage.getItem('MeterPhase');
-
-    if (meterPhase == null || meterPhase == 'All') {
-      meterPhase = 'Evit';
-    }
-
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
+    this.getdata.startDate = fromdate;
+    this.getdata.endDate = todate;
 
     return this.http.post(
-      `${environment.apiUrl}/` + meterPhase + `/getEventDataPush/` + ``,
-      this.getdata,
-      httpOptions
+      `${environment.apiUrl}/events/getEventDataPush`,
+      this.getdata
     );
   }
 
   getLoadProfileData(fromdate: string, todate: string, meterNo: string) {
     if (meterNo != '') {
-      this.getdata.level_name = 'METER';
-      this.getdata.level_value = meterNo;
+      this.getdata.levelName = 'METER';
+      this.getdata.levelValue = meterNo;
     } else {
-      this.getdata.level_name = localStorage.getItem('levelName');
-      this.getdata.level_value = localStorage.getItem('levelValue');
+      this.getdata.levelName = localStorage.getItem('levelName');
+      this.getdata.levelValue = localStorage.getItem('levelValue');
     }
 
-    this.getdata.start_date = fromdate;
-    this.getdata.end_date = todate;
-
-    let meterPhase = sessionStorage.getItem('MeterPhase');
-
-    if (meterPhase == null || meterPhase == 'All' || meterPhase == 'Evit') {
-      meterPhase = 'Evit';
-    } else {
-      meterPhase = 'Evit3P';
-    }
-
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
-
+    this.getdata.startDate = fromdate;
+    this.getdata.endDate = todate;
     return this.http.post(
-      `${environment.apiUrl}/` + meterPhase + `/getLoadProfileData/` + ``,
-      this.getdata,
-      httpOptions
+      `${environment.apiUrl}/delta/getLoadProfileData`,
+      this.getdata
     );
   }
 
   getBillingData(fromdate: string, todate: string, meterNo: string) {
     if (meterNo != '') {
-      this.getdata.level_name = 'METER';
-      this.getdata.level_value = meterNo;
+      this.getdata.levelName = 'METER';
+      this.getdata.levelValue = meterNo;
     } else {
-      this.getdata.level_name = localStorage.getItem('levelName');
-      this.getdata.level_value = localStorage.getItem('levelValue');
+      this.getdata.levelName = localStorage.getItem('levelName');
+      this.getdata.levelValue = localStorage.getItem('levelValue');
     }
-    this.getdata.start_date = fromdate;
-    this.getdata.end_date = todate;
-    let meterPhase = sessionStorage.getItem('MeterPhase');
-
-    if (meterPhase == null || meterPhase == 'All' || meterPhase == 'Evit') {
-      meterPhase = 'Evit';
-    } else {
-      meterPhase = 'Evit3P';
-    }
-
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
+    this.getdata.startDate = fromdate;
+    this.getdata.endDate = todate;
 
     return this.http.post(
-      `${environment.apiUrl}/` + meterPhase + `/getBillingData/` + ``,
-      this.getdata,
-      httpOptions
+      `${environment.apiUrl}/billing/getBillingData`,
+      this.getdata
     );
   }
 
   getCurrentBillingData(fromdate: string, todate: string, meterNo: string) {
     if (meterNo != '') {
-      this.getdata.level_name = 'METER';
-      this.getdata.level_value = meterNo;
+      this.getdata.levelName = 'METER';
+      this.getdata.levelValue = meterNo;
     } else {
-      this.getdata.level_name = localStorage.getItem('levelName');
-      this.getdata.level_value = localStorage.getItem('levelValue');
+      this.getdata.levelName = localStorage.getItem('levelName');
+      this.getdata.levelValue = localStorage.getItem('levelValue');
     }
-    this.getdata.start_date = fromdate;
-    this.getdata.end_date = todate;
-    let meterPhase = sessionStorage.getItem('MeterPhase');
-
-    if (meterPhase == null || meterPhase == 'All' || meterPhase == 'Evit') {
-      meterPhase = 'Evit';
-    } else {
-      meterPhase = 'Evit3P';
-    }
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
-
+    this.getdata.startDate = fromdate;
+    this.getdata.endDate = todate;
     return this.http.post(
-      `${environment.apiUrl}/` + meterPhase + `/getCurrentBillingData/` + ``,
-      this.getdata,
-      httpOptions
+      `${environment.apiUrl}/currbill/getCurrentBillingData`,
+      this.getdata
     );
   }
 
   getDevice() {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
-
-    return this.http.get(
-      `${environment.apiUrl}/Evit/getDevice/ALL/EVIT_DELHI`,
-      httpOptions
-    );
-  }
-
-  getSubdivisionData() {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
-
-    return this.http.get(
-      `${environment.apiUrl}/Evit/getSubdivisionList/SUBDEVISION/SUBD_DEL_01/2021-03-03/2023-03-14`,
-      httpOptions
-    );
-  }
-
-  getSubstationData() {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
-
-    return this.http.get(
-      `${environment.apiUrl}/Evit/getSubstationList/SUBDEVISION/SUBD_DEL_01/2021-03-03/2023-03-14`,
-      httpOptions
-    );
-  }
-
-  getFeederData() {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
-
-    return this.http.get(
-      `${environment.apiUrl}/Evit/getFeederList/SUBDEVISION/SUBD_DEL_01/2021-03-03/2023-03-14`,
-      httpOptions
-    );
-  }
-
-  getDTData() {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
-
-    return this.http.get(
-      `${environment.apiUrl}/Evit/getDtTransList/SUBDEVISION/SUBD_DEL_01/2021-03-03/2023-03-14`,
-      httpOptions
-    );
+    return this.http.get(`${environment.apiUrl}/Evit/getDevice/ALL/EVIT_DELHI`);
   }
 
   getDashboardChart(commandType: any, date: string, meterPhase: string) {
@@ -551,16 +323,9 @@ export class DataService {
     this.getchart.commandType = commandType;
     this.getchart.startDate = date;
 
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
-
     return this.http.post(
       `${environment.apiUrl}/Evit/getCommCount/`,
-      this.getchart,
-      httpOptions
+      this.getchart
     );
   }
   getDashboardChartForCommReport(
@@ -588,19 +353,13 @@ export class DataService {
     this.getchart.levelValue = levelValue;
     this.getchart.commandType = commandType;
     this.getchart.startDate = date;
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
 
     return this.http.post(
       `${environment.apiUrl}/Evit/getCommCount/`,
-      this.getchart,
-      httpOptions
+      this.getchart
     );
   }
-  getDashboardChartComman(meterPhase: string) {
+  getDashboardChartComman(meterPhase: string) {  
     let devType;
     switch (meterPhase) {
       case 'All':
@@ -626,32 +385,24 @@ export class DataService {
       levelValue: localStorage.getItem('levelValue'),
       devType: devType,
     };
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
 
     return this.http.post(
-      `${environment.apiUrl}/Evit/getMetersCommCount/`,
-      bodyData,
-      httpOptions
+      `${environment.apiUrl}/devices/getMetersCommCount`,
+      bodyData
+
     );
   }
+
+
   getCommReportChartData(levelname: string, levelvalue: string) {
     let bodyData = {
       levelName: levelname,
       levelValue: levelvalue,
     };
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
+
     return this.http.post(
       `${environment.apiUrl}/Evit/getDeviceDatasetsComm`,
-      bodyData,
-      httpOptions
+      bodyData
     );
   }
 
@@ -668,15 +419,10 @@ export class DataService {
       start_date: startdate,
       end_date: enddate,
     };
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
+
     return this.http.post(
-      `https://meghasmarts.com:8443/sla/rest/Evit/getSLAData`,
-      bodyData,
-      httpOptions
+      `http://115.124.114.201:8080/sla/rest/Evit/getSLAData`,
+      bodyData
     );
   }
 
@@ -693,39 +439,11 @@ export class DataService {
       start_date: startdate,
       end_date: enddate,
     };
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
+
     return this.http.post(
-      // `https://meghasmarts.com:8443/sla2/rest/Evit/getMonthlySLANew`,
-      `https://meghasmarts.com:8443/dlms1/rest/Evit/getMonthlySLANew`,
-      bodyData,
-      httpOptions
-    );
-  }
-  //sla history by rajneesh
-  getMeterCount(
-   
-    startdate: string,
-    enddate: string
-  ) {
-    let bodyData = {
-     
-      startDate: startdate,
-      endDate: enddate,
-    };
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
-    return this.http.post(
-      // `https://meghasmarts.com:8443/sla2/rest/Evit/getMonthlySLANew`,
-      `https://meghasmarts.com:6005/monthlySla/getList`,
-      bodyData,
-      httpOptions
+      `http://115.124.114.201:8080/sla2/rest/Evit/getMonthlySLANew`,
+      // `https://meghasmarts.com:8443/sla1/rest/Evit/getMonthlySLA`,
+      bodyData
     );
   }
   //sla history by rajneesh
@@ -741,15 +459,10 @@ export class DataService {
       start_date: startdate,
       end_date: enddate,
     };
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
+
     return this.http.post(
       `http://115.124.119.161:8069/api/MonthSla/getMonthlySLA`,
-      bodyData,
-      httpOptions
+      bodyData
     );
   }
 
@@ -765,15 +478,10 @@ export class DataService {
       start_date: startdate,
       end_date: enddate,
     };
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
+
     return this.http.post(
       `http://115.124.119.161:5065/api/SystemCheck`,
-      bodyData,
-      httpOptions
+      bodyData
     );
   }
 
@@ -792,15 +500,7 @@ export class DataService {
   }
 
   getSLAReportHistoryData3() {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
-    return this.http.get(
-      `${environment.slaH}/api/MonthSla/get-all-sla-data`,
-      httpOptions
-    );
+    return this.http.get(`${environment.slaH}/api/MonthSla/get-all-sla-data`);
   }
   getDashboardChartList(
     commandType: string,
@@ -809,6 +509,7 @@ export class DataService {
     dropdownvalue: string,
     meterType: string
   ) {
+    debugger;
     if (commandType == 'Billing') {
       let month_year;
 
@@ -828,16 +529,9 @@ export class DataService {
     this.getchartstatus.startDate = date;
     this.getchartstatus.meterType = meterType;
 
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
-
     return this.http.post(
-      `${environment.apiComUrl}/Evit/getCommCountDevicesList/`,
-      this.getchartstatus,
-      httpOptions
+      `${environment.apiComUrl}/devices/getCommCountDevicesList`,
+      this.getchartstatus
     );
   }
   getDashboardChartListForCommReport(
@@ -888,16 +582,9 @@ export class DataService {
     this.getchartstatus.startDate = date;
     this.getchartstatus.meterType = devType;
 
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
-
     return this.http.post(
-      `${environment.apiComUrl}/Evit/getCommCountDevicesList/`,
-      this.getchartstatus,
-      httpOptions
+      `${environment.apiComUrl}/devices/getCommCountDevicesList`,
+      this.getchartstatus
     );
   }
 }

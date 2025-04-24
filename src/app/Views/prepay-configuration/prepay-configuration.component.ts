@@ -12,6 +12,8 @@ import { OnDemandService } from 'src/app/Services/on-demand.service';
 import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { DatePipe } from '@angular/common';
+import { Common } from 'src/app/Shared/Common/common';
+import { DataSharedService } from 'src/app/Services/data-shared.service';
 
 @Component({
   selector: 'app-prepay-configuration',
@@ -20,7 +22,7 @@ import { DatePipe } from '@angular/common';
 })
 export class PrepayConfigurationComponent implements OnInit {
   formdata: UserCreate = new UserCreate();
-
+  isAsync = false;
   UtilityDropdown: any[] = [];
   SubDivisionDropdown: any[] = [];
   SubStationDropdown: any[] = [];
@@ -34,8 +36,8 @@ export class PrepayConfigurationComponent implements OnInit {
   levelValue: string = '';
   isMeter: boolean = true;
   iswritepermission: string;
-
-
+  commonClass: Common;
+  isAsyncMode: boolean = false;
 
   PaymentMode: string;
   CurrentBalanceAmount: string = '';
@@ -64,7 +66,10 @@ export class PrepayConfigurationComponent implements OnInit {
     private ondemmand: OnDemandService,
     private toaster: ToastrService,
     private datePipe: DatePipe,
-  ) { }
+      private datasharedservice: DataSharedService
+  ) { 
+    this.commonClass = new Common(datasharedservice);
+  }
 
   ngOnInit(): void {
     this.formdata.roleID = '6';
@@ -88,7 +93,7 @@ export class PrepayConfigurationComponent implements OnInit {
   //       }
   //     } else {
   //       this.spinner.hide();
-  //       this.logout();
+  //       
   //     }
   //   });
   // }
@@ -117,7 +122,7 @@ export class PrepayConfigurationComponent implements OnInit {
         }
         else {
 
-          this.logout();
+          
         }
       });
   }
@@ -217,6 +222,55 @@ export class PrepayConfigurationComponent implements OnInit {
       this.getSubdivision();
     }
   }
+  onSubmit(command: string) {
+    this.spinner.show();
+    this.getLevelValue();
+    let commandValue;
+    if (command == 'CurrentBalanceAmount') {
+      commandValue = this.CurrentBalanceAmount;
+    } else if (command == 'PaymentMode') {
+      commandValue = this.PaymentMode;
+    }
+    else if (command == 'TotalAmountAtLastRecharge') {
+      commandValue = this.TotalAmountAtLastRecharge;
+    }
+    else if (command == 'LastTokenRechargeTime') {
+      commandValue = this.datePipe.transform(new Date(), 'yyyy-MM-dd'); this.LastTokenRechargeTime;
+    }
+    else if (command == 'LastTokenRechargeAmount') {
+      commandValue = this.LastTokenRechargeAmount;
+    }
+    else if (command == 'CurrentBalanceTime') {
+      commandValue = this.datePipe.transform(this.CurrentBalanceTime, 'yyyy-MM-dd HH:mm:ss');
+    }
+  
+    // Choose method based on isAsync toggle
+    const method = this.isAsync ? 
+      this.ondemmand.executeCommandForConfigurationAsync :
+      this.ondemmand.executeCommandForConfiguration;
+  
+    method.call(this.ondemmand,
+      command,
+      commandValue,
+      this.levelName,
+      this.levelValue
+    ).subscribe({
+      next: (res: any) => {
+        this.spinner.hide();
+        if (res && res.result === true) {
+          this.toaster.success('Updated Successfully');
+        } else {
+          this.toaster.error('Something went wrong!');
+        }
+      },
+      error: (err) => {
+        this.spinner.hide();
+        this.toaster.error('Oops! Something Went Wrong.');
+      }
+    });
+  }
+  
+ 
   onSubmitAll() {
 
     if (this.CurrentBalanceAmountCheck && this.CurrentBalanceAmount == "")
@@ -269,51 +323,152 @@ export class PrepayConfigurationComponent implements OnInit {
           })
     }
   }
-  onSubmit(command: string) {
-    this.spinner.show();
-    this.getLevelValue();
-    let commandValue;
-    if (command == 'CurrentBalanceAmount') {
-      commandValue = this.CurrentBalanceAmount;
-    } else if (command == 'PaymentMode') {
-      commandValue = this.PaymentMode;
-    }
-    else if (command == 'TotalAmountAtLastRecharge') {
-      commandValue = this.TotalAmountAtLastRecharge;
-    }
-    else if (command == 'LastTokenRechargeTime') {
-      commandValue = this.datePipe.transform(new Date(), 'yyyy-MM-dd'); this.LastTokenRechargeTime;
-    }
-    else if (command == 'LastTokenRechargeAmount') {
-      commandValue = this.LastTokenRechargeAmount;
-    }
-    else if (command == 'CurrentBalanceTime') {
-      commandValue = this.datePipe.transform(this.CurrentBalanceTime, 'yyyy-MM-dd HH:mm:ss');
-    }
-    this.ondemmand
-      .executeCommandForConfiguration(
-        command,
-        commandValue,
-        this.levelName,
-        this.levelValue
-      )
-      .subscribe((res: any) => {
-        this.spinner.hide();
+  // onSubmit(command: string) {
+  //   this.spinner.show();
+  //   this.getLevelValue();
+  //   let commandValue;
+  //   if (command == 'CurrentBalanceAmount') {
+  //     commandValue = this.CurrentBalanceAmount;
+  //   } else if (command == 'PaymentMode') {
+  //     commandValue = this.PaymentMode;
+  //   }
+  //   else if (command == 'TotalAmountAtLastRecharge') {
+  //     commandValue = this.TotalAmountAtLastRecharge;
+  //   }
+  //   else if (command == 'LastTokenRechargeTime') {
+  //     commandValue = this.datePipe.transform(new Date(), 'yyyy-MM-dd'); this.LastTokenRechargeTime;
+  //   }
+  //   else if (command == 'LastTokenRechargeAmount') {
+  //     commandValue = this.LastTokenRechargeAmount;
+  //   }
+  //   else if (command == 'CurrentBalanceTime') {
+  //     commandValue = this.datePipe.transform(this.CurrentBalanceTime, 'yyyy-MM-dd HH:mm:ss');
+  //   }
+  //   this.ondemmand
+  //     .executeCommandForConfiguration(
+  //       command,
+  //       commandValue,
+  //       this.levelName,
+  //       this.levelValue
+  //     )
+  //          .subscribe({
+  //       next: (res: any) => {
+  //         this.spinner.hide();
+  //           if (res && res.result === true) {
+  //           this.toaster.success('Updated Successfully');
+  //         } else {
+  //           this.toaster.error('Something went wrong!');
+  //         }
+  //       },
+  //       error: (err) => {
+  //         this.spinner.hide();
+  //         this.toaster.error('Oops! Something Went Wrong.');
+  //       }
+  //     }); 
+  // }
+  // onSubmitAsync(command: string) {
+  //   this.spinner.show();
+  //   this.getLevelValue();
+  //   let commandValue;
+  //   if (command == 'CurrentBalanceAmount') {
+  //     commandValue = this.CurrentBalanceAmount;
+  //   } else if (command == 'PaymentMode') {
+  //     commandValue = this.PaymentMode;
+  //   }
+  //   else if (command == 'TotalAmountAtLastRecharge') {
+  //     commandValue = this.TotalAmountAtLastRecharge;
+  //   }
+  //   else if (command == 'LastTokenRechargeTime') {
+  //     commandValue = this.datePipe.transform(new Date(), 'yyyy-MM-dd'); this.LastTokenRechargeTime;
+  //   }
+  //   else if (command == 'LastTokenRechargeAmount') {
+  //     commandValue = this.LastTokenRechargeAmount;
+  //   }
+  //   else if (command == 'CurrentBalanceTime') {
+  //     commandValue = this.datePipe.transform(this.CurrentBalanceTime, 'yyyy-MM-dd HH:mm:ss');
+  //   }
+  //   this.ondemmand
+  //     .executeCommandForConfigurationAsync(
+  //       command,
+  //       commandValue,
+  //       this.levelName,
+  //       this.levelValue
+  //     )
+  //          .subscribe({
+  //       next: (res: any) => {
+  //         this.spinner.hide();
+  //           if (res && res.result === true) {
+  //           this.toaster.success('Updated Successfully');
+  //         } else {
+  //           this.toaster.error('Something went wrong!');
+  //         }
+  //       },
+  //       error: (err) => {
+  //         this.spinner.hide();
+  //         this.toaster.error('Oops! Something Went Wrong.');
+  //       }
+  //     }); 
+  // }
+  // onSubmitAll() {
+  //   if (!this.validateAllCommands()) {
+  //     return;
+  //   }
 
-        if (res.data != null) {
-          if (res.data == true) {
-            this.toaster.success('Updated Successfully');
-          } else {
-            this.toaster.success('Something went wrong !!');
-          }
-        }
-      },
-        (err) => {
-          this.spinner.hide();
-          this.toaster.error('Oops! Something Went Wrong.');
-        })
-  }
+  //   this.spinner.show();
+  //   this.getLevelValue();
 
+  //   const dataBody = this.prepareDataBody();
+    
+  //   // Choose endpoint based on isAsyncMode
+  //   const endpoint = this.isAsyncMode ? '/cfg/config/async' : '/cfg/config/sync';
+
+  //   this.ondemmand
+  //     .executeMultipleCommandForConfiguration(dataBody, this.levelName, this.levelValue, endpoint)
+  //     .subscribe(
+  //       (res: any) => {
+  //         this.spinner.hide();
+  //         if (res.data != null) {
+  //           this.toaster.success(res.data[0].status);
+  //         } else {
+  //           this.toaster.error('Something went wrong!');
+  //         }
+  //       },
+  //       (err) => {
+  //         this.spinner.hide();
+  //         this.toaster.error('Oops! Something Went Wrong.');
+  //       }
+  //     );
+  // }
+  // onSubmit(command: string) {
+  //   if (!this.validateCommand(command)) {
+  //     return;
+  //   }
+
+  //   this.spinner.show();
+  //   this.getLevelValue();
+    
+  //   let commandValue = this.getCommandValue(command);
+
+  //   // Choose endpoint based on isAsyncMode
+  //   const endpoint = this.isAsyncMode ? '/cfg/config/async' : '/cfg/config/sync';
+    
+  //   this.ondemmand
+  //     .executeCommandForConfiguration(command, commandValue, this.levelName, this.levelValue, endpoint)
+  //     .subscribe(
+  //       (res: any) => {
+  //         this.spinner.hide();
+  //         if (res.data != null && res.data === true) {
+  //           this.toaster.success('Updated Successfully');
+  //         } else {
+  //           this.toaster.error('Something went wrong!');
+  //         }
+  //       },
+  //       (err) => {
+  //         this.spinner.hide();
+  //         this.toaster.error('Oops! Something Went Wrong.');
+  //       }
+  //     );
+  // }
   getLevelValue() {
     if (this.formdata.roleID == '1') {
       this.levelName = 'All';
@@ -336,4 +491,58 @@ export class PrepayConfigurationComponent implements OnInit {
       this.levelValue = this.formdata.designation;
     }
   }
+//   onSubmitAll() {
+//     if (this.CurrentBalanceAmountCheck && this.CurrentBalanceAmount == "")
+//       this.toaster.error('Please Enter Current Balance Amount');
+//     else if (this.CurrentBalanceTimeCheck && this.CurrentBalanceTime == "")
+//       this.toaster.error('Please Enter Current Balance Time');
+//     else if (this.LastTokenRechargeAmountCheck && this.LastTokenRechargeAmount == "")
+//       this.toaster.error('Please Enter Last Recharge Amount');
+//     else if (this.LastTokenRechargeTimeCheck && this.LastTokenRechargeTime == "")
+//       this.toaster.error('Please Enter Last Recharge Time');
+//     else if (this.TotalAmountAtLastRechargeCheck && this.TotalAmountAtLastRecharge == "")
+//       this.toaster.error('Please Enter Total Amount');
+//     else if (this.PaymentMode && this.PaymentMode == "")
+//       this.toaster.error('Please Select Payment Mode');
+//     else {
+//       this.getLevelValue();
+//       let dataBody = {};
+//       if (this.CurrentBalanceAmountCheck)
+//         dataBody['CurrentBalanceAmount'] = this.CurrentBalanceAmount;
+//       if (this.CurrentBalanceTimeCheck)
+//         dataBody['CurrentBalanceTime'] = this.datePipe.transform(this.CurrentBalanceTime, 'yyyy-MM-dd HH:mm:ss');
+//       if (this.LastTokenRechargeAmountCheck)
+//         dataBody['LastTokenRechargeAmount'] = this.LastTokenRechargeAmount;
+//       if (this.LastTokenRechargeTimeCheck)
+//         dataBody['LastTokenRechargeTime'] = this.datePipe.transform(this.LastTokenRechargeTime, 'yyyy-MM-dd HH:mm:ss');
+//       if (this.TotalAmountAtLastRechargeCheck)
+//         dataBody['TotalAmountAtLastRecharge'] = this.TotalAmountAtLastRecharge;
+//       if (this.PaymentModeCheck)
+//         dataBody['PaymentMode'] = this.PaymentMode;
+
+//       // Choose method based on isAsync toggle
+//       const method = this.isAsync ? 
+//         this.ondemmand.executeMultipleCommandForConfigurationAsync :
+//         this.ondemmand.executeMultipleCommandForConfiguration;
+
+//       method.call(this.ondemmand,
+//         dataBody,
+//         this.levelName,
+//         this.levelValue
+//       ).subscribe({
+//         next: (res: any) => {
+//           this.spinner.hide();
+//           if (res.data != null) {
+//             this.toaster.success(res.data[0].status);
+//           } else {
+//             this.toaster.error('Something went wrong!');
+//           }
+//         },
+//         error: (err) => {
+//           this.spinner.hide();
+//           this.toaster.error('Oops! Something Went Wrong.');
+//         }
+//       });
+//     }
+// }
 }

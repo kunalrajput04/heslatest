@@ -10,7 +10,7 @@ import { Utility } from 'src/app/Shared/utility';
 @Component({
   selector: 'app-full-config-log',
   templateUrl: './full-config-log.component.html',
-  styleUrls: ['./full-config-log.component.scss']
+  styleUrls: ['./full-config-log.component.scss'],
 })
 export class FullConfigLogComponent implements OnInit {
   gridOptions: any;
@@ -27,12 +27,17 @@ export class FullConfigLogComponent implements OnInit {
   };
   utility = new Utility();
   formdata: MeterData = new MeterData();
-  constructor(private datasharedservice: DataSharedService, private datePipe: DatePipe, private service: OnDemandService,
-    private router: Router) {
-
-    this.gridOptions = { context: { componentParent: this } }
+  constructor(
+    private datasharedservice: DataSharedService,
+    private datePipe: DatePipe,
+    private service: OnDemandService,
+    private router: Router
+  ) {
+    this.gridOptions = { context: { componentParent: this } };
     this.defaultColDef = {
-      resizable: true, filter: false, sortable: true
+      resizable: true,
+      filter: false,
+      sortable: true,
     };
 
     this.columnDefs = [
@@ -40,11 +45,10 @@ export class FullConfigLogComponent implements OnInit {
       { field: 'meterSNo' },
       { field: 'configsCommand' },
       { field: 'configsCommandStatus' },
-      { field: 'mdasDateTime',headerName:'HES Date Time' },
+      { field: 'mdasDateTime', headerName: 'HES Date Time' },
       { field: 'commandCompletionDateTime' },
       { field: 'overAllStatus' },
       { field: 'attempts' },
-
     ];
     this.datasharedservice.chagneHeaderNav(this.data);
   }
@@ -52,13 +56,12 @@ export class FullConfigLogComponent implements OnInit {
   ngOnInit(): void {
     this.formdata.fromdate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
     this.formdata.todate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
-
   }
 
   onBtnExport() {
     var excelParams = {
       fileName: 'FullConfigLog.csv',
-    }
+    };
     this.gridApi.exportDataAsCsv(excelParams);
   }
 
@@ -67,9 +70,8 @@ export class FullConfigLogComponent implements OnInit {
     this.gridColumnApi = params.columnApi;
     params.api.setRowData([]);
     this.gridColumnApi.autoSizeAllColumns();
-    this.onSubmit();
+    //this.onSubmit();
   }
-
 
   onFilterTextBoxChanged() {
     this.gridApi.setQuickFilter(
@@ -93,12 +95,18 @@ export class FullConfigLogComponent implements OnInit {
     this.gridApi.showLoadingOverlay();
 
     this.service
-      .getFullConfigLog(this.formdata.fromdate, this.formdata.todate)
+      .getFullConfigLog(
+        this.formdata.fromdate,
+        this.formdata.todate,
+        this.formdata.meterNo
+      )
       .subscribe((res: any) => {
-
-        if (res != null && res.message != 'Key Is Not Valid' && res.message != 'Session Is Expired') {
+        if (
+          res != null &&
+          res.message != 'Key Is Not Valid' &&
+          res.message != 'Session Is Expired'
+        ) {
           if (res.data != null) {
-
             for (let item in res.data[0]) {
               if (parseInt(item) !== 1) {
                 this.tableData.push({
@@ -113,27 +121,19 @@ export class FullConfigLogComponent implements OnInit {
                 });
               }
             }
-            this.utility.updateApiKey(res.apiKey);;
+            this.utility.updateApiKey(res.apiKey);
             this.gridApi.setRowData(this.tableData);
             this.gridColumnApi.autoSizeAllColumns();
-          } else
-            this.gridApi.setRowData([]);
+          } else this.gridApi.setRowData([]);
         } else {
-
-          this.logout();
+          
         }
       });
-
   }
 
   logout() {
-
     sessionStorage.clear();
     localStorage.clear();
     this.router.navigate(['/meecl']);
   }
-
-
-
-
 }

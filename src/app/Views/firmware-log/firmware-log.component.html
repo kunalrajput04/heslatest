@@ -58,7 +58,15 @@
                           />
                         </span>
                       </div>
-                      
+                      <div class="col-lg-1" style="margin-top: 10px; margin-bottom: 4px; width:90px">
+                        <span>Meter No:</span>
+                      </div>
+                      <div class="col-lg-2" style="margin-top: 4px; margin-bottom: 4px">
+                        <span>
+                          <input type="text" #meterNo="ngModel" placeholder="meter number" name="meterNo"
+                            [(ngModel)]="formdata.meterNo" class="form-control" />
+                        </span>
+                      </div>
                       
                       <div
                         class="col-lg-1"

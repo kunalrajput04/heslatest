@@ -1,8 +1,10 @@
 export class Feeder {
-  user_id: string = '';
-  subdivisionName: string = '';
-  substationName: string = '';
+  ownerName: string = '';
+  subDivisionName: string = '';
+  subStationName: string = '';
   latitude: string = '';
   longitude: string = '';
-  feeder_name: string = '';
+  feederName: string = '';
 }
+
+

@@ -178,7 +178,7 @@ export class CurrentBillingDataComponent implements OnInit {
           this.gridApi.setRowData([]);
       } else {
 
-        this.logout();
+        
       }
     });
 

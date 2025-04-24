@@ -97,7 +97,7 @@ export class SlaHistoryComponent implements OnInit {
 
   onSubmit() {
     this.slaDataService
-      .getSLAReportHistoryData(
+      .getSLAReportHistoryData1(
         this.levelName,
         this.levelValue,
         this.formdata.fromdate,
@@ -124,13 +124,12 @@ export class SlaHistoryComponent implements OnInit {
                   Installed: this.resultData[item][6],
                   Never: this.resultData[item][7],
                   Non: this.resultData[item][8],
-                  // Percentage: this.resultData[item][9],
-                  Percentage: parseFloat(this.resultData[item][9]).toFixed(2),
+                  Percentage: this.resultData[item][9],
                   Success: this.resultData[item][10],
                 });
               }
               // else{
-              //   this.logout();
+              //   
               // }
             }
             //table creation

@@ -117,7 +117,7 @@ export class MeterStatusComponent implements OnInit {
             this.gridApi.setRowData([]);
         } else {
 
-          this.logout();
+          
         }
       });
 

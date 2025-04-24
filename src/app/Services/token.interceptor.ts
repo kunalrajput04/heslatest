@@ -35,6 +35,7 @@ export class TokenInterceptor implements HttpInterceptor {
       return next.handle(newRequest);
     } else {
       if (this.authService.getJwtToken()) {
+        
         request = this.addToken(request, this.authService.getJwtToken());
       }
       return next.handle(request).pipe(

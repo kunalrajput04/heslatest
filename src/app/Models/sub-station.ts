@@ -1,9 +1,9 @@
+
 export class SubStation {
-  user_id: string = '';
-  substation_name: string = '';
-  subdivisionName: string = '';
+  ownerName: string = '';
+  subStationName: string = '';
+  subDivisionName: string = '';
   latitude: string = '';
   longitude: string = '';
 }
-
 

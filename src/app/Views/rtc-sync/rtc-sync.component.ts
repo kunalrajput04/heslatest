@@ -129,7 +129,7 @@ export class RtcSyncComponent implements OnInit {
       }
       else {
 
-        this.logout();
+        
       }
     }, (err) => {
       this.tableData = [];

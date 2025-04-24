@@ -136,7 +136,7 @@ export class DeviceNamePlateComponent implements OnInit {
             this.gridApi.setRowData([]);
         } else {
 
-          this.logout();
+          
         }
       });
   }

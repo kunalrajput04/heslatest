@@ -36,7 +36,7 @@ export class SideMenuComponent implements OnInit {
     private feederservice: FeederService,
     private dtservice: DTService,
     private service: OnDemandService,
-    private router: Router,
+    private router: Router
   ) {
     if (
       localStorage.getItem('levelName') !==
@@ -53,17 +53,14 @@ export class SideMenuComponent implements OnInit {
     this.levelvalue = localStorage.getItem('levelValue');
 
     this.changeAccessLevel(this.levelname);
-    if(parseInt(localStorage.getItem('WriteAccess'))!=0)
-    {
-      this.isWriteAccess=true;
-    }
-    else
-    {
-      this.isWriteAccess=false;
+    if (parseInt(localStorage.getItem('WriteAccess')) != 0) {
+      this.isWriteAccess = true;
+    } else {
+      this.isWriteAccess = false;
     }
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 
   connectAndDisconnect() {
     $('#ModalConnectDisconnect').modal('show');
@@ -74,28 +71,33 @@ export class SideMenuComponent implements OnInit {
   }
 
   getSubdivision() {
-    // this.spinner.show();
-
-    this.subdivisionservice.getSubdivision().subscribe((res: any) => {
-       if (res != null && (res.message != 'Key Is Not Valid' && res.message != 'Session Is Expired')) {
-        this.subdivisionDropDown = [];
-        let obj = res.data[0];
-        for (var item in obj) {
-          this.subdivisionDropDown.push(obj[item][0]);
+    this.spinner.show();
+    this.subdivisionservice.getSubdivision().subscribe(
+      (res: any) => {
+    
+        if (
+          res != null &&
+          res.message != 'Key Is Not Valid' &&
+          res.message != 'Session Is Expired'
+        ) {
+          this.subdivisionDropDown = [];
+          let obj = res.data[0];
+          for (var item in obj) {
+            this.subdivisionDropDown.push(obj[item][0]);
+          }
+          // this.spinner.hide();
+        } else {
+    
+          
         }
-        // this.spinner.hide();
-      }
-      else {
-        
-        this.logout();
-      }
-    });
+      },
+      (error) => console.log('error', error)
+    );
   }
   logout() {
-
     sessionStorage.clear();
     localStorage.clear();
-    this.router.navigate(['/meecl']);
+    //this.router.navigate(['/meecl']);
   }
 
   getSubstation(subdivision: string) {

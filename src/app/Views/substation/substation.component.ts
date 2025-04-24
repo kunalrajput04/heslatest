@@ -17,6 +17,7 @@ import { Subject } from 'rxjs';
 import { DataTableDirective } from 'angular-datatables';
 import { AuthService } from 'src/app/Services/auth.service';
 import { Utility } from 'src/app/Shared/utility';
+import { Common } from 'src/app/Shared/Common/common';
 
 @Component({
   selector: 'app-substation',
@@ -47,6 +48,7 @@ export class SubstationComponent implements OnInit {
 
   iswritepermission: string;
   utility = new Utility();
+   commonClass: Common;
   constructor(
     private spinner: NgxSpinnerService,
     private toaster: ToastrService,
@@ -58,6 +60,7 @@ export class SubstationComponent implements OnInit {
     private service: AuthService
   ) {
     this.datasharedservice.chagneHeaderNav(this.data);
+    this.commonClass = new Common(datasharedservice);
   }
 
   ngOnInit(): void {
@@ -91,7 +94,7 @@ export class SubstationComponent implements OnInit {
     this.spinner.show();
     this.substationservice.getSubstationData().subscribe((res: any) => {
       this.spinner.hide();
-      if (res != null && res.message != 'Key Is Not Valid') {
+      this.commonClass.checkDataExists(res);
         this.headerdata = res.data[0][1];
         this.rowdata = [];
         for (let item in res.data[0]) {
@@ -102,10 +105,7 @@ export class SubstationComponent implements OnInit {
         this.utility.updateApiKey(res.apiKey);;
 
         this.dtTrigger.next();
-      } else {
-        this.spinner.hide();
-        this.logout();
-      }
+      
     });
   }
 
@@ -116,33 +116,81 @@ export class SubstationComponent implements OnInit {
     });
   }
 
+  // onSubmit(form: NgForm) {
+  //   $('#ModalUpdateSubstation').modal('hide');
+  //   this.spinner.show();
+
+  //   this.substationservice.addSubStation(form.value).subscribe((res: any) => {
+  //     this.spinner.hide();
+      
+  //       if (res.data == true) {
+  //         if (this.isEdit) {
+  //           this.toaster.success('Updated Successfully');
+  //         } else {
+  //           this.toaster.success('Created Successfully');
+  //         }
+  //         this.rerender();
+  //       }
+  //       else {
+  //         this.toaster.error(res.message);
+
+  //       }
+     
+  //   });
+  // }
   onSubmit(form: NgForm) {
     $('#ModalUpdateSubstation').modal('hide');
     this.spinner.show();
-
-    this.substationservice.addSubStation(form.value).subscribe((res: any) => {
-      this.spinner.hide();
-      if (res != null && (res.message != 'Key Is Not Valid' && res.message != 'Session Is Expired')) {
-        if (res.data == true) {
+  
+    this.substationservice.addSubStation(form.value).subscribe({
+      next: (res: any) => {
+        this.spinner.hide();
+        
+        if (res && res.result === true) {
           if (this.isEdit) {
             this.toaster.success('Updated Successfully');
           } else {
-            this.toaster.success('Created Successfully');
+            this.toaster.success('Substation Added Successfully');
           }
           this.rerender();
+        } else {
+          this.toaster.error(res.message || 'Operation failed');
         }
-        else {
-          this.toaster.error(res.message);
-
-        }
-      }
-      else {
-
-        this.logout();
+      },
+      error: (error) => {
+        this.spinner.hide();
+        this.toaster.error('An error occurred while processing your request');
       }
     });
   }
-
+  // onSubmit(form: NgForm) {
+  //   $('#ModalUpdateSubstation').modal('hide');
+  //   this.spinner.show();
+  
+  //   this.substationservice.addSubStation(form.value).subscribe({
+  //     next: (res: any) => {
+  //       console.log('Full response:', res); // Let's see the exact response
+  //       console.log('res.data type:', typeof res.data); // Check the type of res.data
+  //       this.spinner.hide();
+  
+  //       // If the API is sending success message directly
+  //       if (res && res.message === "SubStation successfully added") {
+  //         if (this.isEdit) {
+  //           this.toaster.success('Updated Successfully');
+  //         } else {
+  //           this.toaster.success(res.message);
+  //         }
+  //         this.rerender();
+  //       } else {
+  //         this.toaster.error(res.message || 'Operation failed');
+  //       }
+  //     },
+  //     error: (error) => {
+  //       this.spinner.hide();
+  //       this.toaster.error('An error occurred');
+  //     }
+  //   });
+  // }
   getSubstationInfo(substation: any) {
     this.isEdit = true;
     $('#ModalUpdateSubstation').modal('show');
@@ -151,9 +199,9 @@ export class SubstationComponent implements OnInit {
     this.formdata = {
       latitude: substation[2],
       longitude: substation[3],
-      subdivisionName: substation[0],
-      substation_name: substation[1],
-      user_id: localStorage.getItem('UserID'),
+      subDivisionName: substation[0],
+      subStationName: substation[1],
+      ownerName: localStorage.getItem('UserID'),
     };
   }
 
@@ -168,35 +216,61 @@ export class SubstationComponent implements OnInit {
 
     this.subdivisionservice.getSubdivision().subscribe((res: any) => {
       this.spinner.hide();
-      if (res != null && (res.message != 'Key Is Not Valid' && res.message != 'Session Is Expired')) {
+      this.commonClass.checkDataExists(res);     
         let obj = res.data[0];
         for (var item in obj) {
           this.subdivisionDropDown.push(obj[item][0]);
         }
-        this.utility.updateApiKey(res.apiKey);;
-
-      }
-      else {
-
-        this.logout();
-      }
+        
+    
     });
   }
   onChangePage(pageOfItems: Array<any>) {
     this.pageOfItems = pageOfItems;
   }
 
+  // deleteSubstationInfo(meterno: string) {
+  //   this.formdata = new SubStation();
+  //   this.formdata.subStationName = meterno;
+
+  //   Swal.fire({
+  //     title: 'Are you sure?',
+  //     input: 'text',
+  //     inputAttributes: {
+  //       autocapitalize: 'off',
+  //     },
+
+  //     text: 'You will not be able to recover this data! Enter your reason',
+  //     icon: 'warning',
+  //     showCancelButton: true,
+  //     confirmButtonColor: '#3085d6',
+  //     cancelButtonColor: '#d33',
+  //     confirmButtonText: 'Yes, delete it!',
+  //   }).then((result) => {
+  //     if (result.value == '') {
+  //       Swal.fire('Please Enter Delete Reason!', '', 'error');
+  //     } else if (result.isConfirmed) {
+  //       this.substationservice
+  //         .deleteSubstationData(this.formdata)
+  //         .subscribe((res: any) => {
+  //           this.commonClass.checkDataExists(res);           
+  //             Swal.fire('deleted successfully', '', 'success');              
+  //             this.rerender();
+            
+  //         });
+  //     }
+  //   });
+  // }
   deleteSubstationInfo(meterno: string) {
     this.formdata = new SubStation();
-    this.formdata.substation_name = meterno;
-
+    this.formdata.subStationName = meterno;
+    
     Swal.fire({
       title: 'Are you sure?',
       input: 'text',
       inputAttributes: {
         autocapitalize: 'off',
       },
-
       text: 'You will not be able to recover this data! Enter your reason',
       icon: 'warning',
       showCancelButton: true,
@@ -207,23 +281,24 @@ export class SubstationComponent implements OnInit {
       if (result.value == '') {
         Swal.fire('Please Enter Delete Reason!', '', 'error');
       } else if (result.isConfirmed) {
-        this.substationservice
-          .deleteSubstationData(this.formdata)
-          .subscribe((res: any) => {
-            if (res != null && (res.message != 'Key Is Not Valid' && res.message != 'Session Is Expired')) {
-              Swal.fire('deleted successfully', '', 'success');
-              this.utility.updateApiKey(res.apiKey);;
-              this.rerender();
-            }
-            else {
-
-              this.logout();
+        this.substationservice.deleteSubstationData(this.formdata)
+          .subscribe({
+            next: (res: any) => {
+              const validData = this.commonClass.checkDataExists(res);
+              if (validData) {
+                Swal.fire('Deleted successfully', '', 'success');
+                this.rerender();
+              } else {
+                Swal.fire('Error', res.message || 'Failed to delete substation', 'error');
+              }
+            },
+            error: (error) => {
+              Swal.fire('Error', 'Failed to delete substation', 'error');
             }
           });
       }
     });
   }
-
   logout() {
     sessionStorage.clear();
     localStorage.clear();

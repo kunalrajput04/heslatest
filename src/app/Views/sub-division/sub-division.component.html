@@ -220,12 +220,12 @@
             <label style="margin-bottom: 1em">Subdivision Name</label>
             <input
               type="text"
-              #substation_name="ngModel"
-              name="substation_name"             
+              #subDivisionName="ngModel"
+              name="subDivisionName"             
               [ngClass]="
-                substation_name.invalid ? 'errorclass' : 'successclass'
+              subDivisionName.invalid ? 'errorclass' : 'successclass'
               "
-              [(ngModel)]="formdata.substation_name"
+              [(ngModel)]="formdata.subDivisionName"
               class="form-control"
               [readonly]="isEdit"
 

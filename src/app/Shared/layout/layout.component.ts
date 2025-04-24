@@ -11,6 +11,7 @@ import { DataSharedService } from 'src/app/Services/data-shared.service';
 import { environment } from 'src/environments/environment';
 declare let $: any;
 declare let toggleMenu: any;
+
 @Component({
   selector: 'app-layout',
   templateUrl: './layout.component.html',
@@ -20,7 +21,7 @@ export class LayoutComponent implements OnInit {
   data: Headernavigation = new Headernavigation();
   changepassword: ChangePassword = new ChangePassword();
   logoutcred: ILogout = {
-    email: ''
+    email: '',
   };
   reTypePassword: string = '';
   chartFilter = [];
@@ -28,26 +29,31 @@ export class LayoutComponent implements OnInit {
   lastUpdatedTime: string;
   hesVersion: string;
   buildDate: string;
+  meterphase: string = 'All';
+  welcomemessage: string = localStorage.getItem('Welcomemsg');
+  userName: string = localStorage.getItem('username');
+
   constructor(
     private service: AuthService,
     private router: Router,
     private datasharedservice: DataSharedService,
     private spinner: NgxSpinnerService,
     private toaster: ToastrService,
-    private datepipe:DatePipe
+    private datepipe: DatePipe
   ) {
     this.hesVersion = environment.hesVersion;
-    this.buildDate = this.datepipe.transform(environment.buildDate, 'dd-MM-yyyy'); 
+    this.buildDate = this.datepipe.transform(
+      environment.buildDate,
+      'dd-MM-yyyy'
+    );
   }
-  meterphase: string = 'All';
-  welcomemessage: string = localStorage.getItem('Welcomemsg');
-  userName: string = localStorage.getItem('username');
 
   ngOnInit(): void {
-
     this.getchartFilter();
     if (sessionStorage.getItem('MeterPhase') != undefined)
       this.meterphase = sessionStorage.getItem('MeterPhase');
+
+    this.setDevType(this.meterphase);
 
     let userid = localStorage.getItem('UserID');
     if (userid == 'All') {
@@ -56,7 +62,11 @@ export class LayoutComponent implements OnInit {
 
     this.datasharedservice.currentheadernav.subscribe((data) => {
       this.data = data;
-      if (this.data.menuname == 'Dashboard' || this.data.menuname == 'Summary' || this.data.menuname == 'Report') {
+      if (
+        this.data.menuname == 'Dashboard' ||
+        this.data.menuname == 'Summary' ||
+        this.data.menuname == 'Report'
+      ) {
         this.isdashboard = true;
       } else {
         this.isdashboard = false;
@@ -64,27 +74,39 @@ export class LayoutComponent implements OnInit {
     });
     this.datasharedservice.datetimevar.subscribe((data) => {
       this.lastUpdatedTime = data;
-
     });
     if (this.welcomemessage == 'null') {
-      this.welcomemessage = 'Welcome to Meghalaya Energy Corporation Limited';
+      this.welcomemessage = 'Welcome to Mizoram Energy Corporation Limited';
     }
   }
+
   myValue(value: string) {
+    this.meterphase = value;
     sessionStorage.setItem('MeterPhase', value);
+    this.setDevType(value);
     location.reload();
   }
+
+  setDevType(phaseValue: string): void {
+    let devType = '3P';
+
+    if (phaseValue === 'All') {
+      devType = 'All';
+    } else if (phaseValue === 'Evit') {
+      devType = '1P';
+    }
+
+    localStorage.setItem('devType', devType);
+    console.log(`Set devType in localStorage to: ${devType}`);
+  }
+
   logout() {
     this.logoutcred.email = localStorage.getItem('email');
-    this.service
-      .logout(this.logoutcred)
-      .subscribe((res: any) => {
+    this.service.logout(this.logoutcred).subscribe((res: any) => {});
 
-      });
-    sessionStorage.clear();
-    localStorage.clear();
-    this.router.navigate(['/meecl']);
+    this.datasharedservice.clearlocalStorageData(true);
   }
+
   changePassword(form: NgForm) {
     this.spinner.show();
     if (form.value.newPassword != form.value.reTypePassword) {
@@ -102,7 +124,11 @@ export class LayoutComponent implements OnInit {
           .changePassword(this.changepassword)
           .subscribe((res: any) => {
             this.spinner.hide();
-            if (res != null && (res.message != 'Key Is Not Valid' && res.message != 'Session Is Expired')) {
+            if (
+              res != null &&
+              res.message != 'Key Is Not Valid' &&
+              res.message != 'Session Is Expired'
+            ) {
               if (res.data == false) {
                 this.toaster.error('Password Not Matched');
               } else if (res.data == true) {
@@ -122,7 +148,6 @@ export class LayoutComponent implements OnInit {
       { filter: 'Last Week' },
       { filter: 'Yesterday' },
       { filter: 'Today' },
-
       { filter: 'Last Month' },
     ];
   }

@@ -169,7 +169,7 @@ export class EventDataComponent implements OnInit {
           this.gridApi.setRowData([]);
       } else {
 
-        this.logout();
+        
       }
     });
 

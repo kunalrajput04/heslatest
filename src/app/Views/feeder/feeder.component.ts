@@ -21,6 +21,7 @@ import { DataTableDirective } from 'angular-datatables';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/Services/auth.service';
 import { Utility } from 'src/app/Shared/utility';
+import { Common } from 'src/app/Shared/Common/common';
 
 @Component({
   selector: 'app-feeder',
@@ -42,7 +43,7 @@ export class FeederComponent implements OnInit {
   dtTrigger: Subject<any> = new Subject<any>();
   @ViewChild(DataTableDirective, { static: false })
   dtElement: DataTableDirective;
-
+commonClass: Common;
   data: Headernavigation = {
     firstlevel: 'Hierarchy',
     menuname: 'Feeder',
@@ -64,6 +65,7 @@ export class FeederComponent implements OnInit {
     private datasharedservice: DataSharedService
   ) {
     this.datasharedservice.chagneHeaderNav(this.data);
+    this.commonClass = new Common(datasharedservice);
   }
 
   ngOnInit(): void {
@@ -105,7 +107,8 @@ export class FeederComponent implements OnInit {
     this.spinner.show();
 
     this.feederservice.addFeeder(form.value).subscribe((res: any) => {
-      if (res.data == true) {
+      // if (res.data == true) {
+        if (res && res.result === true) {
         if (this.isEdit) {
           this.spinner.hide();
           this.toaster.success('Record Saved Successfully');
@@ -131,22 +134,16 @@ export class FeederComponent implements OnInit {
   }
   getSubdivision() {
     this.spinner.show();
-
     this.subdivisionservice.getSubdivision().subscribe((res: any) => {
       this.spinner.hide();
-       if (res != null && (res.message != 'Key Is Not Valid' && res.message != 'Session Is Expired')) {
+      const validData = this.commonClass.checkDataExists(res);
         this.subdivisionDropDown = [];
         let obj = res.data[0];
         for (var item in obj) {
           this.subdivisionDropDown.push(obj[item][0]);
         }
-        this.utility.updateApiKey(res.apiKey);;
-        
-      }
-      else {
-        
-        this.logout();
-      }
+      //  this.utility.updateApiKey(res.apiKey);        
+   
     });
   }
 
@@ -163,7 +160,7 @@ export class FeederComponent implements OnInit {
           for (var item in obj) {
             this.substationDropdown.push(obj[item][0]);
           }
-          this.utility.updateApiKey(res.apiKey);;
+        //  this.utility.updateApiKey(res.apiKey);;
         }
       });
   }
@@ -172,7 +169,7 @@ export class FeederComponent implements OnInit {
     this.spinner.show();
     this.feederservice.getFeederList().subscribe((res: any) => {
       this.spinner.hide();
-      if (res != null && res.message != 'Key Is Not Valid') {
+      const validData = this.commonClass.checkDataExists(res);
         this.rowdata = [];
         this.headerdata = res.data[0][1];
 
@@ -181,12 +178,9 @@ export class FeederComponent implements OnInit {
             this.rowdata.push(res.data[0][item]);
           }
         }
-        this.utility.updateApiKey(res.apiKey);;
+     //   this.utility.updateApiKey(res.apiKey);;
         this.dtTrigger.next();
-      } else {
-        this.spinner.hide();
-        this.logout();
-      }
+    
     });
   }
 
@@ -217,24 +211,54 @@ export class FeederComponent implements OnInit {
     this.getSubdivision();
     this.getSubstation(data[0]);
     this.formdata = {
-      subdivisionName: data[0],
-      substationName: data[1],
-      feeder_name: data[2],
+      subDivisionName: data[0],
+      subStationName: data[1],
+      feederName: data[2],
       latitude: data[3],
       longitude: data[4],
-      user_id: localStorage.getItem('UserID'),
+      ownerName: localStorage.getItem('UserID'),
     };
   }
 
+  // deleteFederInfo(feerderId: string) {
+  //   this.formdata.feederName = feerderId;
+  //   Swal.fire({
+  //     title: 'Are you sure?',
+  //     input: 'text',
+  //     inputAttributes: {
+  //       autocapitalize: 'off',
+  //     },
+
+  //     text: 'You will not be able to recover this data! Enter your reason',
+  //     icon: 'warning',
+  //     showCancelButton: true,
+  //     confirmButtonColor: '#3085d6',
+  //     cancelButtonColor: '#d33',
+  //     confirmButtonText: 'Yes, delete it!',
+  //   }).then((result) => {
+  //     if (result.value == '') {
+  //       Swal.fire('Please Enter Delete Reason!', '', 'error');
+  //     } else if (result.isConfirmed) {
+  //       this.feederservice.deleteFeeder(this.formdata).subscribe((res: any) => {
+  //         const validData = this.commonClass.checkDataExists(res);
+  //           this.formdata = new Feeder();
+  //           Swal.fire('deleted successfully', '', 'success');
+  //           this.utility.updateApiKey(res.apiKey);;
+  //           this.rerender();
+        
+  //       });
+  //     }
+  //   });
+  // }
+
   deleteFederInfo(feerderId: string) {
-    this.formdata.feeder_name = feerderId;
+    this.formdata.feederName = feerderId;    
     Swal.fire({
       title: 'Are you sure?',
       input: 'text',
       inputAttributes: {
         autocapitalize: 'off',
       },
-
       text: 'You will not be able to recover this data! Enter your reason',
       icon: 'warning',
       showCancelButton: true,
@@ -245,18 +269,23 @@ export class FeederComponent implements OnInit {
       if (result.value == '') {
         Swal.fire('Please Enter Delete Reason!', '', 'error');
       } else if (result.isConfirmed) {
-        this.feederservice.deleteFeeder(this.formdata).subscribe((res: any) => {
-           if (res != null && (res.message != 'Key Is Not Valid' && res.message != 'Session Is Expired')) {
-            this.formdata = new Feeder();
-            Swal.fire('deleted successfully', '', 'success');
-            this.utility.updateApiKey(res.apiKey);;
-            this.rerender();
-          }
-          else {
-        
-            this.logout();
-          }
-        });
+        this.feederservice.deleteFeeder(this.formdata)
+          .subscribe({
+            next: (res: any) => {
+              const validData = this.commonClass.checkDataExists(res);
+              if (validData) {
+                this.formdata = new Feeder();
+                Swal.fire('Deleted successfully', '', 'success');
+             
+                this.rerender();
+              } else {
+                Swal.fire('Error', res.message || 'Failed to delete feeder', 'error');
+              }
+            },
+            error: (error) => {
+              Swal.fire('Error', 'Failed to delete feeder', 'error');
+            }
+          });
       }
     });
   }

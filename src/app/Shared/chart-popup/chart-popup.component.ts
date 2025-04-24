@@ -16,6 +16,7 @@ import { IChartTable } from 'src/app/Models/dashboard';
 import { DataSharedService } from 'src/app/Services/data-shared.service';
 
 import { DataService } from 'src/app/Services/data.service';
+import { Common } from '../Common/common';
 
 @Component({
   selector: 'app-chart-popup',
@@ -28,6 +29,7 @@ export class ChartPopupComponent implements OnInit {
   columnDefs: any;
   gridApi: any;
   gridColumnApi: any;
+  commonClass: Common;
   tableData: any[] = [];
   data: Headernavigation = {
     firstlevel: '',
@@ -44,9 +46,12 @@ export class ChartPopupComponent implements OnInit {
     private router: Router,
     private datasharedservice: DataSharedService
   ) {
-    this.gridOptions = { context: { componentParent: this } }
+    this.commonClass = new Common(datasharedservice);
+    this.gridOptions = { context: { componentParent: this } };
     this.defaultColDef = {
-      resizable: true, filter: false, sortable: true
+      resizable: true,
+      filter: false,
+      sortable: true,
     };
     this.columnDefs = [
       { field: 'meterSNo' },
@@ -60,7 +65,6 @@ export class ChartPopupComponent implements OnInit {
   }
 
   ngOnInit() {
-
     this.datasharedservice.shareChartData.subscribe((data) => {
       let chartData: IChartTable = data;
       if (chartData.commandType != null) {
@@ -70,26 +74,23 @@ export class ChartPopupComponent implements OnInit {
             chartData.status,
             chartData.daytype
           );
-        }, 1000)
+        }, 1000);
       }
-
     });
   }
   onBtnExport() {
     var excelParams = {
       fileName: this.graphHeaderValue + '.csv',
-    }
+    };
     this.gridApi.exportDataAsCsv(excelParams);
   }
 
   onGridReady(params: any) {
-
     this.gridApi = params.api;
     this.gridColumnApi = params.columnApi;
     params.api.setRowData([]);
     this.gridColumnApi.autoSizeAllColumns();
   }
-
 
   onFilterTextBoxChanged() {
     this.gridApi.setQuickFilter(
@@ -97,14 +98,11 @@ export class ChartPopupComponent implements OnInit {
     );
   }
 
-
   onTableget(commandType: string, status: string, daytype: string) {
-
     this.tableData = [];
     this.gridApi.setRowData([]);
     this.gridColumnApi.autoSizeAllColumns();
     this.gridApi.showLoadingOverlay();
-
 
     if (commandType == 'LastComm') {
       this.graphHeaderValue = 'Communication Status';
@@ -120,10 +118,10 @@ export class ChartPopupComponent implements OnInit {
       this.graphHeaderValue = 'Billing Data';
     }
 
-
     let currentDate = new Date();
     let date;
-    if (daytype == 'Today') date = this.datePipe.transform(currentDate, 'yyyy-MM-dd');
+    if (daytype == 'Today')
+      date = this.datePipe.transform(currentDate, 'yyyy-MM-dd');
     else if (daytype == 'Yesterday')
       date = this.datePipe.transform(
         currentDate.setDate(currentDate.getDate() - 1),
@@ -143,52 +141,50 @@ export class ChartPopupComponent implements OnInit {
 
     let devType;
     switch (sessionStorage.getItem('MeterPhase')) {
-      case "All": devType = 'All'; break;
-      case "Evit": devType = 'Single Phase'; break;
-      case "Evit3P": devType = 'Three Phase'; break;
-      case "Evit3P1": devType = 'CT Meter'; break;
-      case "EvitHT": devType = 'HT Meter'; break;
-      default: devType = 'All'; break;
+      case 'All':
+        devType = 'All';
+        break;
+      case 'Evit':
+        devType = 'Single Phase';
+        break;
+      case 'Evit3P':
+        devType = 'Three Phase';
+        break;
+      case 'Evit3P1':
+        devType = 'CT Meter';
+        break;
+      case 'EvitHT':
+        devType = 'HT Meter';
+        break;
+      default:
+        devType = 'All';
+        break;
     }
     this.chartservice
-      .getDashboardChartList(commandType, status, date, daytype,devType)
+      .getDashboardChartList(commandType, status, date, daytype, devType)
       .subscribe((res: any) => {
-
-        if (res != null && (res.message != 'Key Is Not Valid' && res.message != 'Session Is Expired')) {
-          if (res.data != null) {
-            for (let item in res.data[0]) {
-              if (parseInt(item) !== 1) {
-                this.tableData.push({
-                  meterSNo: res.data[0][item][0],
-                  ConsumerNo: res.data[0][item][1],
-                  NICMSISDNNo: res.data[0][item][2],
-                  NICIPV6: res.data[0][item][3],
-                  LastUpdateTime: res.data[0][item][4],
-                  longitude: res.data[0][item][5],
-                  latitude: res.data[0][item][6],
-
-                });
-              }
+        debugger;
+        const validData = this.commonClass.checkDataExists(res);
+        // if (res.data != null) {
+        if (res && res.result === true) {
+          for (let item in res.data[0]) {
+            if (parseInt(item) !== 1) {
+              this.tableData.push({
+                meterSNo: res.data[0][item][0],
+                ConsumerNo: res.data[0][item][1],
+                NICMSISDNNo: res.data[0][item][2],
+                NICIPV6: res.data[0][item][3],
+                LastUpdateTime: res.data[0][item][4],
+                longitude: res.data[0][item][5],
+                latitude: res.data[0][item][6],
+              });
             }
-            this.gridApi.setRowData(this.tableData);
-            this.gridColumnApi.autoSizeAllColumns();
           }
-          else {
-            this.gridApi.setRowData([]);
-          }
-        }
-        else {
-
-          this.logout();
+          this.gridApi.setRowData(this.tableData);
+          this.gridColumnApi.autoSizeAllColumns();
+        } else {
+          this.gridApi.setRowData([]);
         }
       });
   }
-
-  logout() {
-
-    sessionStorage.clear();
-    localStorage.clear();
-    this.router.navigate(['/meecl']);
-  }
-
 }

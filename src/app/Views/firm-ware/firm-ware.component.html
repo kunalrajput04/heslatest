@@ -1,251 +1,332 @@
 <div class="main-content">
-    <div class="main-content-inner">
-        <div class="page-content">
-            <div class="page-header"></div>
-            <!-- /.page-header -->
-            <div class="row">
-                <div class="col-12">
-                    <h4 class="heading">Firmware File Upload</h4>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-12">
-                    <form novalidate>
-                        <div class="row">
-                            <div class="form-group col-md-3">
-
-                                <label for="manufacturer">Meter Manufacturer</label>
-                                <select class="form-control" style="width: 100%" name="manufacturer"
-                                    #manufacturer="ngModel" [(ngModel)]="formFiledata.manufacturer" required>
-                                    <option value="">Select Meter Manufacturer</option>
-                                    <option value="JNE">JNE </option>
-                                    <option value="HEXING">HEXING </option>
-                                    <option value="JPM">JPM </option>
-                                    <option value="INISH">INISH </option>
-                                    <option value="ALLIED">ALLIED </option>
-                                    <option value="LNT">LNT </option>
-                                    <option value="LAN">LAN </option>
-                                    <option value="EPPELTONE">EPPELTONE </option>
-                                    <option value="FLASH">FLASH </option>
-                                    <option value="HPL">HPL </option>
-                                    <option value="MSE1"> MSE </option>
-                      <option value="MSE"> MSE Part-I </option>
-                                </select>
-
-                            </div>
-                            <div class="form-group col-md-2">
-
-                                <label for="manufacturer">Firmware Version</label>
-                                <input type="text" class="form-control" style="width: 100%" name="version"
-                                    #version="ngModel" [(ngModel)]="formFiledata.version" />
-
-                            </div>
-
-                            <div class="form-group col-md-2">
-
-                                <label for="manufacturer">Status</label>
-                                <select class="form-control" style="width: 100%" name="status" #status="ngModel"
-                                    [(ngModel)]="formFiledata.status" required>
-                                    <option value="">Select Status</option>
-                                    <option value="Active">Active </option>
-                                    <option value="Inactive">Inactive </option>
-                                </select>
-
-                            </div>
-
-
-                            <div class="form-group col-md-3">
-
-                                <label for="manufacturer">Select Firmware File</label>
-                                <input type="file" accept=".rbin,.bin" (change)="checkFile($event)" class="form-control" style="width: 100%" name="firmWareFile"
-                                     />
-
-                            </div>
-                            <div class="form-group col-md-2">
-                                <button type="button" (click)="uploadFirmware()" class="btn brn-default"
-                                    style="float: left">
-                                    Upload
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    <h4 class="heading">View Available Firmware</h4>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    <div class="table-responsive">
-                        <button type="button" (click)="onBtnExport()" class="ag-gridbtn">
-                            <i class="fa fa-download"></i> CSV Export Data
-                        </button>
-                        <input type="text" id="filter-text-box" placeholder="Search"
-                            (input)="onFilterTextBoxChanged()" />
-                        <ag-grid-angular style="width: 100%; height: 250px;" class="ag-theme-balham"
-                            [defaultColDef]="defaultColDef" [frameworkComponents]="frameworkComponents"
-                            [gridOptions]="gridOptions" [pagination]=true [paginationPageSize]="15"
-                            enableCellTextSelection=true (gridReady)="onGridReady($event)" [rowSelection]="rowSelection" [columnDefs]="columnDefs"
-                            [animateRows]=true>
-                        </ag-grid-angular>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-12">
-                    <h4 class="heading">Firmware Upgrade (Select bin file from above list to upgrade firmware )</h4>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-12">
-                    <form novalidate>
-                        <div class="row">
-                            <div class="form-group col-md-4">
-                                <label class="block clearfix">
-                                    <div>
-                                        <select read style="width: 100%" name="roleID" #roleID="ngModel"
-                                            [(ngModel)]="formdata.roleID"
-                                            (change)="changeAccessLevel($event.target.value)" required>
-                                            <option value="">Select Access Level</option>
-                                            <option value="1">Utility</option>
-                                            <option value="2">Subdivision</option>
-                                            <option value="3">Substation</option>
-                                            <option value="4">Feeder</option>
-                                            <option value="5">DT</option>
-                                            <option value="6">METER</option>
-                                        </select>
-                                    </div>
-                                </label>
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label class="block clearfix">
-                                    <div class="">
-                                        <input readonly class="form-control" style="width: 100%" name="accessOwner"
-                                            #accessOwner="ngModel" [(ngModel)]="formdata.accessOwner" />
-                                    </div>
-                                </label>
-                            </div>
-                            <div class="form-group col-md-4" *ngIf="isMeter">
-                                <label class="block clearfix">
-                                    <div class="">
-                                        <input placeholder="meter serial no" class="form-control" style="width: 100%"
-                                            name="designation" #designation="ngModel"
-                                            [(ngModel)]="formdata.designation" />
-                                    </div>
-                                </label>
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label class="block clearfix" *ngIf="isSubdivision">
-                                    <div class="">
-                                        <select style="width: 100%" #accessSubdivision="ngModel"
-                                            name="accessSubdivision" [ngClass]="
-                              accessSubdivision.invalid
-                                ? 'errorclass'
-                                : 'successclass'
-                            " [(ngModel)]="formdata.accessSubdivision" (change)="getSubstation($event.target.value)"
-                                            required>
-                                            <option selected="" value="">
-                                                Select Subdivision
-                                            </option>
-                                            <option *ngFor="let obj of SubDivisionDropdown" [Value]="obj">
-                                                {{ obj }}
-                                            </option>
-                                        </select>
-                                    </div>
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="form-group col-md-4">
-                                <label class="block clearfix" *ngIf="isSubstation">
-                                    <div class="">
-                                        <select style="width: 100%" #accessSubStation="ngModel" name="accessSubStation"
-                                            [ngClass]="
-                              accessSubStation.invalid
-                                ? 'errorclass'
-                                : 'successclass'
-                            " [(ngModel)]="formdata.accessSubStation" (change)="getFeeder($event.target.value)"
-                                            required>
-                                            <option selected="" value="">
-                                                Select Substation
-                                            </option>
-                                            <option *ngFor="let obj of SubStationDropdown" [Value]="obj">
-                                                {{ obj }}
-                                            </option>
-                                        </select>
-                                    </div>
-                                </label>
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label class="block clearfix" *ngIf="isFeeder">
-                                    <div class="">
-                                        <select #accessFeeder="ngModel" name="accessFeeder" [ngClass]="
-                              accessFeeder.invalid ? 'errorclass' : 'successclass'
-                            " [(ngModel)]="formdata.accessFeeder" style="width: 100%"
-                                            (change)="getDT($event.target.value)" required>
-                                            <option selected="" value="">Select Feeder</option>
-                                            <option *ngFor="let obj of FeederDropdown" [Value]="obj">
-                                                {{ obj }}
-                                            </option>
-                                        </select>
-                                    </div>
-                                </label>
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label class="block clearfix" *ngIf="isDT">
-                                    <div class="">
-                                        <select #accessDT="ngModel" name="accessDT" [ngClass]="
-                              accessDT.invalid ? 'errorclass' : 'successclass'
-                            " [(ngModel)]="formdata.accessDT" style="width: 100%" required>
-                                            <option selected="" value="">Select DT</option>
-                                            <option *ngFor="let obj of DTDropdown" [Value]="obj">
-                                                {{ obj }}
-                                            </option>
-                                        </select>
-                                    </div>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="form-group col-md-4">
-                            <button type="button" (click)="getSelectedRowData()" class="btn brn-default"
-                                style="float: left">
-                                Firmware Upgrade
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            
-
-            <!-- /.page-content -->
+  <div class="main-content-inner">
+    <div class="page-content">
+      <div class="page-header"></div>
+      <!-- /.page-header -->
+      <div class="row">
+        <div class="col-12">
+          <h4 class="heading">Firmware File Upload</h4>
         </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <form novalidate>
+            <div class="row">
+              <div class="form-group col-md-3">
+                <label for="manufacturer">Meter Manufacturer</label>
+                <select
+                  class="form-control"
+                  style="width: 100%"
+                  name="manufacturer"
+                  #manufacturer="ngModel"
+                  [(ngModel)]="formFiledata.manufacturer"
+                  required
+                >
+                  <option value="">Select Meter Manufacturer</option>
+                  <option value="JNE">JNE</option>
+                  <option value="OAK">OAKTER</option>
+                  <option value="HEXING">HEXING</option>
+                  <option value="JPM">JPM</option>
+                  <option value="INISH">INISH</option>
+                  <option value="ALLIED">ALLIED</option>
+                  <option value="LNT">LNT</option>
+                  <option value="LAN">LAN</option>
+                  <option value="EPPELTONE">EPPELTONE</option>
+                  <option value="FLASH">FLASH</option>
+                  <option value="HPL">HPL</option>
+                  <option value="MSE1">MSE</option>
+                  <option value="MSE">MSE Part-I</option>
+                </select>
+              </div>
+              <div class="form-group col-md-2">
+                <label for="manufacturer">Firmware Version</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  style="width: 100%"
+                  name="version"
+                  #version="ngModel"
+                  [(ngModel)]="formFiledata.version"
+                />
+              </div>
+
+              <div class="form-group col-md-2">
+                <label for="manufacturer">Status</label>
+                <select
+                  class="form-control"
+                  style="width: 100%"
+                  name="status"
+                  #status="ngModel"
+                  [(ngModel)]="formFiledata.status"
+                  required
+                >
+                  <option value="">Select Status</option>
+                  <option value="Active">Active</option>
+                  <option value="Inactive">Inactive</option>
+                </select>
+              </div>
+
+              <div class="form-group col-md-3">
+                <label for="manufacturer">Select Firmware File</label>
+                <input
+                  type="file"
+                  accept=".rbin,.bin"
+                  (change)="checkFile($event)"
+                  class="form-control"
+                  style="width: 100%"
+                  name="firmWareFile"
+                />
+              </div>
+              <div class="form-group col-md-2">
+                <button
+                  type="button"
+                  (click)="uploadFirmware()"
+                  class="btn brn-default"
+                  style="float: left"
+                >
+                  Upload
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <h4 class="heading">View Available Firmware</h4>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <div class="table-responsive">
+            <button type="button" (click)="onBtnExport()" class="ag-gridbtn">
+              <i class="fa fa-download"></i> CSV Export Data
+            </button>
+            <input
+              type="text"
+              id="filter-text-box"
+              placeholder="Search"
+              (input)="onFilterTextBoxChanged()"
+            />
+            <ag-grid-angular
+              style="width: 100%; height: 250px"
+              class="ag-theme-balham"
+              [defaultColDef]="defaultColDef"
+              [frameworkComponents]="frameworkComponents"
+              [gridOptions]="gridOptions"
+              [pagination]="true"
+              [paginationPageSize]="15"
+              enableCellTextSelection="true"
+              (gridReady)="onGridReady($event)"
+              [rowSelection]="rowSelection"
+              [columnDefs]="columnDefs"
+              [animateRows]="true"
+            >
+            </ag-grid-angular>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-12">
+          <h4 class="heading">
+            Firmware Upgrade (Select bin file from above list to upgrade
+            firmware )
+          </h4>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <form novalidate>
+            <div class="row">
+              <div class="form-group col-md-4">
+                <label class="block clearfix">
+                  <div>
+                    <select
+                      read
+                      style="width: 100%"
+                      name="roleID"
+                      #roleID="ngModel"
+                      [(ngModel)]="formdata.roleID"
+                      (change)="changeAccessLevel($event.target.value)"
+                      required
+                    >
+                      <option value="">Select Access Level</option>
+                      <option value="1">Utility</option>
+                      <option value="2">Subdivision</option>
+                      <option value="3">Substation</option>
+                      <option value="4">Feeder</option>
+                      <option value="5">DT</option>
+                      <option value="6">METER</option>
+                    </select>
+                  </div>
+                </label>
+              </div>
+              <div class="form-group col-md-4">
+                <label class="block clearfix">
+                  <div class="">
+                    <input
+                      readonly
+                      class="form-control"
+                      style="width: 100%"
+                      name="accessOwner"
+                      #accessOwner="ngModel"
+                      [(ngModel)]="formdata.accessOwner"
+                    />
+                  </div>
+                </label>
+              </div>
+              <div class="form-group col-md-4" *ngIf="isMeter">
+                <label class="block clearfix">
+                  <div class="">
+                    <input
+                      placeholder="meter serial no"
+                      class="form-control"
+                      style="width: 100%"
+                      name="designation"
+                      #designation="ngModel"
+                      [(ngModel)]="formdata.designation"
+                    />
+                  </div>
+                </label>
+              </div>
+              <div class="form-group col-md-4">
+                <label class="block clearfix" *ngIf="isSubdivision">
+                  <div class="">
+                    <select
+                      style="width: 100%"
+                      #accessSubdivision="ngModel"
+                      name="accessSubdivision"
+                      [ngClass]="
+                        accessSubdivision.invalid
+                          ? 'errorclass'
+                          : 'successclass'
+                      "
+                      [(ngModel)]="formdata.accessSubdivision"
+                      (change)="getSubstation($event.target.value)"
+                      required
+                    >
+                      <option selected="" value="">Select Subdivision</option>
+                      <option
+                        *ngFor="let obj of SubDivisionDropdown"
+                        [Value]="obj"
+                      >
+                        {{ obj }}
+                      </option>
+                    </select>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="form-group col-md-4">
+                <label class="block clearfix" *ngIf="isSubstation">
+                  <div class="">
+                    <select
+                      style="width: 100%"
+                      #accessSubStation="ngModel"
+                      name="accessSubStation"
+                      [ngClass]="
+                        accessSubStation.invalid ? 'errorclass' : 'successclass'
+                      "
+                      [(ngModel)]="formdata.accessSubStation"
+                      (change)="getFeeder($event.target.value)"
+                      required
+                    >
+                      <option selected="" value="">Select Substation</option>
+                      <option
+                        *ngFor="let obj of SubStationDropdown"
+                        [Value]="obj"
+                      >
+                        {{ obj }}
+                      </option>
+                    </select>
+                  </div>
+                </label>
+              </div>
+              <div class="form-group col-md-4">
+                <label class="block clearfix" *ngIf="isFeeder">
+                  <div class="">
+                    <select
+                      #accessFeeder="ngModel"
+                      name="accessFeeder"
+                      [ngClass]="
+                        accessFeeder.invalid ? 'errorclass' : 'successclass'
+                      "
+                      [(ngModel)]="formdata.accessFeeder"
+                      style="width: 100%"
+                      (change)="getDT($event.target.value)"
+                      required
+                    >
+                      <option selected="" value="">Select Feeder</option>
+                      <option *ngFor="let obj of FeederDropdown" [Value]="obj">
+                        {{ obj }}
+                      </option>
+                    </select>
+                  </div>
+                </label>
+              </div>
+              <div class="form-group col-md-4">
+                <label class="block clearfix" *ngIf="isDT">
+                  <div class="">
+                    <select
+                      #accessDT="ngModel"
+                      name="accessDT"
+                      [ngClass]="
+                        accessDT.invalid ? 'errorclass' : 'successclass'
+                      "
+                      [(ngModel)]="formdata.accessDT"
+                      style="width: 100%"
+                      required
+                    >
+                      <option selected="" value="">Select DT</option>
+                      <option *ngFor="let obj of DTDropdown" [Value]="obj">
+                        {{ obj }}
+                      </option>
+                    </select>
+                  </div>
+                </label>
+              </div>
+            </div>
+            <div class="form-group col-md-4">
+              <button
+                type="button"
+                (click)="getSelectedRowData()"
+                class="btn brn-default"
+                style="float: left"
+              >
+                Firmware Upgrade
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- /.page-content -->
     </div>
-    
+  </div>
+
   <div
-  class="modal fade"
-  id="ModalAddDevice"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="exampleModalDevice"
-  aria-hidden="true"
->
-  <div class="col-lg-12">
-    <div class="row">
-      <div
-        class="modal-dialog col-lg-12"
-        style="
-          float: none;
-          width: 70%;
-          margin-top: 7em;
-          margin-left: 22em;
-          line-height: 1em;
-        "
-      >
-        
+    class="modal fade"
+    id="ModalAddDevice"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalDevice"
+    aria-hidden="true"
+  >
+    <div class="col-lg-12">
+      <div class="row">
+        <div
+          class="modal-dialog col-lg-12"
+          style="
+            float: none;
+            width: 70%;
+            margin-top: 7em;
+            margin-left: 22em;
+            line-height: 1em;
+          "
+        >
           <div class="modal-content">
             <div class="modal-header" style="background-color: #438eb9">
               <button
@@ -262,50 +343,64 @@
                 id="exampleModalDevice"
                 style="text-align: center"
                 showDeviceModal
-                
               >
                 Update Firmware
               </h4>
-             
             </div>
             <div class="modal-body">
-                
-                    <div class="row">
-                        <div class="form-group col-md-4">
+              <div class="row">
+                <div class="form-group col-md-4">
+                  <label for="manufacturer">Meter Manufacturer</label>
+                  <input
+                    type="text"
+                    readonly
+                    class="form-control"
+                    style="width: 100%"
+                    name="manufacturer"
+                    #manufacturer="ngModel"
+                    [(ngModel)]="formFiledata.manufacturer"
+                  />
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="manufacturer">Firmware Version</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    style="width: 100%"
+                    name="version"
+                    #version="ngModel"
+                    [(ngModel)]="formFiledata.version"
+                  />
+                </div>
 
-                            <label for="manufacturer">Meter Manufacturer</label>
-                            <input type="text" readonly class="form-control" style="width: 100%" name="manufacturer"
-                            #manufacturer="ngModel" [(ngModel)]="formFiledata.manufacturer" />
-                        </div>
-                        <div class="form-group col-md-4">
-
-                            <label for="manufacturer">Firmware Version</label>
-                            <input type="text" class="form-control" style="width: 100%" name="version"
-                                #version="ngModel" [(ngModel)]="formFiledata.version" />
-
-                        </div>
-
-                        <div class="form-group col-md-4">
-
-                            <label for="manufacturer">Status</label>
-                            <select class="form-control" style="width: 100%" name="status" #status="ngModel"
-                                [(ngModel)]="formFiledata.status" required>
-                                <option value="">Select Status</option>
-                                <option value="Active">Active </option>
-                                <option value="Inactive">Inactive </option>
-                            </select>
-
-                        </div>
-                        <div class="form-group col-md-4">
-
-                            <label for="manufacturer">Image Identifier</label>
-                           <input type="text" class="form-control" style="width: 100%" name="imageIdentifier" #imageIdentifier="ngModel"
-                           [(ngModel)]="formFiledata.imageIdentifier" required />
-
-                        </div>
-                       
-                    </div>
-                
+                <div class="form-group col-md-4">
+                  <label for="manufacturer">Status</label>
+                  <select
+                    class="form-control"
+                    style="width: 100%"
+                    name="status"
+                    #status="ngModel"
+                    [(ngModel)]="formFiledata.status"
+                    required
+                  >
+                    <option value="">Select Status</option>
+                    <option value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
+                  </select>
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="manufacturer">Image Identifier</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    style="width: 100%"
+                    name="imageIdentifier"
+                    #imageIdentifier="ngModel"
+                    [(ngModel)]="formFiledata.imageIdentifier"
+                    required
+                  />
+                </div>
+              </div>
             </div>
           </div>
 
@@ -320,16 +415,15 @@
             </button>
             <button
               type="submit"
-             (click)="updateFirmware()"
+              (click)="updateFirmware()"
               class="btn brn-default"
               style="float: right"
             >
               Save
             </button>
           </div>
-        
+        </div>
       </div>
     </div>
   </div>
-</div>
 </div>

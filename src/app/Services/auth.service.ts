@@ -6,6 +6,7 @@ import { Token } from '../Models/token';
 import { catchError, map, mapTo, tap } from 'rxjs/operators';
 import { ChangePassword, ILogout } from '../Models/change-password';
 import { Levls } from '../Models/levls';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -13,9 +14,7 @@ import { Levls } from '../Models/levls';
 export class AuthService {
   private readonly JWT_TOKEN = 'apikey';
   datalevel: Levls = new Levls();
-  constructor(private http: HttpClient) {
-
-  }
+  constructor(private http: HttpClient) {}
   getJwtToken() {
     return localStorage.getItem(this.JWT_TOKEN);
   }
@@ -52,45 +51,49 @@ export class AuthService {
   getDashboard() {
     this.datalevel.levelName = localStorage.getItem('levelName');
     this.datalevel.levelValue = localStorage.getItem('levelValue');
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
+ 
 
     return this.http.post(
       `${environment.apiUrl}/Evit/getDashboard/`,
-      this.datalevel,
-      httpOptions
+      this.datalevel
+      
     );
   }
 
-  doLoginUser(tokens: string) {
+  doLoginUser(tokens: string) {    
     localStorage.setItem(this.JWT_TOKEN, tokens);
   }
 
-
- // Old Api
+  // Old Api
   login(formdata: User) {
-    return this.http.post(
-      `${environment.apiUrl}/authentication/appLogin`,
-      formdata
-    );
+    return this.http.post(`${environment.apiUrl}/auth/login`, formdata);
   }
 
   //New Api with captcha
 
   newlogin(formdata: User, token: string) {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        token: token,
-      }),
-    };
+    // const httpOptions = {
+    //   headers: new HttpHeaders({
+    //     token: token,
+    //   }),
+    // };
 
-    return this.http.post(
-      `${environment.apiUrl}/authentication/captchaAppLogin`,
-      formdata, httpOptions
-    );
+     return this.http.post(`${environment.apiUrl}/auth/ui-login`, formdata);
+   // return this.http.post(`${environment.apiUrl}/auth/login`, formdata);
   }
 
+  // newlogin(formdata: User, token: string): Observable<any> {
+  //   const httpOptions = {
+  //     headers: new HttpHeaders({
+  //       'Content-Type': 'application/json',
+  //       'token': token
+  //     })
+  //   };
+
+  //   return this.http.post(
+  //     `${environment.apiUrl}/auth/login`,
+  //     formdata,
+  //     httpOptions
+  //   );
+  // }
 }

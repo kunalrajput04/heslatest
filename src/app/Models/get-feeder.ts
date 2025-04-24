@@ -1,4 +1,4 @@
 export class GetFeeder {
-  user_id: string = '';
+  ownerName: string = '';
   subdivisionName: string = '';
 }

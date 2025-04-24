@@ -112,10 +112,12 @@ export class InsantDataPushComponent implements OnInit {
     this.gridApi.showLoadingOverlay();
 
     this.service.getInstantPushData(this.formdata.fromdate, this.formdata.todate, this.formdata.meterNo)
-      .subscribe((res: any) => {
-        if (res != null && res.message != 'Key Is Not Valid') {
-          if (res.data != null) {
-           
+      // .subscribe((res: any) => {
+      //   if (res != null && res.message != 'Key Is Not Valid') {
+      //     if (res.data != null) {
+        .subscribe({
+          next: (res: any) => {
+            if (res?.result === true && res.data?.[0]) {
             for (let item in res.data[0]) {
               if (parseInt(item) !== 1) {
                 this.tableData.push({
@@ -140,11 +142,8 @@ export class InsantDataPushComponent implements OnInit {
             this.gridColumnApi.autoSizeAllColumns();
           } else
             this.gridApi.setRowData([]);
-        } else {
-
-          this.logout();
-        }
-      });
+       
+      }});
 
   }
 

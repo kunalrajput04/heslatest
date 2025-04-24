@@ -183,14 +183,29 @@
           <div class="row">
             <div class="col-xs-12">
               <table id="simple-table" class="table table-bordered table-hover">
+           
                 <thead>
                   <tr>
                     <th>Configuration type <input type="checkbox" name="forOnDemandConfig" [(ngModel)]="forOnDemandConfig" id="forOnDemandConfig" class="form-check-input" >On-Demand Config </th>
                     <th>Configuration Value</th>
-                    <th class="hidden-480">Action</th>
+                    <th class="hidden-480">Action
+                      
+                        <input
+                          type="checkbox"
+                          class="form-check-input"
+                          id="asyncToggle"
+                          name="isAsync"
+                          [(ngModel)]="isAsync"
+                        />
+                        <label class="form-check-label" for="asyncToggle">
+                          Async Mode
+                        </label>
+                      
+                    </th>
+               
                   </tr>
                 </thead>
-
+          
                 <tbody>
                   <tr>
                     <td>
@@ -208,6 +223,15 @@
                           <i class="ace-icon fa fa-check bigger-110"></i>
                           Submit
                         </button>
+                        <!-- <button
+      (click)="onSubmitAsync('RTCClock')"
+      class="btn btn-warning ml-2"
+      type="button"
+      [disabled]="iswritepermission === '0'"
+    >
+      <i class="ace-icon fa fa-clock-o bigger-110"></i>
+      Async
+    </button> -->
                       </div>
                     </td>
                   </tr>
@@ -235,6 +259,15 @@
                           <i class="ace-icon fa fa-check bigger-110"></i>
                           Submit
                         </button>
+                        <!-- <button
+      (click)="onSubmitAsync('DemandIntegrationPeriod')"
+      class="btn btn-warning ml-2"
+      type="button"
+      [disabled]="iswritepermission === '0'"
+    >
+      <i class="ace-icon fa fa-clock-o bigger-110"></i>
+      Async
+    </button> -->
                       </div>
                     </td>
                   </tr>
@@ -263,6 +296,15 @@
                           <i class="ace-icon fa fa-check bigger-110"></i>
                           Submit
                         </button>
+                        <!-- <button
+                        (click)="onSubmitAsync('ProfileCapturePeriod')"
+                        class="btn btn-warning ml-2"
+                        type="button"
+                        [disabled]="iswritepermission === '0'"
+                      >
+                        <i class="ace-icon fa fa-clock-o bigger-110"></i>
+                        Async
+                      </button> -->
                       </div>
                     </td>
                   </tr>
@@ -292,6 +334,15 @@
                           <i class="ace-icon fa fa-check bigger-110"></i>
                           Submit
                         </button>
+                        <!-- <button
+                        (click)="onSubmitAsync('LoadLimit')"
+                        class="btn btn-warning ml-2"
+                        type="button"
+                        [disabled]="iswritepermission === '0'"
+                      >
+                        <i class="ace-icon fa fa-clock-o bigger-110"></i>
+                        Async
+                      </button> -->
                       </div>
                     </td>
                   </tr>
@@ -327,6 +378,15 @@
                           <i class="ace-icon fa fa-check bigger-110"></i>
                           Submit
                         </button>
+                        <!-- <button
+                        (click)="onSubmitAsync('MeteringMode')"
+                        class="btn btn-warning ml-2"
+                        type="button"
+                        [disabled]="iswritepermission === '0'"
+                      >
+                        <i class="ace-icon fa fa-clock-o bigger-110"></i>
+                        Async
+                      </button> -->
                       </div>
                     </td>
                   </tr>
@@ -359,6 +419,15 @@
                           <i class="ace-icon fa fa-check bigger-110"></i>
                           Submit
                         </button>
+                        <!-- <button
+                        (click)="onSubmitAsync('EnableDisableDisconnectControl')"
+                        class="btn btn-warning ml-2"
+                        type="button"
+                        [disabled]="iswritepermission === '0'"
+                      >
+                        <i class="ace-icon fa fa-clock-o bigger-110"></i>
+                        Async
+                      </button> -->
                       </div>
                     </td>
                   </tr>
@@ -378,6 +447,15 @@
                           <i class="ace-icon fa fa-check bigger-110"></i>
                           Submit
                         </button>
+                        <!-- <button
+                        (click)="onSubmitAsync('CoverOpen')"
+                        class="btn btn-warning ml-2"
+                        type="button"
+                        [disabled]="iswritepermission === '0'"
+                      >
+                        <i class="ace-icon fa fa-clock-o bigger-110"></i>
+                        Async
+                      </button> -->
                       </div>
                     </td>
                   </tr>
@@ -403,6 +481,15 @@
                           <i class="ace-icon fa fa-check bigger-110"></i>
                           Submit
                         </button>
+                        <!-- <button
+                        (click)="onSubmitAsync('InstantIPPush')"
+                        class="btn btn-warning ml-2"
+                        type="button"
+                        [disabled]="iswritepermission === '0'"
+                      >
+                        <i class="ace-icon fa fa-clock-o bigger-110"></i>
+                        Async
+                      </button> -->
                       </div>
                     </td>
                   </tr>
@@ -430,6 +517,15 @@
                           <i class="ace-icon fa fa-check bigger-110"></i>
                           Submit
                         </button>
+                        <!-- <button
+                        (click)="onSubmitAsync('AlertIPPush')"
+                        class="btn btn-warning ml-2"
+                        type="button"
+                        [disabled]="iswritepermission === '0'"
+                      >
+                        <i class="ace-icon fa fa-clock-o bigger-110"></i>
+                        Async
+                      </button> -->
                       </div>
                     </td>
                   </tr>
@@ -458,6 +554,15 @@
                           <i class="ace-icon fa fa-check bigger-110"></i>
                           Submit
                         </button>
+                        <!-- <button
+                        (click)="onSubmitAsync('ActivitySchedulePush')"
+                        class="btn btn-warning ml-2"
+                        type="button"
+                        [disabled]="iswritepermission === '0'"
+                      >
+                        <i class="ace-icon fa fa-clock-o bigger-110"></i>
+                        Async
+                      </button> -->
                       </div>
                     </td>
                   </tr>
@@ -486,6 +591,15 @@
                           <i class="ace-icon fa fa-check bigger-110"></i>
                           Submit
                         </button>
+                        <!-- <button
+                        (click)="onSubmitAsync('BillingDates')"
+                        class="btn btn-warning ml-2"
+                        type="button"
+                        [disabled]="iswritepermission === '0'"
+                      >
+                        <i class="ace-icon fa fa-clock-o bigger-110"></i>
+                        Async
+                      </button> -->
                       </div>
                     </td>
                   </tr>
@@ -508,6 +622,15 @@
                           <i class="ace-icon fa fa-check bigger-110"></i>
                           Submit
                         </button>
+                        <!-- <button
+                        (click)="onSubmitAsync('MdReset')"
+                        class="btn btn-warning ml-2"
+                        type="button"
+                        [disabled]="iswritepermission === '0'"
+                      >
+                        <i class="ace-icon fa fa-clock-o bigger-110"></i>
+                        Async
+                      </button> -->
                       </div>
                     </td>
                   </tr>
@@ -541,6 +664,15 @@
                           <i class="ace-icon fa fa-check bigger-110"></i>
                           Submit 
                         </button>
+                        <!-- <button
+                        (click)="onSubmitAsync('ActivityCalendar')"
+                        class="btn btn-warning ml-2"
+                        type="button"
+                        [disabled]="iswritepermission === '0'"
+                      >
+                        <i class="ace-icon fa fa-clock-o bigger-110"></i>
+                        Async
+                      </button> -->
                       </div>
                     </td>
                   </tr>

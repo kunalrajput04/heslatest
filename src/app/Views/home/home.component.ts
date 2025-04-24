@@ -29,6 +29,7 @@ import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ChartPopupComponent } from 'src/app/Shared/chart-popup/chart-popup.component';
 import { Utility } from 'src/app/Shared/utility';
+import { Common } from 'src/app/Shared/Common/common';
 
 declare let $: any;
 declare let L: any;
@@ -78,7 +79,7 @@ export class HomeComponent implements OnInit {
     url: '/',
   };
   isReload: boolean = false;
-
+  commonClass: Common;
   dropdownvalue: string = '';
   utility = new Utility();
   meterPhase: string = sessionStorage.getItem('MeterPhase');
@@ -91,7 +92,7 @@ export class HomeComponent implements OnInit {
     private router: Router,
     private modalService: NgbModal
   ) {
-
+    this.commonClass = new Common(datasharedservice);
     let thispage = this;
     this.isReload = JSON.parse(sessionStorage.getItem('IsReload'));
     if (!this.isReload) {
@@ -100,31 +101,130 @@ export class HomeComponent implements OnInit {
     }
     this.datasharedservice.chagneHeaderNav(this.data);
 
+    // this.chartOptions = {
+    //   series: [0],
+    //   labels: ['Total Meters'],
+    //   fill: {
+    //     colors: ['#5f9ea0'],
+    //   },
+    //   colors: ['#5f9ea0'],
+    //   chart: {
+    //     width: 180,
+    //     type: 'donut',
+    //   },
+
+    //   dataLabels: {
+    //     enabled: false,
+    //   },
+    //   legend: {
+    //     show: false,
+    //   },
+
+    //   plotOptions: {
+    //     pie: {
+    //       donut: {
+    //         labels: {
+    //           show: true,
+
+    //           total: {
+    //             show: true,
+    //             showAlways: false,
+    //             label: 'Total',
+    //             fontSize: '15px',
+    //             fontFamily: 'Helvetica, Arial, sans-serif',
+    //             fontWeight: 600,
+    //             color: '#373d3f',
+    //             formatter: function (w) {
+    //               return w.globals.seriesTotals.reduce((a, b) => {
+    //                 return a + b;
+    //               }, 0);
+    //             },
+    //           },
+    //         },
+    //       },
+    //     },
+    //   },
+    // };
+    //YHA SE ANOTHER FOR TESTING
+    // this.chartOptions = {
+    //   series: [30, 20, 10, 15, 25, 18],  // Example values for each segment
+    //   labels: ['1p RF', '3p RF', '3p RF', 'CT RF', 'HT RF'],  // Labels for each segment
+    //   fill: {
+    //     colors: ['#5f9ea0', '#66c2a4', '#8da0cb', '#e78ac3', '#a6d854', '#ffd92f'],
+    //   },
+    //   colors: ['#5f9ea0', '#66c2a4', '#8da0cb', '#e78ac3', '#a6d854', '#ffd92f'],
+    //   chart: {
+    //     width: 180,
+    //     type: 'donut',
+    //   },
+    //   dataLabels: {
+    //     enabled: false,
+    //   },
+    //   legend: {
+    //     show: true,
+    //     position: 'bottom',
+    //   },
+    //   plotOptions: {
+    //     pie: {
+    //       donut: {
+    //         labels: {
+    //           show: true,
+    //           total: {
+    //             show: true,
+    //             showAlways: true,
+    //             label: 'Total Meters',
+    //             fontSize: '15px',
+    //             fontFamily: 'Helvetica, Arial, sans-serif',
+    //             fontWeight: 600,
+    //             color: '#373d3f',
+    //             formatter: function (w) {
+    //               return w.globals.seriesTotals.reduce((a, b) => a + b, 0);
+    //             },
+    //           },
+    //         },
+    //       },
+    //     },
+    //   },
+    // };
     this.chartOptions = {
-      series: [0],
-      labels: ['Total Meters'],
+      series: [30, 15, 10, 20, 25], // Example data for each category
+      labels: ['1P', '3P', 'CT', 'RF', 'HT'], // Updated labels
       fill: {
-        colors: ['#5f9ea0'],
+        colors: ['#00D100', '#B32824', '#6e6d64', '#0307fc', '#fcb503'],
       },
-      colors: ['#5f9ea0'],
+      colors: ['#00D100', '#B32824', '#6e6d64', '#0307fc', '#fcb503'],
       chart: {
         width: 180,
         type: 'donut',
+        // events: {
+        //   click: (event, chartContext, config) => {
+        //     const dataPointIndex = config.dataPointIndex;
+        //     // Adjusting the click handling to the new labels
+        //     if (dataPointIndex === 0) {
+        //       this.onTableget('LastComm', '1P');
+        //     } else if (dataPointIndex === 1) {
+        //       this.onTableget('LastComm', '3P');
+        //     } else if (dataPointIndex === 2) {
+        //       this.onTableget('LastComm', 'CT');
+        //     } else if (dataPointIndex === 3) {
+        //       this.onTableget('LastComm', 'RF');
+        //     } else if (dataPointIndex === 4) {
+        //       this.onTableget('LastComm', 'HT');
+        //     }
+        //   },
+        // },
       },
-
       dataLabels: {
         enabled: false,
       },
       legend: {
         show: false,
       },
-
       plotOptions: {
         pie: {
           donut: {
             labels: {
               show: true,
-
               total: {
                 show: true,
                 showAlways: false,
@@ -134,9 +234,7 @@ export class HomeComponent implements OnInit {
                 fontWeight: 600,
                 color: '#373d3f',
                 formatter: function (w) {
-                  return w.globals.seriesTotals.reduce((a, b) => {
-                    return a + b;
-                  }, 0);
+                  return w.globals.seriesTotals.reduce((a, b) => a + b, 0);
                 },
               },
             },
@@ -144,6 +242,54 @@ export class HomeComponent implements OnInit {
         },
       },
     };
+
+    //not Good
+    // this.chartOptions = {
+    //   series: [30, 20, 10, 15, 25, 18, 12, 16, 22, 13, 28, 14],  // Outer donut (Total meters), Inner donut (RF categories for each)
+    //   chart: {
+    //     type: 'donut',
+    //     width: 300,
+    //   },
+    //   labels: ['1p RF', '1p GPRS', '3p RF', '3p GPRS', 'CT RF', 'HT GPRS'], // Labels for inner donut (RF categories)
+    //   colors: ['#5f9ea0', '#66c2a4', '#8da0cb', '#e78ac3', '#a6d854', '#ffd92f'], // Color palette for inner donut
+    //   fill: {
+    //     colors: ['#5f9ea0', '#66c2a4', '#8da0cb', '#e78ac3', '#a6d854', '#ffd92f'], // Same colors for inner donut
+    //   },
+    //   plotOptions: {
+    //     pie: {
+    //       donut: {
+    //         size: '60%',  // Outer donut size
+    //         labels: {
+    //           show: true,  // Labels show in the inner donut for RF categories
+    //           total: {
+    //             show: true,
+    //             showAlways: true,
+    //             label: 'Total Meters',
+    //             fontSize: '16px',
+    //             fontFamily: 'Helvetica, Arial, sans-serif',
+    //             fontWeight: 600,
+    //             color: '#373d3f',
+    //             formatter: function(w) {
+    //               return w.globals.seriesTotals.reduce((a, b) => a + b, 0);  // Total calculation
+    //             },
+    //           },
+    //         },
+    //       },
+    //     },
+    //   },
+    //   responsive: [
+    //     {
+    //       breakpoint: 480,
+    //       options: {
+    //         chart: {
+    //           width: '100%',
+    //         },
+    //       },
+    //     },
+    //   ],
+    // };
+
+    // original h yha se
 
     this.chartOptions1 = {
       series: [],
@@ -211,6 +357,313 @@ export class HomeComponent implements OnInit {
         },
       },
     };
+
+    // this.chartOptions1 = {
+    //   series: [30, 15, 10, 20, 25], // Example data for each category
+    //   labels: ['Success', 'Failure', 'Inactive', 'Active', 'Faulty'],
+    //   fill: {
+    //     colors: ['#00D100', '#B32824', '#6e6d64', '#0307fc', '#fcb503'],
+    //   },
+    //   colors: ['#00D100', '#B32824', '#6e6d64', '#0307fc', '#fcb503'],
+    //   chart: {
+    //     width: 180,
+    //     type: 'donut',
+    //     events: {
+    //       click: (event, chartContext, config) => {
+    //         const dataPointIndex = config.dataPointIndex;
+    //         if (dataPointIndex === 0) {
+    //           this.onTableget('LastComm', 'Success');
+    //         } else if (dataPointIndex === 1) {
+    //           this.onTableget('LastComm', 'Failure');
+    //         } else if (dataPointIndex === 2) {
+    //           this.onTableget('LastComm', 'Inactive');
+    //         } else if (dataPointIndex === 3) {
+    //           this.onTableget('LastComm', 'Active');
+    //         } else if (dataPointIndex === 4) {
+    //           this.onTableget('LastComm', 'Faulty');
+    //         }
+    //       },
+    //     },
+    //   },
+    //   dataLabels: {
+    //     enabled: false,
+    //   },
+    //   legend: {
+    //     show: false,
+    //   },
+    //   plotOptions: {
+    //     pie: {
+    //       donut: {
+    //         labels: {
+    //           show: true,
+    //           total: {
+    //             show: true,
+    //             showAlways: false,
+    //             label: 'Total',
+    //             fontSize: '15px',
+    //             fontFamily: 'Helvetica, Arial, sans-serif',
+    //             fontWeight: 600,
+    //             color: '#373d3f',
+    //             formatter: function (w) {
+    //               return w.globals.seriesTotals.reduce((a, b) => a + b, 0);
+    //             },
+    //           },
+    //         },
+    //       },
+    //     },
+    //   },
+    // };
+
+    // this.chartOptions2 = {
+    //   series: [30, 15, 10, 20, 25],
+    //   labels: ['Success', 'Failure', 'Inactive', 'Active', 'Faulty'],
+    //   colors: ['#00D100', '#B32824', '#6e6d64', '#0307fc', '#fcb503'],
+    //   fill: { colors: ['#00D100', '#B32824', '#6e6d64', '#0307fc', '#fcb503'] },
+    //   chart: {
+    //     width: 180,
+    //     type: 'donut',
+    //     events: {
+    //       click: (event, chartContext, config) => {
+    //         const dataPointIndex = config.dataPointIndex;
+    //         if (dataPointIndex === 0) {
+    //           this.onTableget('Instant', 'Success');
+    //         } else if (dataPointIndex === 1) {
+    //           this.onTableget('Instant', 'Failure');
+    //         } else if (dataPointIndex === 2) {
+    //           this.onTableget('Instant', 'Inactive');
+    //         } else if (dataPointIndex === 3) {
+    //           this.onTableget('Instant', 'Active');
+    //         } else if (dataPointIndex === 4) {
+    //           this.onTableget('Instant', 'Faulty');
+    //         }
+    //       },
+    //     },
+    //   },
+    //   dataLabels: { enabled: false },
+    //   legend: { show: false },
+    //   plotOptions: {
+    //     pie: {
+    //       donut: {
+    //         labels: {
+    //           show: true,
+    //           total: {
+    //             show: true,
+    //             showAlways: false,
+    //             label: 'Total',
+    //             fontSize: '15px',
+    //             fontFamily: 'Helvetica, Arial, sans-serif',
+    //             fontWeight: 600,
+    //             color: '#373d3f',
+    //             formatter: function (w) {
+    //               return w.globals.seriesTotals.reduce((a, b) => a + b, 0);
+    //             },
+    //           },
+    //         },
+    //       },
+    //     },
+    //   },
+    // };
+
+    // this.chartOptions3 = {
+    //   series: [30, 15, 10, 20, 25],
+    //   labels: ['Success', 'Failure', 'Inactive', 'Active', 'Faulty'],
+    //   colors: ['#00D100', '#B32824', '#6e6d64', '#0307fc', '#fcb503'],
+    //   fill: { colors: ['#00D100', '#B32824', '#6e6d64', '#0307fc', '#fcb503'] },
+    //   chart: {
+    //     width: 180,
+    //     type: 'donut',
+    //     events: {
+    //       click: (event, chartContext, config) => {
+    //         const dataPointIndex = config.dataPointIndex;
+    //         if (dataPointIndex === 0) {
+    //           this.onTableget('DailyLP', 'Success');
+    //         } else if (dataPointIndex === 1) {
+    //           this.onTableget('DailyLP', 'Failure');
+    //         } else if (dataPointIndex === 2) {
+    //           this.onTableget('DailyLP', 'Inactive');
+    //         } else if (dataPointIndex === 3) {
+    //           this.onTableget('DailyLP', 'Active');
+    //         } else if (dataPointIndex === 4) {
+    //           this.onTableget('DailyLP', 'Faulty');
+    //         }
+    //       },
+    //     },
+    //   },
+    //   dataLabels: { enabled: false },
+    //   legend: { show: false },
+    //   plotOptions: {
+    //     pie: {
+    //       donut: {
+    //         labels: {
+    //           show: true,
+    //           total: {
+    //             show: true,
+    //             showAlways: false,
+    //             label: 'Total',
+    //             fontSize: '15px',
+    //             fontFamily: 'Helvetica, Arial, sans-serif',
+    //             fontWeight: 600,
+    //             color: '#373d3f',
+    //             formatter: function (w) {
+    //               return w.globals.seriesTotals.reduce((a, b) => a + b, 0);
+    //             },
+    //           },
+    //         },
+    //       },
+    //     },
+    //   },
+    // };
+
+    // this.chartOptions4 = {
+    //   series: [30, 15, 10, 20, 25],
+    //   labels: ['Success', 'Failure', 'Inactive', 'Active', 'Faulty'],
+    //   colors: ['#00D100', '#B32824', '#6e6d64', '#0307fc', '#fcb503'],
+    //   fill: { colors: ['#00D100', '#B32824', '#6e6d64', '#0307fc', '#fcb503'] },
+    //   chart: {
+    //     width: 180,
+    //     type: 'donut',
+    //     events: {
+    //       click: (event, chartContext, config) => {
+    //         const dataPointIndex = config.dataPointIndex;
+    //         if (dataPointIndex === 0) {
+    //           this.onTableget('DeltaLP', 'Success');
+    //         } else if (dataPointIndex === 1) {
+    //           this.onTableget('DeltaLP', 'Failure');
+    //         } else if (dataPointIndex === 2) {
+    //           this.onTableget('DeltaLP', 'Inactive');
+    //         } else if (dataPointIndex === 3) {
+    //           this.onTableget('DeltaLP', 'Active');
+    //         } else if (dataPointIndex === 4) {
+    //           this.onTableget('DeltaLP', 'Faulty');
+    //         }
+    //       },
+    //     },
+    //   },
+    //   dataLabels: { enabled: false },
+    //   legend: { show: false },
+    //   plotOptions: {
+    //     pie: {
+    //       donut: {
+    //         labels: {
+    //           show: true,
+    //           total: {
+    //             show: true,
+    //             showAlways: false,
+    //             label: 'Total',
+    //             fontSize: '15px',
+    //             fontFamily: 'Helvetica, Arial, sans-serif',
+    //             fontWeight: 600,
+    //             color: '#373d3f',
+    //             formatter: function (w) {
+    //               return w.globals.seriesTotals.reduce((a, b) => a + b, 0);
+    //             },
+    //           },
+    //         },
+    //       },
+    //     },
+    //   },
+    // };
+
+    // this.chartOptions5 = {
+    //   series: [30, 15, 10, 20, 25],
+    //   labels: ['Success', 'Failure', 'Inactive', 'Active', 'Faulty'],
+    //   colors: ['#00D100', '#B32824', '#6e6d64', '#0307fc', '#fcb503'],
+    //   fill: { colors: ['#00D100', '#B32824', '#6e6d64', '#0307fc', '#fcb503'] },
+    //   chart: {
+    //     width: 180,
+    //     type: 'donut',
+    //     events: {
+    //       click: (event, chartContext, config) => {
+    //         const dataPointIndex = config.dataPointIndex;
+    //         if (dataPointIndex === 0) {
+    //           this.onTableget('Events', 'Success');
+    //         } else if (dataPointIndex === 1) {
+    //           this.onTableget('Events', 'Failure');
+    //         } else if (dataPointIndex === 2) {
+    //           this.onTableget('Events', 'Inactive');
+    //         } else if (dataPointIndex === 3) {
+    //           this.onTableget('Events', 'Active');
+    //         } else if (dataPointIndex === 4) {
+    //           this.onTableget('Events', 'Faulty');
+    //         }
+    //       },
+    //     },
+    //   },
+    //   dataLabels: { enabled: false },
+    //   legend: { show: false },
+    //   plotOptions: {
+    //     pie: {
+    //       donut: {
+    //         labels: {
+    //           show: true,
+    //           total: {
+    //             show: true,
+    //             showAlways: false,
+    //             label: 'Total',
+    //             fontSize: '15px',
+    //             fontFamily: 'Helvetica, Arial, sans-serif',
+    //             fontWeight: 600,
+    //             color: '#373d3f',
+    //             formatter: function (w) {
+    //               return w.globals.seriesTotals.reduce((a, b) => a + b, 0);
+    //             },
+    //           },
+    //         },
+    //       },
+    //     },
+    //   },
+    // };
+
+    // this.chartOptions6 = {
+    //   series: [30, 15, 10, 20, 25],
+    //   labels: ['Success', 'Failure', 'Inactive', 'Active', 'Faulty'],
+    //   colors: ['#00D100', '#B32824', '#6e6d64', '#0307fc', '#fcb503'],
+    //   fill: { colors: ['#00D100', '#B32824', '#6e6d64', '#0307fc', '#fcb503'] },
+    //   chart: {
+    //     width: 180,
+    //     type: 'donut',
+    //     events: {
+    //       click: (event, chartContext, config) => {
+    //         const dataPointIndex = config.dataPointIndex;
+    //         if (dataPointIndex === 0) {
+    //           this.onTableget('Billing', 'Success');
+    //         } else if (dataPointIndex === 1) {
+    //           this.onTableget('Billing', 'Failure');
+    //         } else if (dataPointIndex === 2) {
+    //           this.onTableget('Billing', 'Inactive');
+    //         } else if (dataPointIndex === 3) {
+    //           this.onTableget('Billing', 'Active');
+    //         } else if (dataPointIndex === 4) {
+    //           this.onTableget('Billing', 'Faulty');
+    //         }
+    //       },
+    //     },
+    //   },
+    //   dataLabels: { enabled: false },
+    //   legend: { show: false },
+    //   plotOptions: {
+    //     pie: {
+    //       donut: {
+    //         labels: {
+    //           show: true,
+    //           total: {
+    //             show: true,
+    //             showAlways: false,
+    //             label: 'Total',
+    //             fontSize: '15px',
+    //             fontFamily: 'Helvetica, Arial, sans-serif',
+    //             fontWeight: 600,
+    //             color: '#373d3f',
+    //             formatter: function (w) {
+    //               return w.globals.seriesTotals.reduce((a, b) => a + b, 0);
+    //             },
+    //           },
+    //         },
+    //       },
+    //     },
+    //   },
+    // };
+
     this.chartOptions2 = {
       series: [],
       labels: ['Success', 'Failure', 'Inactive', 'Active', 'Faulty'],
@@ -437,7 +890,6 @@ export class HomeComponent implements OnInit {
               thispage.onTableget('Events', 'Failure');
             }
 
-
           },
         },
       },
@@ -540,10 +992,10 @@ export class HomeComponent implements OnInit {
         },
       },
     };
+    this.commonClass = new Common(datasharedservice);
   }
 
   ngOnInit(): void {
-
     let levelName = localStorage.getItem('levelName');
 
     if (levelName == 'All') {
@@ -590,28 +1042,12 @@ export class HomeComponent implements OnInit {
   }
   getDashboard() {
     this.authservice.getDashboard().subscribe((res: any) => {
+      const validData = this.commonClass.checkDataExists(res);
+      this.dashboard = res.data;
 
-      if (res != null && (res.message != 'Key Is Not Valid' && res.message != 'Session Is Expired')) {
-
-        this.dashboard = res.data;
-
-        this.chartOptions.series = [
-          res.data['1P'],
-
-        ];
-        this.utility.updateApiKey(res.apiKey);;
-      } else {
-
-        this.logout();
-      }
+      this.chartOptions.series = [res.data['1P']];
+      this.utility.updateApiKey(res.apiKey);
     });
-  }
-
-  logout() {
-
-    sessionStorage.clear();
-    localStorage.clear();
-    this.router.navigate(['/meecl']);
   }
 
   onTableget(commandType: string, status: string) {
@@ -636,7 +1072,7 @@ export class HomeComponent implements OnInit {
         } else {
         }
       },
-      (reason: any) => { }
+      (reason: any) => {}
     );
   }
 
@@ -662,92 +1098,65 @@ export class HomeComponent implements OnInit {
     else date = this.datePipe.transform(filter, 'yyyy-MM-dd');
     this.weekdropvalue = date;
     this.chartservice
-      .getDashboardChart('LastComm', date,meterPhase)
+      .getDashboardChart('LastComm', date, meterPhase)
       .subscribe((res: any) => {
-
-        if (res != null && (res.message != 'Key Is Not Valid' && res.message != 'Session Is Expired')) {
-          if (res.data != null) {
-            
-            this.chartOptions1.series = res.data[0][2];
-          }
-        } else {
-          this.logout();
+        debugger;
+        const validData = this.commonClass.checkDataExists(res);
+        if (res.data != null) {
+          this.chartOptions1.series = res.data[0][2];
         }
       });
 
     this.chartservice
-      .getDashboardChart('Instant', date,meterPhase)
+      .getDashboardChart('Instant', date, meterPhase)
       .subscribe((res: any) => {
-        if (res != null && (res.message != 'Key Is Not Valid' && res.message != 'Session Is Expired')) {
-          if (res.data != null) {
-            this.chartOptions2.series = res.data[0][2];
-          }
-        }
-        else {
-
-          this.logout();
+        const validData = this.commonClass.checkDataExists(res);
+        if (res.data != null) {
+          this.chartOptions2.series = res.data[0][2];
         }
       });
     this.chartservice
-      .getDashboardChart('DailyLP', date,meterPhase)
+      .getDashboardChart('DailyLP', date, meterPhase)
       .subscribe((res: any) => {
-        if (res != null && (res.message != 'Key Is Not Valid' && res.message != 'Session Is Expired')) {
-          if (res.data != null) {
-            this.chartOptions3.series = res.data[0][2];
-          }
-        }
-        else {
-
-          this.logout();
+        const validData = this.commonClass.checkDataExists(res);
+        if (res.data != null) {
+          this.chartOptions3.series = res.data[0][2];
         }
       });
     this.chartservice
-      .getDashboardChart('DeltaLP', date,meterPhase)
+      .getDashboardChart('DeltaLP', date, meterPhase)
       .subscribe((res: any) => {
-        if (res != null && (res.message != 'Key Is Not Valid' && res.message != 'Session Is Expired')) {
-          if (res.data != null) {
-            this.chartOptions4.series = res.data[0][2];
-          }
-        }
-        else {
-
-          this.logout();
+        const validData = this.commonClass.checkDataExists(res);
+        if (res.data != null) {
+          this.chartOptions4.series = res.data[0][2];
         }
       });
     this.chartservice
-      .getDashboardChart('Events', date,meterPhase)
+      .getDashboardChart('Events', date, meterPhase)
       .subscribe((res: any) => {
-        if (res != null && (res.message != 'Key Is Not Valid' && res.message != 'Session Is Expired')) {
-          if (res.data != null) {
-            this.chartOptions5.series = res.data[0][2];
-          }
-        }
-        else {
-
-          this.logout();
+        const validData = this.commonClass.checkDataExists(res);
+        if (res.data != null) {
+          this.chartOptions5.series = res.data[0][2];
         }
       });
 
     this.chartservice
-      .getDashboardChart('Billing', date,meterPhase)
+      .getDashboardChart('Billing', date, meterPhase)
       .subscribe((res: any) => {
-        if (res != null && (res.message != 'Key Is Not Valid' && res.message != 'Session Is Expired')) {
-          if (res.data != null) {
-            this.chartOptions6.series = res.data[0][2];
-          }
-        }
-        else {
-          this.logout();
+        const validData = this.commonClass.checkDataExists(res);
+        if (res.data != null) {
+          this.chartOptions6.series = res.data[0][2];
         }
       });
   }
   getDashboardChartComman(date: string) {
-    
+    //
     let meterPhase = sessionStorage.getItem('MeterPhase');
-    this.chartservice.getDashboardChartComman(meterPhase).subscribe((res: any) => {
-      if (res != null && (res.message != 'Key Is Not Valid' && res.message != 'Session Is Expired')) {
+    this.chartservice.getDashboardChartComman(meterPhase).subscribe(
+      (res: any) => {
+        const validData = this.commonClass.checkDataExists(res);
 
-        if (res.data != null) {
+        if (res.data && res.data.length > 0) {
           this.dashboardChartComman = res.data[0];
           sessionStorage.setItem(
             'communicationsummary',
@@ -764,83 +1173,74 @@ export class HomeComponent implements OnInit {
           this.dashboard.SUBDEVISION = this.dashboardChartComman.subdevision;
           this.dashboard.SUBSTATION = this.dashboardChartComman.substation;
 
-          if (this.meterPhase == '' || this.meterPhase == 'All' || this.meterPhase == null || this.meterPhase == undefined || this.meterPhase == 'Evit') {
-            this.chartOptions.series = [
-              this.dashboardChartComman.meters,
-            ];
-          }
-
-          else if (this.meterPhase == 'Evit3P') {
+          if (
+            this.meterPhase == '' ||
+            this.meterPhase == 'All' ||
+            this.meterPhase == null ||
+            this.meterPhase == undefined ||
+            this.meterPhase == 'Evit'
+          ) {
+            this.chartOptions.series = [this.dashboardChartComman.meters];
+          } else if (this.meterPhase == 'Evit3P') {
             this.chartOptions.series = [
               this.dashboardChartComman.threephasemeters,
             ];
-          }
-          else if (this.meterPhase == 'Evit3P1') {
-            this.chartOptions.series = [
-              this.dashboardChartComman.ctmeters,
-            ];
-          }
-          else if (this.meterPhase == 'EvitHT') {
-            this.chartOptions.series = [
-              this.dashboardChartComman.htmeters,
-            ];
+          } else if (this.meterPhase == 'Evit3P1') {
+            this.chartOptions.series = [this.dashboardChartComman.ctmeters];
+          } else if (this.meterPhase == 'EvitHT') {
+            this.chartOptions.series = [this.dashboardChartComman.htmeters];
           }
 
-        
           if (date == 'Last Week') {
             this.chartOptions1.series = [
               this.dashboardChartComman.commweeksuccesscount,
               this.dashboardChartComman.commweekfailurecount,
               this.dashboardChartComman.inactivedev,
               this.dashboardChartComman.activedev,
-              this.dashboardChartComman.faultydev
+              this.dashboardChartComman.faultydev,
             ];
             this.chartOptions2.series = [
               this.dashboardChartComman.instantweeksuccesscount,
               this.dashboardChartComman.instantweekfailurecount,
               this.dashboardChartComman.inactivedev,
               this.dashboardChartComman.activedev,
-              this.dashboardChartComman.faultydev
+              this.dashboardChartComman.faultydev,
             ];
             this.chartOptions3.series = [
               this.dashboardChartComman.dailyweeksuccesscount,
               this.dashboardChartComman.dailyweekfailurecount,
               this.dashboardChartComman.inactivedev,
               this.dashboardChartComman.activedev,
-              this.dashboardChartComman.faultydev
+              this.dashboardChartComman.faultydev,
             ];
             this.chartOptions4.series = [
               this.dashboardChartComman.deltaweeksuccesscount,
               this.dashboardChartComman.deltaweekfailurecount,
               this.dashboardChartComman.inactivedev,
               this.dashboardChartComman.activedev,
-              this.dashboardChartComman.faultydev
+              this.dashboardChartComman.faultydev,
             ];
             this.chartOptions5.series = [
               this.dashboardChartComman.eventweeksuccesscount,
               this.dashboardChartComman.eventweekfailurecount,
               this.dashboardChartComman.inactivedev,
               this.dashboardChartComman.activedev,
-              this.dashboardChartComman.faultydev
+              this.dashboardChartComman.faultydev,
             ];
             this.chartOptions6.series = [
               this.dashboardChartComman.billingweeksuccesscount,
               this.dashboardChartComman.billingweekfailurecount,
               this.dashboardChartComman.inactivedev,
               this.dashboardChartComman.activedev,
-              this.dashboardChartComman.faultydev
+              this.dashboardChartComman.faultydev,
             ];
           }
         }
-      }
-      else {
-
-        this.logout();
-      }
-    });
+      },
+      (error) => console.log('error', error)
+    );
   }
   getDashboardChartCommanData(type: string) {
-
     if (this.dashboardChartComman != undefined) {
       if (type == 'Today' || type == '') {
         this.chartOptions1.series = [
@@ -848,42 +1248,42 @@ export class HomeComponent implements OnInit {
           this.dashboardChartComman.commdayfailurecount,
           this.dashboardChartComman.inactivedev,
           this.dashboardChartComman.activedev,
-          this.dashboardChartComman.faultydev
+          this.dashboardChartComman.faultydev,
         ];
         this.chartOptions2.series = [
           this.dashboardChartComman.instantdaysuccesscount,
           this.dashboardChartComman.instantdayfailurecount,
           this.dashboardChartComman.inactivedev,
           this.dashboardChartComman.activedev,
-          this.dashboardChartComman.faultydev
+          this.dashboardChartComman.faultydev,
         ];
         this.chartOptions3.series = [
           this.dashboardChartComman.dailydaysuccesscount,
           this.dashboardChartComman.dailydayfailurecount,
           this.dashboardChartComman.inactivedev,
           this.dashboardChartComman.activedev,
-          this.dashboardChartComman.faultydev
+          this.dashboardChartComman.faultydev,
         ];
         this.chartOptions4.series = [
           this.dashboardChartComman.deltadaysuccesscount,
           this.dashboardChartComman.deltadayfailurecount,
           this.dashboardChartComman.inactivedev,
           this.dashboardChartComman.activedev,
-          this.dashboardChartComman.faultydev
+          this.dashboardChartComman.faultydev,
         ];
         this.chartOptions5.series = [
           this.dashboardChartComman.eventdaysuccesscount,
           this.dashboardChartComman.eventdayfailurecount,
           this.dashboardChartComman.inactivedev,
           this.dashboardChartComman.activedev,
-          this.dashboardChartComman.faultydev
+          this.dashboardChartComman.faultydev,
         ];
         this.chartOptions6.series = [
           this.dashboardChartComman.billingdaysuccesscount,
           this.dashboardChartComman.billingdayfailurecount,
           this.dashboardChartComman.inactivedev,
           this.dashboardChartComman.activedev,
-          this.dashboardChartComman.faultydev
+          this.dashboardChartComman.faultydev,
         ];
       } else if (type == 'Yesterday') {
         this.chartOptions1.series = [
@@ -891,42 +1291,42 @@ export class HomeComponent implements OnInit {
           this.dashboardChartComman.commyestfailurecount,
           this.dashboardChartComman.inactivedev,
           this.dashboardChartComman.activedev,
-          this.dashboardChartComman.faultydev
+          this.dashboardChartComman.faultydev,
         ];
         this.chartOptions2.series = [
           this.dashboardChartComman.instantyestsuccesscount,
           this.dashboardChartComman.instantyestfailurecount,
           this.dashboardChartComman.inactivedev,
           this.dashboardChartComman.activedev,
-          this.dashboardChartComman.faultydev
+          this.dashboardChartComman.faultydev,
         ];
         this.chartOptions3.series = [
           this.dashboardChartComman.dailyyestsuccesscount,
           this.dashboardChartComman.dailyyestfailurecount,
           this.dashboardChartComman.inactivedev,
           this.dashboardChartComman.activedev,
-          this.dashboardChartComman.faultydev
+          this.dashboardChartComman.faultydev,
         ];
         this.chartOptions4.series = [
           this.dashboardChartComman.deltayestsuccesscount,
           this.dashboardChartComman.deltayestfailurecount,
           this.dashboardChartComman.inactivedev,
           this.dashboardChartComman.activedev,
-          this.dashboardChartComman.faultydev
+          this.dashboardChartComman.faultydev,
         ];
         this.chartOptions5.series = [
           this.dashboardChartComman.eventyestsuccesscount,
           this.dashboardChartComman.eventyestfailurecount,
           this.dashboardChartComman.inactivedev,
           this.dashboardChartComman.activedev,
-          this.dashboardChartComman.faultydev
+          this.dashboardChartComman.faultydev,
         ];
         this.chartOptions6.series = [
           this.dashboardChartComman.billingyestsuccesscount,
           this.dashboardChartComman.billingyestfailurecount,
           this.dashboardChartComman.inactivedev,
           this.dashboardChartComman.activedev,
-          this.dashboardChartComman.faultydev
+          this.dashboardChartComman.faultydev,
         ];
       } else if (type == 'Last Week') {
         this.chartOptions1.series = [
@@ -934,42 +1334,42 @@ export class HomeComponent implements OnInit {
           this.dashboardChartComman.commweekfailurecount,
           this.dashboardChartComman.inactivedev,
           this.dashboardChartComman.activedev,
-          this.dashboardChartComman.faultydev
+          this.dashboardChartComman.faultydev,
         ];
         this.chartOptions2.series = [
           this.dashboardChartComman.instantweeksuccesscount,
           this.dashboardChartComman.instantweekfailurecount,
           this.dashboardChartComman.inactivedev,
           this.dashboardChartComman.activedev,
-          this.dashboardChartComman.faultydev
+          this.dashboardChartComman.faultydev,
         ];
         this.chartOptions3.series = [
           this.dashboardChartComman.dailyweeksuccesscount,
           this.dashboardChartComman.dailyweekfailurecount,
           this.dashboardChartComman.inactivedev,
           this.dashboardChartComman.activedev,
-          this.dashboardChartComman.faultydev
+          this.dashboardChartComman.faultydev,
         ];
         this.chartOptions4.series = [
           this.dashboardChartComman.deltaweeksuccesscount,
           this.dashboardChartComman.deltaweekfailurecount,
           this.dashboardChartComman.inactivedev,
           this.dashboardChartComman.activedev,
-          this.dashboardChartComman.faultydev
+          this.dashboardChartComman.faultydev,
         ];
         this.chartOptions5.series = [
           this.dashboardChartComman.eventweeksuccesscount,
           this.dashboardChartComman.eventweekfailurecount,
           this.dashboardChartComman.inactivedev,
           this.dashboardChartComman.activedev,
-          this.dashboardChartComman.faultydev
+          this.dashboardChartComman.faultydev,
         ];
         this.chartOptions6.series = [
           this.dashboardChartComman.billingweeksuccesscount,
           this.dashboardChartComman.billingweekfailurecount,
           this.dashboardChartComman.inactivedev,
           this.dashboardChartComman.activedev,
-          this.dashboardChartComman.faultydev
+          this.dashboardChartComman.faultydev,
         ];
       } else if (type == 'Last Month') {
         this.chartOptions1.series = [
@@ -977,42 +1377,42 @@ export class HomeComponent implements OnInit {
           this.dashboardChartComman.commmonthfailurecount,
           this.dashboardChartComman.inactivedev,
           this.dashboardChartComman.activedev,
-          this.dashboardChartComman.faultydev
+          this.dashboardChartComman.faultydev,
         ];
         this.chartOptions2.series = [
           this.dashboardChartComman.instantmonthsuccesscount,
           this.dashboardChartComman.instantmonthfailurecount,
           this.dashboardChartComman.inactivedev,
           this.dashboardChartComman.activedev,
-          this.dashboardChartComman.faultydev
+          this.dashboardChartComman.faultydev,
         ];
         this.chartOptions3.series = [
           this.dashboardChartComman.dailymonthsuccesscount,
           this.dashboardChartComman.dailymonthfailurecount,
           this.dashboardChartComman.inactivedev,
           this.dashboardChartComman.activedev,
-          this.dashboardChartComman.faultydev
+          this.dashboardChartComman.faultydev,
         ];
         this.chartOptions4.series = [
           this.dashboardChartComman.deltamonthsuccesscount,
           this.dashboardChartComman.deltamonthfailurecount,
           this.dashboardChartComman.inactivedev,
           this.dashboardChartComman.activedev,
-          this.dashboardChartComman.faultydev
+          this.dashboardChartComman.faultydev,
         ];
         this.chartOptions5.series = [
           this.dashboardChartComman.eventmonthsuccesscount,
           this.dashboardChartComman.eventmonthfailurecount,
           this.dashboardChartComman.inactivedev,
           this.dashboardChartComman.activedev,
-          this.dashboardChartComman.faultydev
+          this.dashboardChartComman.faultydev,
         ];
         this.chartOptions6.series = [
           this.dashboardChartComman.billingmonthsuccesscount,
           this.dashboardChartComman.billingmonthfailurecount,
           this.dashboardChartComman.inactivedev,
           this.dashboardChartComman.activedev,
-          this.dashboardChartComman.faultydev
+          this.dashboardChartComman.faultydev,
         ];
       }
     }

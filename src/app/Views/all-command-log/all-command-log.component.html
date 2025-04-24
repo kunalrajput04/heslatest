@@ -13,69 +13,51 @@
           <div class="row">
             <div class="col-xs-12">
               <div class="table-header">
+               
                 <form #form="ngForm" (submit)="onSubmit()">
                   <div class="row">
-                    <div class="col-lg-3">
+                    <div class="col-lg-2">
                       <h4 class="title">Full Command Logs</h4>
                     </div>
-                    <div
-                      class="col-lg-1"
-                      style="margin-top: 4px; margin-bottom: 4px; width: 40px"
-                    >
+                    <div class="col-lg-1" style="margin-top: 10px; margin-bottom: 4px;  width:45px;margin-left: 44px">
                       <span>From:</span>
                     </div>
-                    <div
-                      class="col-lg-3"
-                      style="margin-top: 4px; margin-bottom: 4px"
-                    >
+                    <div class="col-lg-2" style="margin-top: 4px; margin-bottom: 4px">
                       <span>
-                        <input
-                          type="date"
-                          #start_date="ngModel"
-                          name="start_date"
-                          [(ngModel)]="formdata.start_date"
-                          class="form-control"
-                        />
+                        <input type="date" #fromdate="ngModel" name="fromdate" [(ngModel)]="formdata.fromdate"
+                          class="form-control" />
                       </span>
                     </div>
-                    <div
-                      class="col-lg-1"
-                      style="margin-top: 4px; margin-bottom: 4px; width: 10px"
-                    >
+                    <div class="col-lg-1" style="margin-top: 10px; margin-bottom: 4px; width: 10px">
                       <span>To:</span>
                     </div>
-                    <div
-                      class="col-lg-3"
-                      style="margin-top: 4px; margin-bottom: 4px"
-                    >
+                    <div class="col-lg-2" style="margin-top: 4px; margin-bottom: 4px">
                       <span>
-                        <input
-                          type="date"
-                          #end_date="ngModel"
-                          name="end_date"
-                          [(ngModel)]="formdata.end_date"
-                          class="form-control"
-                        />
+                        <input type="date" #todate="ngModel" name="todate" [(ngModel)]="formdata.todate"
+                          class="form-control" />
                       </span>
                     </div>
-                    <div
-                      class="col-lg-1"
-                      style="margin-top: 4px; margin-bottom: 4px"
-                    >
+                    <div class="col-lg-1" style="margin-top: 10px; margin-bottom: 4px; width:90px">
+                      <span>Meter No:</span>
+                    </div>
+                    <div class="col-lg-2" style="margin-top: 4px; margin-bottom: 4px">
                       <span>
-                        <button
-                          type="submit"
-                          class="btn brn-default"
-                          style="
+                        <input type="text" #meterNo="ngModel" placeholder="meter number" name="meterNo"
+                          [(ngModel)]="formdata.meterNo" class="form-control" />
+                      </span>
+                    </div>
+                    <div class="col-lg-1" style="margin-top: 4px; margin-bottom: 4px">
+                      <span>
+                        <button type="submit" class="btn brn-default" style="
                             background: #707878;
                             border-radius: 7px;
                             color: white;
-                          "
-                        >
+                          ">
                           Go
                         </button>
                       </span>
                     </div>
+
                   </div>
                 </form>
               </div>
@@ -104,6 +86,7 @@
                     [pagination]="true"
                     [paginationPageSize]="15"
                     enableCellTextSelection="true"
+                    (gridReady)="onGridReady($event)"
                     [columnDefs]="columnDefs"
                     [animateRows]="true"
                   >

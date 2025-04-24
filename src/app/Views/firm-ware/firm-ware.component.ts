@@ -13,6 +13,7 @@ import { OnDemandService } from 'src/app/Services/on-demand.service';
 import { SubDivisionService } from 'src/app/Services/sub-division.service';
 import { SubStationService } from 'src/app/Services/sub-station.service';
 import { EditButtonComponent } from 'src/app/Shared/AgGrid/edit-button/edit-button.component';
+import { Common } from 'src/app/Shared/Common/common';
 import { Utility } from 'src/app/Shared/utility';
 import Swal from 'sweetalert2';
 declare let $: any;
@@ -46,6 +47,7 @@ export class FirmWareComponent implements OnInit {
   levelName: string = '';
   levelValue: string = '';
   isMeter: boolean = true;
+  commonClass: Common;
   data: Headernavigation = {
     firstlevel: 'Settings',
     menuname: 'Firmware',
@@ -59,7 +61,6 @@ export class FirmWareComponent implements OnInit {
     version: '',
     imageIdentifier: ''
   };
-
 
   gridOptions: any;
   defaultColDef: any;
@@ -80,6 +81,7 @@ export class FirmWareComponent implements OnInit {
     private toaster: ToastrService,
     private datePipe: DatePipe,
     private datasharedservice: DataSharedService) {
+      this.commonClass = new Common(datasharedservice);
     this.gridOptions = { context: { componentParent: this } }
     this.defaultColDef = {
       resizable: true, filter: false, sortable: true
@@ -128,17 +130,12 @@ export class FirmWareComponent implements OnInit {
     this.datasharedservice.chagneHeaderNav(this.data);
   }
 
-
-
-
   ngOnInit(): void {
     this.formdata.roleID = '6';
     //this.getUtility();
     this.formdata.accessOwner = localStorage.getItem('UserID');
     this.iswritepermission = localStorage.getItem('WriteAccess');
   }
-
-
 
   logout() {
 
@@ -153,7 +150,7 @@ export class FirmWareComponent implements OnInit {
       .getSubdivisionForRegistration(this.formdata.accessOwner)
       .subscribe((res: any) => {
         this.spinner.hide();
-        if (res != null && (res.message != 'Key Is Not Valid' && res.message != 'Session Is Expired')) {
+        const validData = this.commonClass.checkDataExists(res);
           this.SubDivisionDropdown = [];
           let obj = res.data[0];
 
@@ -161,11 +158,7 @@ export class FirmWareComponent implements OnInit {
             this.SubDivisionDropdown.push(obj[item][0]);
           }
 
-        }
-        else {
-
-          this.logout();
-        }
+     
       });
   }
 
@@ -295,8 +288,6 @@ export class FirmWareComponent implements OnInit {
     }
   }
 
-
-
   onBtnExport() {
     var excelParams = {
       fileName: 'FirmwareList.csv',
@@ -325,104 +316,200 @@ export class FirmWareComponent implements OnInit {
     this.gridColumnApi.autoSizeAllColumns();
     this.gridApi.showLoadingOverlay();
     this.ondemmand.getFirmwareList().subscribe((res: any) => {
-      if (res != null && res.message != 'Key Is Not Valid') {
+      const validData = this.commonClass.checkDataExists(res);
+      // if (res != null && ) {
         this.tableData = res.data;
         this.utility.updateApiKey(res.apiKey);;
         this.gridApi.setRowData(this.tableData);
-        this.gridColumnApi.autoSizeAllColumns();
-
-      } else {
-
-        this.logout();
-      }
+        this.gridColumnApi.autoSizeAllColumns();   
     });
   }
 
+  // uploadFirmware() {
+  //   this.spinner.show();
+  //   this.ondemmand.addFirmware(this.formFiledata.firmWareFile, this.formFiledata.status, this.formFiledata.version, this.formFiledata.manufacturer).subscribe((res: any) => {
+  //     this.spinner.hide();
+  //     if (res != null && res.message != 'Key Is Not Valid' && res.message != 'Session Is Expired') {
+  //       if (res.result != 'false') {
+  //         this.toaster.success(res.message);
+  //         this.onList();
+  //       }
+  //       else {
+  //         this.toaster.error(res.message);
+  //       }
+  //     } else {
 
+        
+  //     }
+  //   });
+  // }
   uploadFirmware() {
+    if (!this.formFiledata.firmWareFile) {
+      this.toaster.error('Please select a file');
+      return;
+    }
+    
     this.spinner.show();
-    this.ondemmand.addFirmware(this.formFiledata.firmWareFile, this.formFiledata.status, this.formFiledata.version, this.formFiledata.manufacturer).subscribe((res: any) => {
-      this.spinner.hide();
-      if (res != null && res.message != 'Key Is Not Valid' && res.message != 'Session Is Expired') {
-        if (res.result != 'false') {
+    this.ondemmand.addFirmware(
+      this.formFiledata.firmWareFile,
+      this.formFiledata.status,
+      this.formFiledata.version,
+      this.formFiledata.manufacturer
+    ).subscribe({
+      next: (res: any) => {
+        this.spinner.hide();
+        if (res?.result === 'true') {
           this.toaster.success(res.message);
           this.onList();
+        } else {
+          this.toaster.error(res.message || 'Upload failed');
         }
-        else {
-          this.toaster.error(res.message);
-        }
-      } else {
-
-        this.logout();
+      },
+      error: (error) => {
+        this.spinner.hide();
+        this.toaster.error('Upload failed: ' + (error.message || 'Unknown error'));
       }
     });
   }
 
+  // updateFirmware() {
+  //   this.spinner.show();
+  //   this.ondemmand.updateFirmwareList(this.formFiledata).subscribe((res: any) => {
+  //     this.spinner.hide();
+  //     const validData = this.commonClass.checkDataExists(res);
+  //     // if (res != null && res.message != 'Key Is Not Valid' && res.message != 'Session Is Expired') {
+  //       if (res.result != 'false') {
+  //         this.toaster.success(res.message);
+  //         this.onList();
+  //         $('#ModalAddDevice').modal('hide');
+  //       }
+  //       else {
+  //         this.toaster.error(res.message);
+  //       }
+   
 
-  updateFirmware() {
-    this.spinner.show();
-    this.ondemmand.updateFirmwareList(this.formFiledata).subscribe((res: any) => {
-      this.spinner.hide();
-      if (res != null && res.message != 'Key Is Not Valid' && res.message != 'Session Is Expired') {
-        if (res.result != 'false') {
-          this.toaster.success(res.message);
-          this.onList();
-          $('#ModalAddDevice').modal('hide');
-        }
-        else {
-          this.toaster.error(res.message);
-        }
-      } else {
-
-        this.logout();
+  //   });
+  // }
+//   updateFirmware() {
+//     this.spinner.show();    
+//     this.ondemmand.updateFirmwareList(this.formFiledata).subscribe({
+//         next: (res: any) => {
+//             this.spinner.hide();
+//             if (res.result === "true") {
+//               debugger;
+//                 this.toaster.success(res.message);
+//                 this.onList();
+                
+//                 $('#ModalAddDevice').modal('hide');
+               
+//                // this.formFiledata = {};
+//             } else {
+//                 this.toaster.error(res.message);
+//             }
+//         },
+//         error: (error) => {
+//             this.spinner.hide();
+//             this.toaster.error('An error occurred');
+//         }
+//     });
+// }
+updateFirmware() {
+  this.spinner.show();  
+  this.ondemmand.updateFirmwareList(this.formFiledata).subscribe({
+      next: (res: any) => {
+          this.spinner.hide();          
+          const response = res[0];          
+          if (response.result === "true") {
+              this.toaster.success(response.message); 
+              this.onList();
+              $('#ModalAddDevice').modal('hide');
+          } else {
+              this.toaster.error(response.message || 'Update failed');
+          }
+      },
+      error: (error) => {
+          this.spinner.hide();
+          this.toaster.error('An error occurred while updating');
       }
-
-    });
-  }
-
+  });
+}
   checkFile(data: any) {
     
     this.formFiledata.firmWareFile = data.target.files[0];
 
   }
 
-  onDeleteRow(data: any) {
+  // onDeleteRow(data: any) {
 
-    let dataList = [
-      {
+  //   let dataList = [
+  //     {
+  //       owner: data.rowData.owner,
+  //       fileName: data.rowData.fileName
+  //     }
+  //   ];
+  //   Swal.fire({
+  //     title: 'Are you sure?',
+  //     text: 'You will not be able to recover this data! Enter your reason',
+  //     icon: 'warning',
+  //     showCancelButton: true,
+  //     confirmButtonColor: '#3085d6',
+  //     cancelButtonColor: '#d33',
+  //     confirmButtonText: 'Yes, delete it!',
+  //   }).then((result) => {
+
+  //     if (result.isConfirmed) {
+  //       this.ondemmand
+  //         .deleteFirmwareList(dataList)
+  //         .subscribe((res: any) => {
+  //           this.spinner.hide();   
+  //           const validData = this.commonClass.checkDataExists(res);         
+  //             Swal.fire('Deleted Successfully', '', 'success');
+  //             this.utility.updateApiKey(res.apiKey);;
+  //             this.onList();          
+  //         });
+  //     }
+  //   });
+  // }
+  onDeleteRow(data: any) {
+    
+    const  deleteData = {
         owner: data.rowData.owner,
         fileName: data.rowData.fileName
-      }
-    ];
+    };
+
     Swal.fire({
-      title: 'Are you sure?',
-      text: 'You will not be able to recover this data! Enter your reason',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!',
+        title: 'Are you sure?',
+        text: 'You will not be able to recover this data! Enter your reason',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
-
-      if (result.isConfirmed) {
-        this.ondemmand
-          .deleteFirmwareList(dataList)
-          .subscribe((res: any) => {
-            this.spinner.hide();
-            if (res != null && (res.message != 'Key Is Not Valid' && res.message != 'Session Is Expired')) {
-              Swal.fire('Deleted Successfully', '', 'success');
-              this.utility.updateApiKey(res.apiKey);;
-              this.onList();
-            }
-            else {
-
-              this.logout();
-            }
-          });
-      }
+        if (result.isConfirmed) {
+            this.spinner.show(); // Show spinner at start
+            this.ondemmand.deleteFirmwareList(deleteData)
+                .subscribe({
+                    next: (res: any) => {
+                        this.spinner.hide();
+                        if (res && res.result !== 'false') {
+                            Swal.fire('Deleted Successfully', '', 'success');
+                            // if (res.apiKey) {
+                            //     this.utility.updateApiKey(res.apiKey);
+                            // }
+                            this.onList();
+                        } else {
+                            Swal.fire('Error', res?.message || 'Delete failed', 'error');
+                        }
+                    },
+                    error: (error) => {
+                        this.spinner.hide();
+                        Swal.fire('Error', 'Delete failed: ' + (error.message || 'Unknown error'), 'error');
+                    }
+                });
+        }
     });
-  }
-
+}
   onEditRow(data: any) {
     $('#ModalAddDevice').modal('show');
     this.formFiledata = data.rowData;
@@ -457,7 +544,8 @@ export class FirmWareComponent implements OnInit {
 
       this.getLevelValue();
       this.ondemmand.addConfigs(this.levelName, this.levelValue, s, true).subscribe((res: any) => {
-        if (res != null && res.message != 'Key Is Not Valid' && res.message != 'Session Is Expired') {
+        const validData = this.commonClass.checkDataExists(res);
+        // if (res != null && res.message != 'Key Is Not Valid' && res.message != 'Session Is Expired') {
           if (res.result != 'false') {
             this.toaster.success(res.message);
             this.onList();
@@ -465,10 +553,7 @@ export class FirmWareComponent implements OnInit {
           else {
             this.toaster.error(res.message);
           }
-        } else {
-
-          this.logout();
-        }
+      
       });
 
 

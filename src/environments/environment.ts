@@ -4,18 +4,30 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'https://meghasmarts.com:8443/dlms/rest',
-  apiComUrl: 'http://115.124.119.161:6003',
-  //apiComUrl: 'http://localhost:6003',
-  //apiUrl: 'http://meghasmarts.com:8081/rec/rest',
-  apiRenderUrl: 'http://meghasmarts.com:6002',
-  slaH: 'http://115.124.119.161:8069',
-  slaUrl2: 'https://meghasmarts.com:8443/sla2/rest/Evit',
-  slaiNfoNEW: 'https://meghasmarts.com:8443/dlms1/rest',
-  slachk: 'http://115.124.119.161:5065',
+
+  apiUrl: 'http://hesapi.mizopower.com:6005/api/v1',
+  apiComUrl: 'http://hesapi.mizopower.com:6005/api/v1',
+  apiRenderUrl: 'http://hesapi.mizopower.com:6005/api/v1',
+  slaH: 'http://hesapi.mizopower.com:6005',
+  slachk: 'http://hesapi.mizopower.com:6005',
+  rf: 'http://hesapi.mizopower.com:6005/api',
+
+  // apiUrl: 'https://hesapi.mizopower.com:6005/api/v1',
+  // apiComUrl: 'https://hesapi.mizopower.com:6005/api/v1',
+  // apiRenderUrl: 'https://hesapi.mizopower.com:6005/api/v1',
+  // slaH: 'https://hesapi.mizopower.com:6005',
+  // slachk: 'https://hesapi.mizopower.com:6005',
+  // rf: 'https://hesapi.mizopower.com:6005/api',
+
+  // apiUrl: 'http://localhost:6004/api/v1',
+  // apiComUrl: 'http://localhost:6004/api/v1',
+  // apiRenderUrl: 'http://localhost:6004/api/v1',
+  // slaH: 'http://localhost:6004',
+  // slachk: 'http://localhost:6004',
+  // rf: 'http://localhost:6004/api',
+
   hesVersion: '1.00.00',
   buildDate: new Date(),
-  apiBaseUrl: 'https://meghasmarts.com:6003' // Add this property
 };
 
 /*

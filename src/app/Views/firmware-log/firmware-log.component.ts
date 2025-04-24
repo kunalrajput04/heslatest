@@ -57,7 +57,7 @@ export class FirmwareLogComponent implements OnInit {
 
   onBtnExport() {
     var excelParams = {
-      fileName: 'InstantData.csv',
+      fileName: 'Firmwarelog.csv',
     }
     this.gridApi.exportDataAsCsv(excelParams);
   }
@@ -92,7 +92,7 @@ export class FirmwareLogComponent implements OnInit {
     this.gridApi.showLoadingOverlay();
 
     this.service
-      .getFirmwareLogs(this.formdata.fromdate, this.formdata.todate)
+      .getFirmwareLogs(this.formdata.fromdate, this.formdata.todate, this.formdata.meterNo)
       .subscribe((res: any) => {
         if (res != null && res.message != 'Key Is Not Valid' && res.message != 'Session Is Expired') {
           if (res.data != null) {
@@ -117,7 +117,7 @@ export class FirmwareLogComponent implements OnInit {
             this.gridApi.setRowData([]);
         } else {
 
-          this.logout();
+          
         }
       });
 

@@ -86,42 +86,7 @@ export class CommandLogComponent implements OnInit {
     params.api.setRowData([]);
     this.gridColumnApi.autoSizeAllColumns();
     params.api.showLoadingOverlay();
-    this.service.getCommandLogData(this.formdata.fromdate, this.formdata.todate).subscribe((res: any) => {
-      if (res != null && res.message != 'Key Is Not Valid') {
-        if (res.data != null) {
-          for (let item in res.data[0]) {
-            if (parseInt(item) !== 1) {
-              this.tableData.push({
-                trackingID: res.data[0][item][0],
-                meterSNo: res.data[0][item][1],
-                commandName: res.data[0][item][2],
-                mdasDateTime: res.data[0][item][3],
-                commandCompletionDateTime: res.data[0][item][4],
-                status: res.data[0][item][5],
-                attempts: res.data[0][item][6]
-
-              });
-            }
-          }
-          this.utility.updateApiKey(res.apiKey);;
-          this.gridApi.setRowData(this.tableData);
-          this.gridColumnApi.autoSizeAllColumns();
-
-          this.commandList = this.tableData
-            .map(e => e['commandName'])
-            .map((e, i, final) => final.indexOf(e) === i && i)
-            .filter(obj => this.tableData[obj])
-            .map(e => this.tableData[e].commandName);
-
-        }
-        else {
-          this.gridApi.setRowData([]);
-        }
-      } else {
-
-        this.logout();
-      }
-    });
+   
   }
 
   onFilterTextBoxChanged() {
@@ -130,13 +95,7 @@ export class CommandLogComponent implements OnInit {
     );
   }
 
-  doesExternalFilterPass(node: RowNode): boolean {
-    return node.data.commandName == ageType;
-  }
 
-  isExternalFilterPresent(): boolean {
-    return ageType !== 'Select Command Type';
-  }
 
 
   externalFilterChanged(newValue: string) {
@@ -161,7 +120,7 @@ export class CommandLogComponent implements OnInit {
     this.gridColumnApi.autoSizeAllColumns();
     this.gridApi.showLoadingOverlay();
     this.child.getInstant(this.formdata.fromdate,this.formdata.todate);
-    this.service.getCommandLogData(this.formdata.fromdate, this.formdata.todate).subscribe((res: any) => {
+    this.service.getCommandLogData(this.formdata.fromdate, this.formdata.todate, this.formdata.meterNo).subscribe((res: any) => {
       if (res != null && res.message != 'Key Is Not Valid') {
         if (res.data != null) {
           for (let item in res.data[0]) {
@@ -191,7 +150,7 @@ export class CommandLogComponent implements OnInit {
           this.gridApi.setRowData([]);
       } else {
 
-        this.logout();
+        
       }
     });
 

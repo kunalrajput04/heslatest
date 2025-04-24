@@ -144,7 +144,7 @@ export class EventDataPushComponent implements OnInit {
           this.gridApi.setRowData([]);
       } else {
 
-        this.logout();
+        
       }
     });
   }

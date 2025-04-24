@@ -16,58 +16,46 @@ export class DTService {
   }
   addDT(model: DT) {
     model.ownerName = localStorage.getItem('UserID');
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
-
     return this.http.post(
-      `${environment.apiUrl}/Evit/addDT/`,
-      model,
-
-      httpOptions
+      `${environment.apiUrl}/asset/addDT`,
+      model      
     );
   }
-  getDTByFeeder(feeder: string) {
+  getDTByFeeder(feeder: string) {    
     this.ownerdata.feederName = feeder;
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
     return this.http.post(
-      `${environment.apiUrl}/Evit/getDT`,
-      this.ownerdata,
-      httpOptions
+      `${environment.apiUrl}/asset/getDtTrans`,
+      this.ownerdata
+      
     );
   }
 
   getDtData() {
     this.data.levelName = localStorage.getItem('levelName');
-    this.data.levelValue = localStorage.getItem('levelValue');
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
+    this.data.levelValue = localStorage.getItem('levelValue'); 
     return this.http.post(
-      `${environment.apiUrl}/Evit/getDtTransList/`,
-      this.data,
-      httpOptions
+      `${environment.apiUrl}/asset/getDtTransList`,
+      this.data
+      
     );
   }
-  deleteDTData(data: DT) {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        apiKey: localStorage.getItem('apikey'),
-      }),
-    };
+  // deleteDTData(data: DT) {   
+  //   return this.http.post(
+  //     `${environment.apiUrl}/asset/deleteDT`,
+  //     data
+      
+  //   );
+  // }
+  deleteDTData(data: DT) {   
+    return this.http.request('DELETE',
+      `${environment.apiUrl}/asset/deleteDT`,
+      {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json'
+        }),
+        body: data
+      }
+    );
+  }
 
-    return this.http.post(
-      `${environment.apiUrl}/Evit/deleteDT/`,
-      data,
-      httpOptions
-    );
-  }
 }

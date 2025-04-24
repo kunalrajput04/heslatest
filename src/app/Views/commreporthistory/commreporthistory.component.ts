@@ -38,6 +38,7 @@ import { FeederService } from 'src/app/Services/feeder.service';
 import { SubDivisionService } from 'src/app/Services/sub-division.service';
 import { SubStationService } from 'src/app/Services/sub-station.service';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
+import { Common } from 'src/app/Shared/Common/common';
 export interface IMeterInfo {
   consumerName: string;
   meterSerialNo: string;
@@ -104,7 +105,7 @@ export class CommreporthistoryComponent implements OnInit {
   weekdropvalue: string = '';
   weekdate: string = '';
   isclick: boolean = false;
-
+commonClass: Common;
   formdata: UserCreate = new UserCreate();
   meterInfo: IMeterInfo[] = [];
   meterInfo1: IMeterInfo1[] = [];
@@ -166,6 +167,7 @@ export class CommreporthistoryComponent implements OnInit {
     private router: Router,
     private dtservice: DTService
   ) {
+    
     let thispage = this;
     this.formdata.roleID = '';
 
@@ -334,6 +336,7 @@ export class CommreporthistoryComponent implements OnInit {
         return 'faultyrowcolor';
       }
     }
+    this.commonClass = new Common(datasharedservice);
   }
 
   ngOnInit(): void {
@@ -446,11 +449,12 @@ export class CommreporthistoryComponent implements OnInit {
       .getCommReportChartData1(this.levelName, this.levelValue, this.formdata.fromdate, this.formdata.todate)
       .subscribe((res: any) => {
        
-        if (
-          res != null &&
-          res.message != 'Key Is Not Valid' &&
-          res.message != 'Session Is Expired'
-        ) {
+        // if (
+        //   res != null &&
+        //   res.message != 'Key Is Not Valid' &&
+        //   res.message != 'Session Is Expired'
+        // ) {
+        const validData = this.commonClass.checkDataExists(res);
           if (res.data != null) {
             
             this.resultData = res.data[0];
@@ -458,9 +462,8 @@ export class CommreporthistoryComponent implements OnInit {
             this.simType = 'All';
 
             this.setCommReportChartData();
-          }
-        } else {
-          this.logout();
+      
+          
         }
         this.spinner.hide();
       });
@@ -773,7 +776,7 @@ export class CommreporthistoryComponent implements OnInit {
             this.SubDivisionDropdown.push(obj[item][0]);
           }
         } else {
-          this.logout();
+          
         }
       });
   }
@@ -921,7 +924,7 @@ export class CommreporthistoryComponent implements OnInit {
   //           this.gridColumnApi.autoSizeAllColumns();
   //         }
   //       } else {
-  //         this.logout();
+  //         
   //       }
   //       this.spinner.hide();
 

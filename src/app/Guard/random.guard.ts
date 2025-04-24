@@ -20,7 +20,7 @@ export class RandomGuard implements CanActivate, CanLoad {
   
     canLoad() {
       if (!this.authService.isLoggedIn()) {
-        this.router.navigate(['/meecl']);
+        this.router.navigate(['/login']);
       }
       return this.authService.isLoggedIn();
     }

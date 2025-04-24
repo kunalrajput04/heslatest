@@ -10,6 +10,7 @@ import { FeederService } from 'src/app/Services/feeder.service';
 import { SubDivisionService } from 'src/app/Services/sub-division.service';
 import { SubStationService } from 'src/app/Services/sub-station.service';
 import { UserServiceeService } from 'src/app/Services/user-servicee.service';
+import { Common } from 'src/app/Shared/Common/common';
 
 @Component({
   selector: 'app-register',
@@ -33,6 +34,7 @@ export class RegisterComponent implements OnInit {
   feedervalue: string = '';
   dtvalue: string = '';
   isUpdate: boolean = false;
+  commonClass: Common;
   constructor(
     private spinner: NgxSpinnerService,
     private subdivisionservice: SubDivisionService,
@@ -58,7 +60,8 @@ export class RegisterComponent implements OnInit {
       .getSubdivisionForRegistration(this.formdata.accessOwner)
       .subscribe((res: any) => {
         this.spinner.hide();
-         if (res != null && (res.message != 'Key Is Not Valid' && res.message != 'Session Is Expired')) {
+        // if (res != null && (res.message != 'Key Is Not Valid' && res.message != 'Session Is Expired')) {
+          const validData = this.commonClass.checkDataExists(res);
           this.subdivisionDropDown = [];
           let obj = res.data[0];
 
@@ -68,11 +71,7 @@ export class RegisterComponent implements OnInit {
           
 
           this.formdata.accessSubdivision = this.subdivisonvalue;
-        }
-        else {
-        
-          this.logout();
-        }
+       
       });
   }
     

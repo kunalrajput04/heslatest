@@ -12,7 +12,10 @@ import {
   ChartComponent,
 } from 'ng-apexcharts';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { Consumerlogdata, Consumerlogmodel } from 'src/app/Models/consumerlogmodel';
+import {
+  Consumerlogdata,
+  Consumerlogmodel,
+} from 'src/app/Models/consumerlogmodel';
 import { DataService } from 'src/app/Services/data.service';
 export type ChartOptions = {
   series: ApexNonAxisChartSeries;
@@ -320,19 +323,16 @@ export class CommandLogChartComponent implements OnInit {
 
   ngOnInit(): void {
     this.getInstant(this.fromDate, this.toDate);
-
   }
 
   getInstant(from: any, to: any) {
-
-    this.spinner.show();
+    // this.spinner.show();
     if (from == null && to == null) {
       from = new Date();
       to = new Date();
     }
     from = this.datePipe.transform(new Date(from), 'yyyy-MM-dd');
     to = this.datePipe.transform(new Date(to), 'yyyy-MM-dd');
-
 
     this.condumerlog.instant = new Consumerlogdata();
     this.condumerlog.dailyLP = new Consumerlogdata();
@@ -348,11 +348,12 @@ export class CommandLogChartComponent implements OnInit {
     this.service
       .getCommandLogChartData(from, to, 'InstantaneousRead')
       .subscribe((res: any) => {
-
-
         this.spinner.hide();
-        if (res != null && (res.message != 'Key Is Not Valid' && res.message != 'Session Is Expired')) {
-
+        if (
+          res != null &&
+          res.message != 'Key Is Not Valid' &&
+          res.message != 'Session Is Expired'
+        ) {
           this.condumerlog = res.data;
 
           if (this.condumerlog[0].instant == null)
@@ -380,55 +381,120 @@ export class CommandLogChartComponent implements OnInit {
             this.condumerlog[0].controlRelatedEvents = new Consumerlogdata();
 
           if (this.condumerlog[0].transactionRelatedEvents == null)
-            this.condumerlog[0].transactionRelatedEvents = new Consumerlogdata();
+            this.condumerlog[0].transactionRelatedEvents =
+              new Consumerlogdata();
 
-          this.chartOptions.series = [this.condumerlog[0].instant.IN_PROGRESS == undefined ? 0 : this.condumerlog[0].instant.IN_PROGRESS, this.condumerlog[0].instant.FAILURE == undefined ? 0 : this.condumerlog[0].instant.FAILURE, this.condumerlog[0].instant.SUCCESS == undefined ? 0 : this.condumerlog[0].instant.SUCCESS];
+          this.chartOptions.series = [
+            this.condumerlog[0].instant.IN_PROGRESS == undefined
+              ? 0
+              : this.condumerlog[0].instant.IN_PROGRESS,
+            this.condumerlog[0].instant.FAILURE == undefined
+              ? 0
+              : this.condumerlog[0].instant.FAILURE,
+            this.condumerlog[0].instant.SUCCESS == undefined
+              ? 0
+              : this.condumerlog[0].instant.SUCCESS,
+          ];
 
-          this.chartOptions1.series = [this.condumerlog[0].dailyLP.IN_PROGRESS == undefined ? 0 : this.condumerlog[0].dailyLP.IN_PROGRESS, this.condumerlog[0].dailyLP.FAILURE == undefined ? 0 : this.condumerlog[0].dailyLP.FAILURE, this.condumerlog[0].dailyLP.SUCCESS == undefined ? 0 : this.condumerlog[0].dailyLP.SUCCESS];
+          this.chartOptions1.series = [
+            this.condumerlog[0].dailyLP.IN_PROGRESS == undefined
+              ? 0
+              : this.condumerlog[0].dailyLP.IN_PROGRESS,
+            this.condumerlog[0].dailyLP.FAILURE == undefined
+              ? 0
+              : this.condumerlog[0].dailyLP.FAILURE,
+            this.condumerlog[0].dailyLP.SUCCESS == undefined
+              ? 0
+              : this.condumerlog[0].dailyLP.SUCCESS,
+          ];
 
-          this.chartOptions2.series = [this.condumerlog[0].deltaLP.IN_PROGRESS == undefined ? 0 : this.condumerlog[0].deltaLP.IN_PROGRESS, this.condumerlog[0].deltaLP.FAILURE == undefined ? 0 : this.condumerlog[0].deltaLP.FAILURE, this.condumerlog[0].deltaLP.SUCCESS == undefined ? 0 : this.condumerlog[0].deltaLP.SUCCESS];
+          this.chartOptions2.series = [
+            this.condumerlog[0].deltaLP.IN_PROGRESS == undefined
+              ? 0
+              : this.condumerlog[0].deltaLP.IN_PROGRESS,
+            this.condumerlog[0].deltaLP.FAILURE == undefined
+              ? 0
+              : this.condumerlog[0].deltaLP.FAILURE,
+            this.condumerlog[0].deltaLP.SUCCESS == undefined
+              ? 0
+              : this.condumerlog[0].deltaLP.SUCCESS,
+          ];
 
-          this.chartOptions3.series = [this.condumerlog[0].billing.IN_PROGRESS == undefined ? 0 : this.condumerlog[0].billing.IN_PROGRESS, this.condumerlog[0].billing.FAILURE == undefined ? 0 : this.condumerlog[0].billing.FAILURE, this.condumerlog[0].billing.SUCCESS == undefined ? 0 : this.condumerlog[0].billing.SUCCESS];
-
-
-
+          this.chartOptions3.series = [
+            this.condumerlog[0].billing.IN_PROGRESS == undefined
+              ? 0
+              : this.condumerlog[0].billing.IN_PROGRESS,
+            this.condumerlog[0].billing.FAILURE == undefined
+              ? 0
+              : this.condumerlog[0].billing.FAILURE,
+            this.condumerlog[0].billing.SUCCESS == undefined
+              ? 0
+              : this.condumerlog[0].billing.SUCCESS,
+          ];
 
           this.chartOptions4.series = [
-            (
-              (this.condumerlog[0].otherRelatedEvents.IN_PROGRESS == undefined ? 0 : this.condumerlog[0].otherRelatedEvents.IN_PROGRESS)
-              + (this.condumerlog[0].powerRelatedEvents.IN_PROGRESS == undefined ? 0 : this.condumerlog[0].powerRelatedEvents.IN_PROGRESS)
-              + (this.condumerlog[0].voltageRelatedEvents.IN_PROGRESS == undefined ? 0 : this.condumerlog[0].voltageRelatedEvents.IN_PROGRESS)
-              + (this.condumerlog[0].currentRelatedEvents.IN_PROGRESS == undefined ? 0 : this.condumerlog[0].currentRelatedEvents.IN_PROGRESS)
-              + (this.condumerlog[0].controlRelatedEvents.IN_PROGRESS == undefined ? 0 : this.condumerlog[0].controlRelatedEvents.IN_PROGRESS)
-              + (this.condumerlog[0].transactionRelatedEvents.IN_PROGRESS == undefined ? 0 : this.condumerlog[0].transactionRelatedEvents.IN_PROGRESS)
-            )
-            , (
-              (this.condumerlog[0].otherRelatedEvents.FAILURE == undefined ? 0 : this.condumerlog[0].otherRelatedEvents.FAILURE)
-              + (this.condumerlog[0].powerRelatedEvents.FAILURE == undefined ? 0 : this.condumerlog[0].powerRelatedEvents.FAILURE)
-              + (this.condumerlog[0].voltageRelatedEvents.FAILURE == undefined ? 0 : this.condumerlog[0].voltageRelatedEvents.FAILURE)
-              + (this.condumerlog[0].currentRelatedEvents.FAILURE == undefined ? 0 : this.condumerlog[0].currentRelatedEvents.FAILURE)
-              + (this.condumerlog[0].controlRelatedEvents.FAILURE == undefined ? 0 : this.condumerlog[0].controlRelatedEvents.FAILURE)
-              + (this.condumerlog[0].transactionRelatedEvents.FAILURE == undefined ? 0 : this.condumerlog[0].transactionRelatedEvents.FAILURE)
-            )
-            ,
-            (
-              (this.condumerlog[0].otherRelatedEvents.SUCCESS == undefined ? 0 : this.condumerlog[0].otherRelatedEvents.SUCCESS)
-              + (this.condumerlog[0].powerRelatedEvents.SUCCESS == undefined ? 0 : this.condumerlog[0].powerRelatedEvents.SUCCESS)
-              + (this.condumerlog[0].voltageRelatedEvents.SUCCESS == undefined ? 0 : this.condumerlog[0].voltageRelatedEvents.SUCCESS)
-              + (this.condumerlog[0].currentRelatedEvents.SUCCESS == undefined ? 0 : this.condumerlog[0].currentRelatedEvents.SUCCESS)
-              + (this.condumerlog[0].controlRelatedEvents.SUCCESS == undefined ? 0 : this.condumerlog[0].controlRelatedEvents.SUCCESS)
-              + (this.condumerlog[0].transactionRelatedEvents.SUCCESS == undefined ? 0 : this.condumerlog[0].transactionRelatedEvents.SUCCESS)
-            )];
-        }
-        else {
-
-          this.logout();
+            (this.condumerlog[0].otherRelatedEvents.IN_PROGRESS == undefined
+              ? 0
+              : this.condumerlog[0].otherRelatedEvents.IN_PROGRESS) +
+              (this.condumerlog[0].powerRelatedEvents.IN_PROGRESS == undefined
+                ? 0
+                : this.condumerlog[0].powerRelatedEvents.IN_PROGRESS) +
+              (this.condumerlog[0].voltageRelatedEvents.IN_PROGRESS == undefined
+                ? 0
+                : this.condumerlog[0].voltageRelatedEvents.IN_PROGRESS) +
+              (this.condumerlog[0].currentRelatedEvents.IN_PROGRESS == undefined
+                ? 0
+                : this.condumerlog[0].currentRelatedEvents.IN_PROGRESS) +
+              (this.condumerlog[0].controlRelatedEvents.IN_PROGRESS == undefined
+                ? 0
+                : this.condumerlog[0].controlRelatedEvents.IN_PROGRESS) +
+              (this.condumerlog[0].transactionRelatedEvents.IN_PROGRESS ==
+              undefined
+                ? 0
+                : this.condumerlog[0].transactionRelatedEvents.IN_PROGRESS),
+            (this.condumerlog[0].otherRelatedEvents.FAILURE == undefined
+              ? 0
+              : this.condumerlog[0].otherRelatedEvents.FAILURE) +
+              (this.condumerlog[0].powerRelatedEvents.FAILURE == undefined
+                ? 0
+                : this.condumerlog[0].powerRelatedEvents.FAILURE) +
+              (this.condumerlog[0].voltageRelatedEvents.FAILURE == undefined
+                ? 0
+                : this.condumerlog[0].voltageRelatedEvents.FAILURE) +
+              (this.condumerlog[0].currentRelatedEvents.FAILURE == undefined
+                ? 0
+                : this.condumerlog[0].currentRelatedEvents.FAILURE) +
+              (this.condumerlog[0].controlRelatedEvents.FAILURE == undefined
+                ? 0
+                : this.condumerlog[0].controlRelatedEvents.FAILURE) +
+              (this.condumerlog[0].transactionRelatedEvents.FAILURE == undefined
+                ? 0
+                : this.condumerlog[0].transactionRelatedEvents.FAILURE),
+            (this.condumerlog[0].otherRelatedEvents.SUCCESS == undefined
+              ? 0
+              : this.condumerlog[0].otherRelatedEvents.SUCCESS) +
+              (this.condumerlog[0].powerRelatedEvents.SUCCESS == undefined
+                ? 0
+                : this.condumerlog[0].powerRelatedEvents.SUCCESS) +
+              (this.condumerlog[0].voltageRelatedEvents.SUCCESS == undefined
+                ? 0
+                : this.condumerlog[0].voltageRelatedEvents.SUCCESS) +
+              (this.condumerlog[0].currentRelatedEvents.SUCCESS == undefined
+                ? 0
+                : this.condumerlog[0].currentRelatedEvents.SUCCESS) +
+              (this.condumerlog[0].controlRelatedEvents.SUCCESS == undefined
+                ? 0
+                : this.condumerlog[0].controlRelatedEvents.SUCCESS) +
+              (this.condumerlog[0].transactionRelatedEvents.SUCCESS == undefined
+                ? 0
+                : this.condumerlog[0].transactionRelatedEvents.SUCCESS),
+          ];
+        } else {
         }
       });
   }
 
   logout() {
-
     sessionStorage.clear();
     localStorage.clear();
     this.router.navigate(['/meecl']);

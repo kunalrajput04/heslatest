@@ -1,3 +1,3 @@
 export class SubstationNameKey {
-  substationName: string = '';
+  subStationName: string = '';
 }

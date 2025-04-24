@@ -5,10 +5,11 @@ export class MeterData {
 }
 
 export class MeterDatas {
-  level_name: string = '';
-  level_value: string = '';
-  start_date: string = '';
-  end_date: string = '';
+  levelName: string = '';
+  levelValue: string = '';
+  startDate: string = '';
+  endDate: string = '';
+  devType: string = '';
 }
 
 export class LogDatas {

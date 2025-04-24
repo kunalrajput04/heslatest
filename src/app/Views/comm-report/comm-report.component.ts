@@ -37,6 +37,7 @@ import { DTService } from 'src/app/Services/dt.service';
 import { FeederService } from 'src/app/Services/feeder.service';
 import { SubDivisionService } from 'src/app/Services/sub-division.service';
 import { SubStationService } from 'src/app/Services/sub-station.service';
+import { Common } from 'src/app/Shared/Common/common';
 export interface IMeterInfo {
   consumerName: string;
   meterSerialNo: string;
@@ -97,7 +98,7 @@ export class CommReportComponent implements OnInit {
   weekdropvalue: string = '';
   weekdate: string = '';
   isclick: boolean = false;
-
+  commonClass: Common;
   formdata: UserCreate = new UserCreate();
   meterInfo: IMeterInfo[] = [];
   isSubdivision: boolean = false;
@@ -457,23 +458,15 @@ export class CommReportComponent implements OnInit {
     this.chartservice
       .getCommReportChartData(this.levelName, this.levelValue)
       .subscribe((res: any) => {
-        debugger;
-        if (
-          res != null &&
-          res.message != 'Key Is Not Valid' &&
-          res.message != 'Session Is Expired'
-        ) {
-          if (res.data != null) {
-            this.resultData = res.data[0];
-
-            this.isclick = false;
-            this.simType = 'All';
-
-            this.setCommReportChartData();
-          }
-        } else {
-          this.logout();
+        const validData = this.commonClass.checkDataExists(res);
+        // if (res.data != null) {
+          if (res.data && res.data.length > 0) {
+          this.resultData = res.data[0];
+          this.isclick = false;
+          this.simType = 'All';
+          this.setCommReportChartData();
         }
+
         this.spinner.hide();
       });
   }
@@ -1414,20 +1407,21 @@ export class CommReportComponent implements OnInit {
       .getSubdivisionForRegistration(this.formdata.accessOwner)
       .subscribe((res: any) => {
         this.spinner.hide();
-        if (
-          res != null &&
-          res.message != 'Key Is Not Valid' &&
-          res.message != 'Session Is Expired'
-        ) {
-          this.SubDivisionDropdown = [];
-          let obj = res.data[0];
+        // if (
+        //   res != null &&
+        //   res.message != 'Key Is Not Valid' &&
+        //   res.message != 'Session Is Expired'
+        // ) {
+        const validData = this.commonClass.checkDataExists(res);
+        this.SubDivisionDropdown = [];
+        let obj = res.data[0];
 
-          for (var item in obj) {
-            this.SubDivisionDropdown.push(obj[item][0]);
-          }
-        } else {
-          this.logout();
+        for (var item in obj) {
+          this.SubDivisionDropdown.push(obj[item][0]);
         }
+        // } else {
+
+        // }
       });
   }
 
