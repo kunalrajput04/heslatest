@@ -27,6 +27,7 @@ export class DataService {
   getchart: DashboardCharts = new DashboardCharts();
   getchartstatus: DashBoardChartStatus = new DashBoardChartStatus();
   constructor(private http: HttpClient, private datePipe: DatePipe) {}
+  //git working
 
   getInstantData(fromdate: any, todate: any, meterNo: string) {
     if (meterNo != '') {
